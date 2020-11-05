@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="dbe" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="release">
+				<Option output="./build/dbe" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="./objects/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-Wall" />
+					<Add option="-std=c++11" />
+					<Add directory="external/glew/include" />
+					<Add directory="external/glm" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="glew32" />
+					<Add library="opengl32" />
+					<Add library="glu32" />
+					<Add directory="external/glew/lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="modules/common/include_gl.hpp" />
+		<Unit filename="modules/core/core.cpp" />
+		<Unit filename="modules/core/core.hpp" />
+		<Unit filename="modules/demonblade.hpp" />
+		<Unit filename="modules/graphics/model.cpp" />
+		<Unit filename="modules/graphics/model.hpp" />
+		<Unit filename="modules/graphics/texture.cpp" />
+		<Unit filename="modules/graphics/texture.hpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
