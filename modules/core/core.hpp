@@ -1,6 +1,11 @@
 #ifndef CORE_HPP_INCLUDED
 #define CORE_HPP_INCLUDED
 
+/*
+    Хэдер для подключения ядра движка demonblade
+    Реализует класс - одиночку для работы с функциями состояний OpenGL
+*/
+
 #include <cstdint>
 
 // todo: light

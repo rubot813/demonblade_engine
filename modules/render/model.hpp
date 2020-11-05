@@ -1,13 +1,11 @@
 #ifndef MODEL_HPP_INCLUDED
 #define MODEL_HPP_INCLUDED
 
-#include <glm.hpp>	// vec, mat
-#include <cstdint>	// types
-#include <vector>
-#include <sstream>
-#include <fstream>
-
 #include "texture.hpp"
+
+#include <glm.hpp>	// vec, mat
+#include <sstream>
+#include <vector>
 
 // todo: render from container
 // todo: i_drawable

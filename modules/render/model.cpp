@@ -1,5 +1,6 @@
 #include "model.hpp"
 #include "../common/include_gl.hpp"
+#include <fstream>
 
 namespace demonblade {
 	model::model( void ) {
@@ -109,33 +110,10 @@ namespace demonblade {
 					std::getline( sstream, vn_buf_str, ' ' );
 
 					// Преобразование строкового значения в числовое
-
-					// TODO: Это осталось от старой версии движка. Возможно, переписать через ptr += sizeof( u )?
-					switch ( i ) {
-						case 0 : {
-							// x
-							buf.vertex.x	= atoi( v_buf_str.c_str( ) );
-							buf.texel.x		= atoi( vt_buf_str.c_str( ) );
-							buf.normal.x	= atoi( vn_buf_str.c_str( ) );
-							break;
-						}
-
-						case 1 : {
-							// y
-							buf.vertex.y	= atoi( v_buf_str.c_str( ) );
-							buf.texel.y		= atoi( vt_buf_str.c_str( ) );
-							buf.normal.y	= atoi( vn_buf_str.c_str( ) );
-							break;
-						}
-
-						case 2 : {
-							// z
-							buf.vertex.z	= atoi( v_buf_str.c_str( ) );
-							buf.texel.z		= atoi( vt_buf_str.c_str( ) );
-							buf.normal.z	= atoi( vn_buf_str.c_str( ) );
-							break;
-						}
-					}
+					// TODO: check
+					buf.vertex[ i ]	= atoi( v_buf_str.c_str( ) );
+					buf.texel[ i ]	= atoi( vt_buf_str.c_str( ) );
+					buf.normal[ i ]	= atoi( vn_buf_str.c_str( ) );
 				}
 
 				// Занесение индексов в буфер поверхностей

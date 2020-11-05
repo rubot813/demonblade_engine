@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="dbe" />
+		<Option title="demonblade" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="release">
-				<Option output="./build/dbe" prefix_auto="1" extension_auto="1" />
+				<Option output="./build/demonblade" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="./objects/" />
 				<Option type="2" />
@@ -33,10 +33,11 @@
 		<Unit filename="modules/core/core.cpp" />
 		<Unit filename="modules/core/core.hpp" />
 		<Unit filename="modules/demonblade.hpp" />
-		<Unit filename="modules/graphics/model.cpp" />
-		<Unit filename="modules/graphics/model.hpp" />
-		<Unit filename="modules/graphics/texture.cpp" />
-		<Unit filename="modules/graphics/texture.hpp" />
+		<Unit filename="modules/render/model.cpp" />
+		<Unit filename="modules/render/model.hpp" />
+		<Unit filename="modules/render/render.hpp" />
+		<Unit filename="modules/render/texture.cpp" />
+		<Unit filename="modules/render/texture.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
