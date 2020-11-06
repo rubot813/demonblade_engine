@@ -80,9 +80,9 @@ namespace demonblade {
 		private:
 
 			// ¬нутренние методы передачи в OpenGL указанных параметров
-			void generate_and_apply_texture( void );
-			void apply_filter( void );
-			void apply_wrap( void );
+			void _generate_and_apply_texture( void );
+			void _apply_filter( void );
+			void _apply_wrap( void );
 
 			// ”казатель на массив пикселей
 			uint8_t		*_pixel_ptr;

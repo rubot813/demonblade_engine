@@ -1,10 +1,10 @@
 #ifndef MODEL_HPP_INCLUDED
 #define MODEL_HPP_INCLUDED
 
+#include "./glm/glm.hpp"
 #include "texture.hpp"
-
-#include <glm.hpp>	// vec, mat
 #include <sstream>
+#include <fstream>
 #include <vector>
 
 // todo: render from container

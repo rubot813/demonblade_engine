@@ -17,21 +17,23 @@
 					<Add option="-O2" />
 					<Add option="-Wall" />
 					<Add option="-std=c++11" />
-					<Add directory="external/glew/include" />
-					<Add directory="external/glm" />
+					<Add directory="external" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
 					<Add library="glew32" />
 					<Add library="opengl32" />
-					<Add library="glu32" />
-					<Add directory="external/glew/lib" />
+					<Add directory="external/glew/lib/gcc" />
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="modules/common/include_gl.hpp" />
-		<Unit filename="modules/core/core.cpp" />
+		<Unit filename="modules/common/gl_libs.hpp" />
+		<Unit filename="modules/common/global.hpp" />
+		<Unit filename="modules/core/camera.cpp" />
+		<Unit filename="modules/core/camera.hpp" />
 		<Unit filename="modules/core/core.hpp" />
+		<Unit filename="modules/core/ogl.cpp" />
+		<Unit filename="modules/core/ogl.hpp" />
 		<Unit filename="modules/demonblade.hpp" />
 		<Unit filename="modules/render/model.cpp" />
 		<Unit filename="modules/render/model.hpp" />

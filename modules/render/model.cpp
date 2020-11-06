@@ -1,6 +1,5 @@
 #include "model.hpp"
-#include "../common/include_gl.hpp"
-#include <fstream>
+#include "../common/gl_libs.hpp"
 
 namespace demonblade {
 	model::model( void ) {

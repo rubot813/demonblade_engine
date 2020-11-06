@@ -1,5 +1,5 @@
 #include "texture.hpp"
-#include "../common/include_gl.hpp"
+#include "../common/gl_libs.hpp"
 
 namespace demonblade {
 
@@ -42,9 +42,9 @@ namespace demonblade {
 	}
 
 	bool texture::load_to_vram( void ) {
-		generate_and_apply_texture( );
-		apply_filter( );
-		apply_wrap( );
+		_generate_and_apply_texture( );
+		_apply_filter( );
+		_apply_wrap( );
 		return is_loaded( );
 	}
 
@@ -61,7 +61,7 @@ namespace demonblade {
 		return ( is_loaded( ) ? _texture_ptr : nullptr );
 	}
 
-	void texture::generate_and_apply_texture( void ) {
+	void texture::_generate_and_apply_texture( void ) {
 
 		// Генерация имени текстуры
 		glGenTextures( 1, _texture_ptr );
@@ -81,12 +81,12 @@ namespace demonblade {
 		              _pixel_ptr );
 	}
 
-	void texture::apply_filter( void ) {
+	void texture::_apply_filter( void ) {
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _filter_high );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _filter_low );
 	}
 
-	void texture::apply_wrap( void ) {
+	void texture::_apply_wrap( void ) {
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _wrap_u );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _wrap_v );
 	}
