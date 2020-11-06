@@ -10,4 +10,6 @@
 // live fast, die young! |:>
 namespace db = demonblade;
 
+// test commit
+
 #endif // DEMONBLADE_HPP_INCLUDED
