@@ -7,6 +7,7 @@ namespace demonblade {
 
 		// Инициализация GLEW и обработка ошибки
 		GLenum glew_init_error = glewInit( );
+
 		if ( glew_init_error != GLEW_OK )
 			return 0;
 
@@ -99,6 +100,18 @@ namespace demonblade {
 
 		// Обнуление матрицы
 		glLoadIdentity( );
+	}
+
+	inline uint16_t ogl::get_viewport_height( void ) {
+		return _viewport_height;
+	}
+
+	inline uint16_t ogl::get_viewport_width( void ) {
+		return _viewport_width;
+	}
+
+	inline uint16_t ogl::get_fov( void ) {
+		return _fov;
 	}
 
 	void fog::set( float start, float end, float density ) {

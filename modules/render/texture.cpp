@@ -9,8 +9,8 @@ namespace demonblade {
 	}
 
 	texture::texture( const uint8_t *pixel_ptr, uint16_t width, uint16_t height,
-			filter_e filter_high, filter_e filter_low,
-			wrap_e wrap_u, wrap_e wrap_v ) {
+	                  filter_e filter_high, filter_e filter_low,
+	                  wrap_e wrap_u, wrap_e wrap_v ) {
 		_pixel_ptr		= _pixel_ptr;
 		_pixel_width	= width;
 		_pixel_height	= height;

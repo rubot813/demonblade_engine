@@ -47,8 +47,8 @@ namespace demonblade {
 			// Конструктор с полным набором параметров
 			// Загружает текстуру в VRAM
 			texture( const uint8_t *pixel_ptr, uint16_t width, uint16_t height,
-					filter_e filter_high = NEAREST, filter_e filter_low = NEAREST,
-					wrap_e wrap_u = CLAMP, wrap_e wrap_v = CLAMP );
+			         filter_e filter_high = NEAREST, filter_e filter_low = NEAREST,
+			         wrap_e wrap_u = CLAMP, wrap_e wrap_v = CLAMP );
 
 			~texture( void );
 

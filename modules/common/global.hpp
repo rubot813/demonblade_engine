@@ -7,4 +7,8 @@
 	#define M_PI	3.14159265358979323846
 #endif
 
+#ifdef GLM_FORCE_RADIANS
+	#pragma message "WARN: Use radians on fov param \"ogl->init\""
+#endif // GLM_FORCE_RADIANS
+
 #endif // GLOBAL_HPP_INCLUDED

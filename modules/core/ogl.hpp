@@ -37,6 +37,11 @@ namespace demonblade {
 			// Функция изменения размеров порта вывода
 			void reshape( uint16_t new_viewport_width, uint16_t new_viewport_height );
 
+			// Методы получения размеров порта вывода и угла обзора	todo: refact after add camera
+			inline uint16_t get_viewport_height( void );
+			inline uint16_t get_viewport_width( void );
+			inline uint16_t get_fov( void );
+
 			// Функция очистки матрицы MODELVIEW и буферов OpenGL
 			void clear( void );
 
