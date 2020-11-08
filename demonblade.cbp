@@ -35,6 +35,8 @@
 		<Unit filename="modules/core/ogl.cpp" />
 		<Unit filename="modules/core/ogl.hpp" />
 		<Unit filename="modules/demonblade.hpp" />
+		<Unit filename="modules/render/mesh.cpp" />
+		<Unit filename="modules/render/mesh.hpp" />
 		<Unit filename="modules/render/model.cpp" />
 		<Unit filename="modules/render/model.hpp" />
 		<Unit filename="modules/render/render.hpp" />

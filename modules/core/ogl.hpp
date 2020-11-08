@@ -4,6 +4,9 @@
 /*
     Хэдер для подключения модуля работы с OpenGL движка demonblade
     Реализует класс - одиночку для работы с функциями состояний OpenGL
+
+    Использование:
+    db::ogl::get_instance( )-><method>( );
 */
 
 
@@ -31,16 +34,8 @@ namespace demonblade {
 			};
 
 			// Функция инициализации ядра OpenGL
-			// Принимает размеры порта вывода ( окна ) для отображения и угол обзора ( FOV )
-			bool init( uint16_t viewport_width, uint16_t viewport_height, float fov );
-
-			// Функция изменения размеров порта вывода
-			void reshape( uint16_t new_viewport_width, uint16_t new_viewport_height );
-
-			// Методы получения размеров порта вывода и угла обзора	todo: refact after add camera
-			inline uint16_t get_viewport_height( void );
-			inline uint16_t get_viewport_width( void );
-			inline uint16_t get_fov( void );
+			// Возвращает true, если успешно
+			bool init( void );
 
 			// Функция очистки матрицы MODELVIEW и буферов OpenGL
 			void clear( void );
@@ -56,20 +51,6 @@ namespace demonblade {
 			~ogl( void ) { };
 			ogl( const ogl &_ex ) = delete;
 			ogl& operator=( const ogl& ) = delete;
-
-			// Функция изменения размеров порта вывода
-			// Берет параметры из private переменных
-			void reshape( void );
-
-			// Параметры окна
-			// Размеры
-			uint16_t _viewport_width, _viewport_height;
-
-			// Угол обзора по оси Y
-			float _fov;
-
-		protected:
-			// no childs allowed
 	};	// ogl
 
 	namespace fog {
