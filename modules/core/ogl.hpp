@@ -9,7 +9,6 @@
     db::ogl::get_instance( )-><method>( );
 */
 
-
 #include <cstdint>
 
 // todo: light

@@ -2,10 +2,11 @@
 
 namespace demonblade {
 	camera::camera( void ) {
-
+		_up = { .0, 1.0f, .0f };
 	}
 
 	camera::camera( uint16_t width, uint16_t height, float fov, float z_near, float z_far ) {
+		_up = { .0, 1.0f, .0f };
 		set_viewport( width, height, fov, z_near, z_far );
 	}
 
@@ -69,27 +70,27 @@ namespace demonblade {
 		glm::lookAt( _position, _center, _up );
 	}
 
-	inline void camera::set_position( glm::vec3 value ) {
+	void camera::set_position( glm::vec3 value ) {
 		_position = value;
 	}
 
-	inline void camera::set_center( glm::vec3 value ) {
+	void camera::set_center( glm::vec3 value ) {
 		_center = value;
 	}
 
-	inline void camera::set_up( glm::vec3 value ) {
+	void camera::set_up( glm::vec3 value ) {
 		_up = value;
 	}
 
-	inline glm::vec3 camera::get_position( void  ) {
+	glm::vec3 camera::get_position( void  ) {
 		return _position;
 	}
 
-	inline glm::vec3 camera::get_center( void  ) {
+	glm::vec3 camera::get_center( void  ) {
 		return _center;
 	}
 
-	inline glm::vec3 camera::get_up( void ) {
+	glm::vec3 camera::get_up( void ) {
 		return _up;
 	}
 }	// namespace demonblade

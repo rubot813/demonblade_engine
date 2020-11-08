@@ -1,5 +1,4 @@
 #include "mesh.hpp"
-#include <sstream>
 #include <fstream>
 
 namespace demonblade {
@@ -65,6 +64,18 @@ namespace demonblade {
 		_format			= UNKNOWN;
 		_succes_flag	= 0;
 		_file_name.clear( );
+	}
+
+	std::vector< glm::vec3 >* mesh::get_vertex_ptr( void ) {
+		return &_vertex;
+	}
+
+	std::vector< glm::vec2 >* mesh::get_texel_ptr( void ) {
+		return &_texel;
+	}
+
+	std::vector< glm::vec3 >* mesh::get_normal_ptr( void ) {
+		return &_normal;
 	}
 
 	bool mesh::_load_obj( void ) {

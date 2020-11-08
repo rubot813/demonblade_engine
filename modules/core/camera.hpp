@@ -20,14 +20,14 @@ namespace demonblade {
 			~camera( void );
 
 			// Методы установки параметров камеры
-			inline void set_position( glm::vec3 value );
-			inline void set_center( glm::vec3 value );
-			inline void set_up( glm::vec3 value );
+			void set_position( glm::vec3 value );
+			void set_center( glm::vec3 value );
+			void set_up( glm::vec3 value );
 
 			// Методы получения параметров камеры
-			inline glm::vec3 get_position( void );
-			inline glm::vec3 get_center( void );
-			inline glm::vec3 get_up( void );
+			glm::vec3 get_position( void );
+			glm::vec3 get_center( void );
+			glm::vec3 get_up( void );
 
 			// Метод установки порта вывода
 			// Все принимаемые параметры описаны в private

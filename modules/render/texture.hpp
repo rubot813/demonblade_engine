@@ -3,7 +3,7 @@
 
 #include <cstdint>	// C++11
 
-// todo: 3d textures, mipmap
+// todo: 1d, 3d textures, mipmap
 
 namespace demonblade {
 	// Класс описывает одну текстуру

@@ -1,11 +1,11 @@
 #include "texture.hpp"
 #include "../common/gl_libs.hpp"
+#include <iostream>
 
 namespace demonblade {
 
 	texture::texture( void ) {
-		// nope
-		// DOPE
+		_texture_ptr = nullptr;
 	}
 
 	texture::texture( const uint8_t *pixel_ptr, uint16_t width, uint16_t height,
@@ -54,7 +54,10 @@ namespace demonblade {
 	}
 
 	bool texture::is_loaded( void ) {
-		return ( glIsTexture( *_texture_ptr ) == GL_TRUE );
+		if ( _texture_ptr )
+			return ( glIsTexture( *_texture_ptr ) == GL_TRUE );
+		else
+			return false;
 	}
 
 	texture::texture_t* texture::get_pointer( void ) {
@@ -69,7 +72,7 @@ namespace demonblade {
 		// ”становка текстуры ( все следующие операции будут производитьс€ над ней )
 		glBindTexture( GL_TEXTURE_2D, *_texture_ptr );
 
-		// ѕередача изображени€
+		// «агрузка текстуры в VRAM
 		glTexImage2D( GL_TEXTURE_2D,
 		              0,
 		              GL_RGBA8,
