@@ -3,10 +3,14 @@
 
 #include <cstdint>	// C++11
 
-// todo: 3d textures, mipmap
+/*
+	 ласс texture описывает одну текстуру. ѕозвол€ет загружать набор пикселей из RAM в VRAM
+	 ласс сам чистит за собой пам€ть
+*/
+
+// todo: 1d, 3d textures, mipmap, check on 64bit compiler
 
 namespace demonblade {
-	//  ласс описывает одну текстуру
 	class texture {
 		public:
 
@@ -20,35 +24,48 @@ namespace demonblade {
 			enum wrap_e {
 
 				// ¬жатие текстуры в указанный диапазон
-				CLAMP = 0x2900,
+				CLAMP					= 0x2900,
 
 				// ¬жатие текстуры в указанный диапазон с повторением
-				MIRROR_CLAMP_TO_EDGE = 8743,
+				MIRROR_CLAMP_TO_EDGE	= 0x8743,
 
 				// ѕовторение текстуры
-				REPEAT =  0x2901,
+				REPEAT					= 0x2901,
 
 				// ќтражение текстуры с повторением
-				MIRRORED_REPEAT = 0x8370,
+				MIRRORED_REPEAT			= 0x8370,
 
 				// »гнорирование текселей, выход€щих за диапазон
-				CLAMP_TO_BORDER = 0x812D,
+				CLAMP_TO_BORDER			= 0x812D,
 
 				// »гнорирование выборки текселей, выход€щих за край
-				CLAMP_TO_EDGE = 0x812E,
+				CLAMP_TO_EDGE			= 0x812E
 			};
 
-			// “ип текстуры DB. ќсторожно - не будет работать на 64бит компил€торе
-			typedef uint32_t texture_t;
+			// ѕеречисление форматов упаковки значений цветов пикселей
+			// Ќа данный момент есть поддержка только RGBA 8 / 32 бита
+			enum pack_e {
+				RGBA8			= 0x8058,	// RGBA, 8 бит / пиксель
+				RGBA8_SNORM		= 0xF897,	// RGBA, 8 знаковых бит / пиксель
+				RGBA16			= 0x805B,	// RGBA, 16 бит / пиксель
+				SRGB8_ALPHA8	= 0x8C43,	// RGBA, 8 бит / пиксель
+				RGBA32F			= 0x8814,	// RGBA, 32 бит с плавающей точкой / пиксель
+				RGBA8I			= 0x8D8E,	// RGBA, 8i бит / пиксель
+				RGBA32I			= 0x8D82,	// RGBA, 32i бит / пиксель
+				RGBA32UI		= 0x8D70	// RGBA, 32ui бит / пиксель
+			};
+
+			// јлиас текстуры
+			typedef std::size_t texture_t;
 
 			// ѕустой конструктор по умолчанию
 			texture( void );
 
 			//  онструктор с полным набором параметров
 			// «агружает текстуру в VRAM
-			texture( const uint8_t *pixel_ptr, uint16_t width, uint16_t height,
-					filter_e filter_high = NEAREST, filter_e filter_low = NEAREST,
-					wrap_e wrap_u = CLAMP, wrap_e wrap_v = CLAMP );
+			texture( const void *pixel_ptr, uint16_t width, uint16_t height, pack_e pack = RGBA8,
+			         filter_e filter_high = NEAREST, filter_e filter_low = NEAREST,
+			         wrap_e wrap_u = CLAMP, wrap_e wrap_v = CLAMP );
 
 			~texture( void );
 
@@ -61,8 +78,11 @@ namespace demonblade {
 			// u и v - текстурные координаты 2D, направление соответствует x, y
 			void set_wrap_type( wrap_e wrap_u = CLAMP, wrap_e wrap_v = CLAMP );
 
-			// ”становка указател€ на двумерный массив RGBA ( по 8 бит на компоненту ) и размеров массива
-			void set_pixel_pointer( const uint8_t *pixel_ptr, uint16_t width, uint16_t height );
+			// ”становка указател€ на двумерный массив RGBA и размеров массива
+			void set_pixel_pointer( const void *pixel_ptr, uint16_t width, uint16_t height );
+
+			// ”становка типа упаковки байт в изображении
+			void set_pack_type( pack_e pack );
 
 			// «агрузка текстуры в видеокарту с указанными ранее параметрами
 			// ¬ернет true в случае успешной загрузки
@@ -80,9 +100,9 @@ namespace demonblade {
 		private:
 
 			// ¬нутренние методы передачи в OpenGL указанных параметров
-			void generate_and_apply_texture( void );
-			void apply_filter( void );
-			void apply_wrap( void );
+			void _generate_and_apply_texture( void );
+			void _apply_filter( void );
+			void _apply_wrap( void );
 
 			// ”казатель на массив пикселей
 			uint8_t		*_pixel_ptr;
@@ -98,6 +118,9 @@ namespace demonblade {
 			// “ипы наложени€ текстуры по координатам U, V
 			wrap_e _wrap_u;
 			wrap_e _wrap_v;
+
+			// “ип упаковки байт при загрузке текстуры
+			pack_e _pack;
 
 			// ”казатель на загруженную текстуру
 			texture_t *_texture_ptr;

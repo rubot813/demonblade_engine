@@ -1,11 +1,41 @@
 #ifndef MODEL_HPP_INCLUDED
 #define MODEL_HPP_INCLUDED
 
+#include "../common/gl_libs.hpp"
 #include "texture.hpp"
+#include "mesh.hpp"
 
-#include <glm.hpp>	// vec, mat
 #include <sstream>
+#include <fstream>
 #include <vector>
+
+/*
+	Класс, позволяющий универсально работать с моделями разных форматов
+	Важно! Интенсивно работает с память, смотри использование:
+
+	Использование:
+	// ====
+	db::texture tex;
+    db::mesh mesh;
+    db::model *m
+    m = new db::model( &mesh, &tex );
+    ...
+    delete m;	// Здесь он не сломает tex и mesh
+    // ====
+
+    db::model m( new db::mesh( ... ), new db::texture( ... ) );
+
+    // ====
+
+    db::texture tex;
+    db::mesh mesh;
+
+    db::model m;
+    m.set_texture( &tex )
+    m.set_mesh( &mesh )
+
+	// ====
+*/
 
 // todo: render from container
 // todo: i_drawable
@@ -14,62 +44,70 @@ namespace demonblade {
 	// Класс описывает одну модель
 	class model {
 
-public:
-	// Пустой конструктор по умолчанию
-	model( void );
+		public:
+			// Пустой конструктор по умолчанию
+			model( void );
 
-	// Метод загрузки массивов вершин, текселей и нормалей из Wavefront OBJ файла
-	// Вернет true в случае успеха
-	bool load_from_obj( std::string file_name );
+			// Конструктор с указателями на заранее загруженный меш и загруженную текстуру
+			model( mesh *msh, texture *tex );
 
-	// Метод установки текстуры для модели
-	// Вернет true в случае успеха
-	bool set_texture( texture::texture_t *tex );
+			// Конструктор с созданием экземпляра текстуры и экземпляра меша
+			model( mesh msh, texture tex );
 
-	// Методы перемещения, вращения и масштабирования модели
-	inline void move( glm::vec3 offset );
-	inline void rotate( glm::vec3 offset );
-	inline void scale( glm::vec3 offset );
+			~model( void );
 
-	// Методы установки позиции, поворота и масштаба модели
-	inline void set_position( glm::vec3 value );
-	inline void set_rotation( glm::vec3 value );
-	inline void set_scale( glm::vec3 value );
+			// Метод установки текстуры для модели и меша модели
+			// Вернут true в случае успеха
+			bool set_texture( texture *tex );
+			bool set_mesh( mesh *msh );
 
-	// Метод отрисовки модели
-	void render( void );
+			// Методы получения указателей на текстуру и меш модели
+			texture*	get_texture( void );
+			mesh*		get_mesh( void );
 
-	// types, methods
-	private:
-		// Структура индексов одной поверхности ( треугольника )
-		typedef struct {
-			// Индексы вершин, текселей и нормалей
-			glm::uvec3 vertex;
-			glm::uvec3 texel;
-			glm::uvec3 normal;
-		} _face_ind_s;
+			// Методы перемещения, вращения и масштабирования модели
+			void move( glm::vec3 offset );
+			void rotate( glm::vec3 offset );
+			void scale( glm::vec3 offset );
 
-		// Базовые параметры модели: положение, вращение и масштабирование
-		glm::vec3 _position;
-		glm::vec3 _rotation;
-		glm::vec3 _scale;
+			// Методы установки позиции, поворота и масштаба модели
+			void set_position( glm::vec3 value );
+			void set_rotation( glm::vec3 value );
+			void set_scale( glm::vec3 value );
 
-		// Световые параметры модели
-		glm::vec4 _ambient;		// Рассеянный свет
-		glm::vec4 _diffuse;		// Диффузный свет
-		glm::vec4 _specular;	// Отраженный свет
+			// Методы получения позиции, поворота и масштаба модели
+			glm::vec3 get_position( void );
+			glm::vec3 get_rotation( void );
+			glm::vec3 get_scale( void );
 
-		// Вершины модели
-		std::vector< glm::vec3 > _vertex;
+			// Метод отрисовки модели
+			void render( void );
 
-		// Тексели ( текстурные координаты ) модели
-		std::vector< glm::vec2 > _texel;
+		private:
 
-		// Нормали модели
-		std::vector< glm::vec3 > _normal;
+			// Базовые параметры модели: положение, вращение и масштабирование
+			glm::vec3 _position;
+			glm::vec3 _rotation;
+			glm::vec3 _scale;
 
-		// Текстура модели
-		texture::texture_t *_texture;
+			// Световые параметры модели
+			glm::vec4 _ambient;		// Рассеянный свет
+			glm::vec4 _diffuse;		// Диффузный свет
+			glm::vec4 _specular;	// Отраженный свет
+
+			// Указатель на загруженную текстуру в VRAM
+			texture::texture_t	*_texture_vram;
+
+			// Указатель на экземпляр класса текстур
+			texture				*_texture;
+
+			// Указатель на экземпляр класса работы с мешем
+			mesh				*_mesh;
+
+			// Флаги, что мы создавали экземпляр меша или текстуры
+			// Используются в декструкторе чтобы освободить память
+			bool _mesh_allocated;
+			bool _tex_allocated;
 
 	};	// class model
 
