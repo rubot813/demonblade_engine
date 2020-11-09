@@ -6,9 +6,14 @@ namespace demonblade {
 
 	texture::texture( void ) {
 		_texture_ptr = nullptr;
+		_filter_high	= NEAREST;
+		_filter_low		= NEAREST;
+		_wrap_u			= CLAMP;
+		_wrap_v			= CLAMP;
+		_pack			= RGBA8;
 	}
 
-	texture::texture( const uint8_t *pixel_ptr, uint16_t width, uint16_t height,
+	texture::texture( const void *pixel_ptr, uint16_t width, uint16_t height, pack_e pack,
 	                  filter_e filter_high, filter_e filter_low,
 	                  wrap_e wrap_u, wrap_e wrap_v ) {
 		_pixel_ptr		= _pixel_ptr;
@@ -18,6 +23,7 @@ namespace demonblade {
 		_filter_low		= filter_low;
 		_wrap_u			= wrap_u;
 		_wrap_v			= wrap_v;
+		_pack			= pack;
 		load_to_vram( );
 	}
 
@@ -35,7 +41,7 @@ namespace demonblade {
 		_wrap_v = wrap_v;
 	}
 
-	void texture::set_pixel_pointer( const uint8_t *pixel_ptr, uint16_t width, uint16_t height ) {
+	void texture::set_pixel_pointer( const void *pixel_ptr, uint16_t width, uint16_t height ) {
 		_pixel_ptr = _pixel_ptr;
 		_pixel_width = width;
 		_pixel_height = height;
@@ -45,23 +51,20 @@ namespace demonblade {
 		_generate_and_apply_texture( );
 		_apply_filter( );
 		_apply_wrap( );
-		return is_loaded( );
+		return ( _texture_ptr != nullptr );
 	}
 
 	void texture::unload_from_vram( void ) {
-		if ( is_loaded( ) )
+		if ( _texture_ptr )
 			glDeleteTextures( 1, _texture_ptr );
 	}
 
 	bool texture::is_loaded( void ) {
-		if ( _texture_ptr )
-			return ( glIsTexture( *_texture_ptr ) == GL_TRUE );
-		else
-			return false;
+		return ( _texture_ptr != nullptr );
 	}
 
 	texture::texture_t* texture::get_pointer( void ) {
-		return ( is_loaded( ) ? _texture_ptr : nullptr );
+		return _texture_ptr;
 	}
 
 	void texture::_generate_and_apply_texture( void ) {
@@ -75,7 +78,7 @@ namespace demonblade {
 		// Загрузка текстуры в VRAM
 		glTexImage2D( GL_TEXTURE_2D,
 		              0,
-		              GL_RGBA8,
+		              _pack,
 		              _pixel_width,
 		              _pixel_height,
 		              0,

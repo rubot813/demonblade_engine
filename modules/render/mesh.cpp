@@ -50,7 +50,7 @@ namespace demonblade {
 		return _format;
 	}
 
-	bool mesh::get_load_result( void ) {
+	bool mesh::is_loaded( void ) {
 		return _succes_flag;
 	}
 

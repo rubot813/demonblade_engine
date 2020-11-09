@@ -45,7 +45,7 @@ namespace demonblade {
 
 			// Метод возвращает результат загрузки меша из файла
 			// true - успешно загружен
-			bool get_load_result( void );
+			bool is_loaded( void );
 
 			// Метод возвращает указатель на контейнер с координатами вершин
 			std::vector< glm::vec3 >* get_vertex_ptr( void );

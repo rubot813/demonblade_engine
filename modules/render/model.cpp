@@ -16,11 +16,9 @@ namespace demonblade {
 	}
 
 	model::model( mesh *m, texture *tex ) {
-		std::cout << "HERE";
 		_mesh = m;
 		_texture = tex;
 		_texture_vram = _texture->get_pointer( );
-		std::cout << "HERE2";
 		// Флаги, что память не выделяли
 		_mesh_allocated = 0;
 		_tex_allocated = 0;
