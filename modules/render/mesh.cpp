@@ -4,15 +4,17 @@
 namespace demonblade {
 
 	mesh::mesh( void ) {
-		_clean_internal( );
-	}
 
-	mesh::mesh( std::string file_name ) {
-		load_from_file( file_name );
 	}
 
 	mesh::~mesh( void ) {
 
+	}
+
+	void mesh::operator=( mesh &m ) {
+		_vertex			= *( m.get_vertex_ptr( ) );
+		_texel			= *( m.get_texel_ptr( ) );
+		_normal			= *( m.get_normal_ptr( ) );
 	}
 
 	bool mesh::load_from_file( std::string file_name ) {
@@ -20,20 +22,26 @@ namespace demonblade {
 	}
 
 	bool mesh::load_from_file( std::string file_name, format_e format ) {
-		_clean_internal( );
+		// Succesful loading flag
+		bool load_flag = 0;
 
+		// Clean internal vars
+		_vertex.clear( );
+		_texel.clear( );
+		_normal.clear( );
+
+		// File format switch
 		switch ( format ) {
 			case UNKNOWN:
 				break;
 			case OBJ: {
-				if ( _load_obj( ) )
-					_set_internal( OBJ, 1, &file_name );
+				load_flag = _load_obj( file_name );
 				break;
 			}
 			default:
 				break;
 		}
-		return _succes_flag;
+		return load_flag;
 	}
 
 	mesh::format_e mesh::_get_extension( std::string *path ) {
@@ -44,26 +52,6 @@ namespace demonblade {
 		if ( ext == "obj" || ext == "OBJ" )
 			return OBJ;
 		return UNKNOWN;
-	}
-
-	mesh::format_e mesh::get_file_format( void ) {
-		return _format;
-	}
-
-	bool mesh::is_loaded( void ) {
-		return _succes_flag;
-	}
-
-	void mesh::_set_internal( mesh::format_e fm, bool fl, std::string *fn ) {
-		_format			= fm;
-		_succes_flag	= fl;
-		_file_name		= *fn;
-	}
-
-	void mesh::_clean_internal( void ) {
-		_format			= UNKNOWN;
-		_succes_flag	= 0;
-		_file_name.clear( );
 	}
 
 	std::vector< glm::vec3 >* mesh::get_vertex_ptr( void ) {
@@ -78,16 +66,15 @@ namespace demonblade {
 		return &_normal;
 	}
 
-	bool mesh::_load_obj( void ) {
-
+	bool mesh::_load_obj( std::string fname ) {
 		// Создание объекта текстового файла, открытие файла на чтение
 		std::ifstream file;
-		file.open( _file_name, std::ios_base::in );
-
+		file.open( fname, std::ios_base::in );
 		// Проверка, смогли ли открыть файл
-		if ( !file.is_open( ) )
+		if ( !file.is_open( ) ) {
+			std::cout << "##!\n";
 			return 0;
-
+		}
 		// Буферы считанной строки и подстроки
 		std::string line, buffer;
 
@@ -108,7 +95,6 @@ namespace demonblade {
 
 			// Подстрока размером 2 символа начиная с нулевого
 			buffer = line.substr( 0, 2 );
-
 			// Если объявлена вершина
 			if ( buffer == "v " ) {
 
@@ -208,6 +194,7 @@ namespace demonblade {
 
 			// Если определение неизвестно
 			// TODO: можно хотя бы строчку вывести, где не смогли прочитать
+			file.close( );
 			return 0;
 
 		} // Конец прохода по файлу
@@ -233,6 +220,7 @@ namespace demonblade {
 			++iter;
 		}
 
+		file.close( );
 		return 1;
 	}	// _load_obj
 }	// namespace demonblade

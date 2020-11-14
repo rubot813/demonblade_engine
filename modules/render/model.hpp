@@ -2,39 +2,15 @@
 #define MODEL_HPP_INCLUDED
 
 #include "../common/gl_libs.hpp"
-#include "texture.hpp"
-#include "mesh.hpp"
+#include "../common/global.hpp"
+#include "model_part.hpp"
 
 #include <sstream>
-#include <fstream>
-#include <vector>
+#include <list>
 
 /*
-	Класс, позволяющий универсально работать с моделями разных форматов
-	Важно! Интенсивно работает с память, смотри использование:
-
-	Использование:
-	// ====
-	db::texture tex;
-    db::mesh mesh;
-    db::model *m
-    m = new db::model( &mesh, &tex );
-    ...
-    delete m;	// Здесь он не сломает tex и mesh
-    // ====
-
-    db::model m( new db::mesh( ... ), new db::texture( ... ) );
-
-    // ====
-
-    db::texture tex;
-    db::mesh mesh;
-
-    db::model m;
-    m.set_texture( &tex )
-    m.set_mesh( &mesh )
-
-	// ====
+	Класс, позволяющий универсально работать с моделями и текстурами разных форматов.
+	Модель состоит из частей ( part ). Часть модели состоит из меша ( геометрии ) и текстуры.
 */
 
 // todo: render from container
@@ -45,25 +21,30 @@ namespace demonblade {
 	class model {
 
 		public:
-			// Пустой конструктор по умолчанию
 			model( void );
-
-			// Конструктор с указателями на заранее загруженный меш и загруженную текстуру
-			model( mesh *msh, texture *tex );
-
-			// Конструктор с созданием экземпляра текстуры и экземпляра меша
-			model( mesh msh, texture tex );
-
 			~model( void );
 
-			// Метод установки текстуры для модели и меша модели
-			// Вернут true в случае успеха
-			bool set_texture( texture *tex );
-			bool set_mesh( mesh *msh );
+			// Метод добавления текстуры и меша модели
+			// Добавляются в модель в виде части
+			// Вернет true если все корректно и охуенно ( просто и гениально )
+			// Вернет false если не хватает памяти,
+			// если указатели на валидны,
+			// если меш не загружен в RAM,
+			// если текстура не загружена в VRAM
+			bool add_part( mesh *mesh_ptr, texture *tex_ptr );
 
-			// Методы получения указателей на текстуру и меш модели
-			texture*	get_texture( void );
-			mesh*		get_mesh( void );
+			// Метод удаления части модели по id
+			// Вернет true если успешно
+			// Вернет false если часть не существует или out of range
+			bool remove_part( std::size_t id );
+
+			// Метод получения количества частей модели
+			std::size_t get_part_count( void );
+
+			// Методы получения указателей на меш и текстуру модели
+			// Принимают порядковый номер части модели
+			mesh*		get_mesh( std::size_t id );
+			texture*	get_texture( std::size_t id );
 
 			// Методы перемещения, вращения и масштабирования модели
 			void move( glm::vec3 offset );
@@ -80,10 +61,19 @@ namespace demonblade {
 			glm::vec3 get_rotation( void );
 			glm::vec3 get_scale( void );
 
-			// Метод отрисовки модели
+			// Метод отрисовки всей модели или ее части
 			void render( void );
+			void render( std::size_t id );
 
 		private:
+
+			// Внутренний метод отрисовки части модели через указатель
+			void _render( model_part *part_ptr );
+
+			// Метод получения указателя на итератор списка model_part по индексу
+			// Своя замена std::list::at
+			std::list< model_part >::iterator* _get_part_iter( std::size_t index );
+
 
 			// Базовые параметры модели: положение, вращение и масштабирование
 			glm::vec3 _position;
@@ -95,19 +85,8 @@ namespace demonblade {
 			glm::vec4 _diffuse;		// Диффузный свет
 			glm::vec4 _specular;	// Отраженный свет
 
-			// Указатель на загруженную текстуру в VRAM
-			texture::texture_t	*_texture_vram;
-
-			// Указатель на экземпляр класса текстур
-			texture				*_texture;
-
-			// Указатель на экземпляр класса работы с мешем
-			mesh				*_mesh;
-
-			// Флаги, что мы создавали экземпляр меша или текстуры
-			// Используются в декструкторе чтобы освободить память
-			bool _mesh_allocated;
-			bool _tex_allocated;
+			// Контейнер с частями модели
+			std::list< model_part > _part;
 
 	};	// class model
 

@@ -3,8 +3,9 @@
 
 #define DB_VERSION 0.95
 
-#ifndef M_PI
-	#define M_PI	3.14159265358979323846
-#endif
+#define DB_DEBUG
+#ifdef DB_DEBUG
+	#include <iostream>	// std::cout
+#endif // DB_DEBUG
 
 #endif // GLOBAL_HPP_INCLUDED

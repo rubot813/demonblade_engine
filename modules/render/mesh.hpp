@@ -2,6 +2,7 @@
 #define MESH_HPP_INCLUDED
 
 #include "../common/gl_libs.hpp"
+#include <iostream>
 #include <sstream>
 #include <vector>
 
@@ -10,6 +11,16 @@
 	позволяет загружать вершины, текстурные координаты и карты нормалей из файлов
 	Поддерживаемые форматы: Wavefront OBJ
 	todo: md2 with anim
+
+	usage:
+	db::mesh *msh;
+	msh = new db::mesh;
+	if ( msh->load_from_file( ... ) ) {
+			// ok!
+	}
+	model->
+
+
 */
 
 namespace demonblade {
@@ -17,16 +28,11 @@ namespace demonblade {
 	class mesh {
 
 		public:
-			// Пустой конструктор по умолчанию
 			mesh( void );
-
-			// Конструктор с загрузкой меша из файла
-			// Результат можно получить через метод get_load_result
-			mesh( std::string file_name );
-
 			~mesh( void );
+			void operator=( mesh &m );
 
-			// Форматы файла, из которого был загружен меш
+			// Форматы файла, из которого может быть загружен меш
 			typedef enum {
 				UNKNOWN		= 0,	// Неизвестный формат
 				OBJ					// Wavefront OBJ
@@ -36,16 +42,9 @@ namespace demonblade {
 			// В случае успеха вернет true
 			bool load_from_file( std::string file_name );
 
-			// Принимает формат меша, игнорируя формат файла
+			// Принимает формат меша с указанием формата файла
 			// В случае успеха вернет true
 			bool load_from_file( std::string file_name, format_e format );
-
-			// Метод возвращает формат файла, из которого был загружен меш
-			format_e get_file_format( void );
-
-			// Метод возвращает результат загрузки меша из файла
-			// true - успешно загружен
-			bool is_loaded( void );
 
 			// Метод возвращает указатель на контейнер с координатами вершин
 			std::vector< glm::vec3 >* get_vertex_ptr( void );
@@ -62,14 +61,7 @@ namespace demonblade {
 			format_e _get_extension( std::string *path );
 
 			// Метод загрузки меша из OBJ файла
-			bool _load_obj( void );
-
-			// Метод установки внутренних переменных
-			// Принимает формат файла, флаг успеха загрузки, имя файла
-			void _set_internal( format_e fm, bool fl, std::string *fn );
-
-			// Метод очистки внутренних переменных
-			void _clean_internal( void );
+			bool _load_obj( std::string fname );
 
 			// types, methods
 		private:
@@ -90,14 +82,6 @@ namespace demonblade {
 			// Нормали
 			std::vector< glm::vec3 > _normal;
 
-			// Имя файла, из которого был загружен меш
-			std::string				_file_name;
-
-			// Формат файла, из которого был загружен меш
-			format_e				_format;
-
-			// Флаг успешной загрузки меша
-			bool					_succes_flag;
 	};	// mesh class
 
 }	// namespace demonblade

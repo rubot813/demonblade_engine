@@ -39,6 +39,8 @@
 		<Unit filename="modules/render/mesh.hpp" />
 		<Unit filename="modules/render/model.cpp" />
 		<Unit filename="modules/render/model.hpp" />
+		<Unit filename="modules/render/model_part.cpp" />
+		<Unit filename="modules/render/model_part.hpp" />
 		<Unit filename="modules/render/render.hpp" />
 		<Unit filename="modules/render/texture.cpp" />
 		<Unit filename="modules/render/texture.hpp" />
