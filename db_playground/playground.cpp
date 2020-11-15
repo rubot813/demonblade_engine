@@ -65,7 +65,7 @@ bool playground::init( void ) {
 
 	// ====
 	// Создание и настройка окна
-	sf_render_window.create( sf::VideoMode( window_size_x, window_size_y ), "Demonblade engine v" + std::to_string( DB_VERSION ) , sf::Style::Default, sf_context_settings );
+	sf_render_window.create( sf::VideoMode( window_size_x, window_size_y ), "Demonblade engine v" + std::to_string( DB_VERSION ), sf::Style::Default, sf_context_settings );
 	sf_render_window.setVerticalSyncEnabled( 0 );	// Откл вертикальной синхронизации
 	sf_render_window.setFramerateLimit( 60 );		// Установка ограничения кадров
 	// sf_render_window.setMouseCursorVisible( 0 );	// Отключение видимости курсора в окне
@@ -85,27 +85,47 @@ bool playground::init( void ) {
 
 	// Настройка камеры ( она обязательна,даже если будет статична )
 	// Настраивает и устанавливает матрицу перспективной проекции
-	db_camera.set_viewport( window_size_x, window_size_y, 60.0f );
-	db_camera.set_position( { 0.0f, 0.0f, -100.0f });
+	db_camera.set_viewport( window_size_x, window_size_y, 110.0f );
+	//db_camera.set_position( { 0.0f, 0.0f, -1.0f });
 
-	sf_image.loadFromFile( "resources/grass_001.png" );
-	if ( db_texture.load_from_memory( sf_image.getPixelsPtr( ),
-								sf_image.getSize( ).x,
-								sf_image.getSize( ).y ) )
-			std::cout << "Load texture ok!\n";
+	sf_image.loadFromFile( "resources/box.jpg" );
+	if ( db_texture0.load_from_memory( sf_image.getPixelsPtr( ),
+	                                  sf_image.getSize( ).x,
+	                                  sf_image.getSize( ).y ) )
+		std::cout << "Load texture ok!\n";
 
-	if ( db_mesh.load_from_file( "resources/box.obj" ) )
+	if ( db_mesh0.load_from_file( "resources/model6.obj" ) )
 		std::cout << "Load mesh ok!\n";
 
-	if ( db_model.add_part( &db_mesh, &db_texture ) )
+	if ( db_model.add_part( &db_mesh0, &db_texture0 ) )
 		std::cout << "Model add part ok!\n";
+
+	sf_image.loadFromFile( "resources/grass_001.png" );
+	if ( db_texture1.load_from_memory( sf_image.getPixelsPtr( ),
+	                                  sf_image.getSize( ).x,
+	                                  sf_image.getSize( ).y ) )
+		std::cout << "Load texture ok!\n";
+
+	if ( db_mesh1.load_from_file( "resources/pot.obj" ) )
+		std::cout << "Load mesh ok!\n";
+
+	if ( db_model.add_part( &db_mesh1, &db_texture1 ) )
+		std::cout << "Model add part ok!\n";
+
+	db_model.set_position( glm::vec3( 0.0f, -0.1f, -1.6f ) );
 
 	return _init;
 }
 
 void playground::update( void ) {
-	//db_model.move( { 0.0f, 0.0f, 0.1f } );
+	// db_model.move( { 0.0f, 0.0f, 0.1f } );
 	//db_model.set_position( glm::vec3{ 0.0f, 0.0f, 0.0f } );
+	//glm::vec3 c = db_camera.get_center( );
+	//c.y -= 0.01f;
+	//c.x -= 0.001f;
+	//db_camera.set_center( c );
+	//db_model.rotate( { 1.2f, 1.4f, .7f } );
+	//db_model.move( { .0f, .0f, -.005f } );
 }
 
 void playground::render( void ) {
@@ -128,12 +148,12 @@ void playground::render( void ) {
 	// 2
 	db::ogl::get_instance( )->clear( );
 
-	// 3, 4
-	// Здесь вся отрисовка движка или обычный OpenGL код
-	// ====
-
+	// 3
 	// Проецируем сцену от камеры db_camera
-	db_camera.project( );
+	// db_camera.project( );
+
+	// 4. Здесь вся отрисовка движка или обычный OpenGL код
+	// ====
 
 	// Рисуем модельку
 	db_model.render( );
@@ -144,7 +164,7 @@ void playground::render( void ) {
 
 	// 6
 	// ====
-	// Здесь вся отрисовка SFML
+	// Здесь вся отрисовка SFML ( sfml draw методы )
 
 
 	// ====

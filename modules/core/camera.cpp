@@ -1,4 +1,5 @@
 #include "camera.hpp"
+#include <iostream>
 
 namespace demonblade {
 	camera::camera( void ) {
@@ -40,21 +41,13 @@ namespace demonblade {
 		// Расчет соотношения сторон экрана
 		float aspect_ratio = ( ( float )_viewport_width / ( float )_viewport_height );
 
-		float _fov_checked;
-		#ifdef GLM_FORCE_RADIANS
-		_fov_checked = glm::radians( _fov );	// deg_to_rad
-		#else
-		_fov_checked = _fov;
-		#endif // GLM_FORCE_RADIANS
-
 		// Определение матрицы наблюдения перспективной проекции ( GL_PROJECTION ):
 		// Угол обзора по оси Y
 		// Соотношение сторон экрана
 		// Ближняя плоскость усеченной пирамиды наблюдения
 		// Дальняя плоскость усеченной пирамиды наблюдения
-		//glm::mat4 projection_mat = glm::perspective( _fov_checked, aspect_ratio, _z_near, _z_far );	// todo: magic nums?
-		//glLoadMatrixf( glm::value_ptr( projection_mat ) );
-		gluPerspective( _fov_checked, aspect_ratio, 0.1f, 250.0f );
+		glm::mat4 projection_mat = glm::perspective( glm::radians( _fov ), aspect_ratio, _z_near, _z_far );
+		glLoadMatrixf( glm::value_ptr( projection_mat ) );
 
 		// Выбор матрицы наблюдения моделей
 		glMatrixMode( GL_MODELVIEW );
@@ -68,12 +61,9 @@ namespace demonblade {
 		// Обнуление матрицы MODELVIEW
 		glLoadIdentity( );
 
-		//glm::mat4 lookat_mat = glm::lookAt( _position, _center, _up );
-		//glLoadMatrixf( glm::value_ptr( lookat_mat ) );
-		gluLookAt( _position.x, _position.y, _position.z,
-					_center.x, _center.y, _center.z,
-					_up.x, _up.y, _up.z );
-
+		// Считаем матрицу MODELVIEW и устанавливаем трансформацию относительно камеры
+		glm::mat4 lookat_mat = glm::lookAt( _position, _center, _up );
+		glLoadMatrixf( glm::value_ptr( lookat_mat ) );
 	}
 
 	void camera::set_position( glm::vec3 value ) {

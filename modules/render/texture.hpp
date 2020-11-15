@@ -69,7 +69,7 @@ namespace demonblade {
 		private:
 
 			// ”казатель на загруженную текстуру
-			texture_t *_texture_ptr;
+			texture_t _texture_ptr;
 	};	// class texture
 
 }	// namespace demonblade

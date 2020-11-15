@@ -15,7 +15,7 @@ namespace demonblade {
 			camera( void );
 
 			// Перегруженный конструктор, просто вызывает set_viewport
-			camera( uint16_t width, uint16_t height, float fov, float z_near = 1.0f, float z_far = 250.0f );
+			camera( uint16_t width, uint16_t height, float fov, float z_near = 0.1f, float z_far = 250.0f );
 
 			~camera( void );
 
@@ -31,7 +31,7 @@ namespace demonblade {
 
 			// Метод установки порта вывода
 			// Все принимаемые параметры описаны в private
-			void set_viewport( uint16_t width, uint16_t height, float fov, float z_near = 1.0f, float z_far = 250.0f );
+			void set_viewport( uint16_t width, uint16_t height, float fov, float z_near = 0.1f, float z_far = 250.0f );
 
 			// Метод проецирования от лица текущей камеры
 			void project( void );

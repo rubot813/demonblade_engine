@@ -12,6 +12,7 @@
 /*
 	Класс для тестов с движком demonblade.
 	Здесь все сделано криво и косо, класс предназначен только для проверки
+
 */
 
 class playground {
@@ -38,8 +39,8 @@ class playground {
 		// Переменные
 
 		// Размеры окна
-		const uint16_t window_size_x = 800;
-		const uint16_t window_size_y = 600;
+		const uint16_t window_size_x = 1280;
+		const uint16_t window_size_y = 720;
 
 		// ====
 		// Переменные SFML, начинаются с sf_
@@ -64,8 +65,8 @@ class playground {
 		// ====
 		// Переменные движка, начинаются с db_
 		db::camera db_camera;
-		db::texture db_texture;
-		db::mesh	db_mesh;
+		db::texture db_texture0, db_texture1;
+		db::mesh	db_mesh0, db_mesh1;
 		db::model	db_model;
 };	// playground class
 

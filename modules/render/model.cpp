@@ -152,7 +152,7 @@ namespace demonblade {
 		// ====
 
 		// Установка текстуры для отрисовки
-		glBindTexture( GL_TEXTURE_2D, ( GLuint )( part_ptr->get_texture_name_ptr( ) ) );
+		glBindTexture( GL_TEXTURE_2D, ( GLuint )( *part_ptr->get_texture_name_ptr( ) ) );
 
 		// ====
 
@@ -172,20 +172,20 @@ namespace demonblade {
 		// тип данных,
 		// смещение данных в массиве
 		// указатель на массив
-		glVertexPointer( 3, GL_FLOAT, 0, part_ptr->get_mesh_ptr( )->get_vertex_ptr( ) );
+		glVertexPointer( 3, GL_FLOAT, 0, part_ptr->get_mesh_ptr( )->get_vertex_ptr( )->data( ) );
 
 		// Создание указателя на массив текстурных координат
 		// количество координат,
 		// тип данных,
 		// смещение данных в массиве
 		// указатель на массив
-		glTexCoordPointer( 2, GL_FLOAT, 0, part_ptr->get_mesh_ptr( )->get_texel_ptr( ) );
+		glTexCoordPointer( 2, GL_FLOAT, 0, part_ptr->get_mesh_ptr( )->get_texel_ptr( )->data( ) );
 
 		// Создание указателя на массив нормалей
 		// тип данных,
 		// смещение данных в массиве,
 		// указатель на массив
-		glNormalPointer( GL_FLOAT, 0, part_ptr->get_mesh_ptr( )->get_normal_ptr( ) );
+		glNormalPointer( GL_FLOAT, 0, part_ptr->get_mesh_ptr( )->get_normal_ptr( )->data( ) );
 
 		// Отрисовка массива
 		// Тип данных для отрисовки

@@ -1,16 +1,17 @@
 #include "texture.hpp"
 #include "../common/gl_libs.hpp"
-#include <iostream>
+
 namespace demonblade {
 
 	texture::texture( void ) {
-		_texture_ptr = new std::size_t;
+		#ifdef __linux__
+		_texture_ptr = 0;
+		#endif
 	}
 
 	texture::~texture( void ) {
 		if ( _texture_ptr )
-			glDeleteTextures( 1, _texture_ptr );
-		delete _texture_ptr;
+			glDeleteTextures( 1, &_texture_ptr );
 	}
 
 	bool texture::load_from_memory( const void *pixel_ptr, uint16_t width, uint16_t height, pack_e pack,
@@ -18,10 +19,10 @@ namespace demonblade {
 	                                wrap_e wrap_u, wrap_e wrap_v ) {
 
 		// √енераци€ имени текстуры: заносит в _texture_ptr им€ сгенерированной текстуры
-		glGenTextures( 1, _texture_ptr );
+		glGenTextures( 1, &_texture_ptr );
 
 		// ”становка текстуры ( все следующие операции будут производитьс€ над ней )
-		glBindTexture( GL_TEXTURE_2D, *_texture_ptr );
+		glBindTexture( GL_TEXTURE_2D, _texture_ptr );
 
 		// «агрузка текстуры в VRAM
 		glTexImage2D( GL_TEXTURE_2D,
@@ -42,10 +43,10 @@ namespace demonblade {
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_u );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_v );
 
-		return ( _texture_ptr != nullptr );
+		return ( ( bool )_texture_ptr );
 	}
 
 	texture::texture_t* texture::get_pointer( void ) {
-		return _texture_ptr;
+		return &_texture_ptr;
 	}
 }	// namespace demonblade
