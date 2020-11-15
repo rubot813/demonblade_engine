@@ -11,7 +11,7 @@ namespace demonblade {
 		_ambient = _diffuse = _specular = { .25f, .25f, .25f, 1.0f };
 
 		#ifdef __linux__
-			_part.clear( );
+		_part.clear( );
 		#endif
 	}
 
@@ -109,7 +109,7 @@ namespace demonblade {
 	// ==== RENDER ====
 	void model::render( void ) {
 		// Simplified, check this later
-		for ( auto iter: _part )
+		for ( auto iter : _part )
 			_render( &iter );
 	}	// render
 

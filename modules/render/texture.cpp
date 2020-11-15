@@ -1,15 +1,16 @@
 #include "texture.hpp"
 #include "../common/gl_libs.hpp"
-
+#include <iostream>
 namespace demonblade {
 
 	texture::texture( void ) {
-		_texture_ptr = nullptr;
+		_texture_ptr = new std::size_t;
 	}
 
 	texture::~texture( void ) {
 		if ( _texture_ptr )
 			glDeleteTextures( 1, _texture_ptr );
+		delete _texture_ptr;
 	}
 
 	bool texture::load_from_memory( const void *pixel_ptr, uint16_t width, uint16_t height, pack_e pack,

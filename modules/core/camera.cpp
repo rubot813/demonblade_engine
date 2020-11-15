@@ -52,8 +52,9 @@ namespace demonblade {
 		// Соотношение сторон экрана
 		// Ближняя плоскость усеченной пирамиды наблюдения
 		// Дальняя плоскость усеченной пирамиды наблюдения
-		glm::mat4 projection_mat = glm::perspective( _fov_checked, aspect_ratio, _z_near, _z_far );	// todo: magic nums?
-		glLoadMatrixf( glm::value_ptr( projection_mat ) );
+		//glm::mat4 projection_mat = glm::perspective( _fov_checked, aspect_ratio, _z_near, _z_far );	// todo: magic nums?
+		//glLoadMatrixf( glm::value_ptr( projection_mat ) );
+		gluPerspective( _fov_checked, aspect_ratio, 0.1f, 250.0f );
 
 		// Выбор матрицы наблюдения моделей
 		glMatrixMode( GL_MODELVIEW );
@@ -67,7 +68,12 @@ namespace demonblade {
 		// Обнуление матрицы MODELVIEW
 		glLoadIdentity( );
 
-		glm::lookAt( _position, _center, _up );
+		//glm::mat4 lookat_mat = glm::lookAt( _position, _center, _up );
+		//glLoadMatrixf( glm::value_ptr( lookat_mat ) );
+		gluLookAt( _position.x, _position.y, _position.z,
+					_center.x, _center.y, _center.z,
+					_up.x, _up.y, _up.z );
+
 	}
 
 	void camera::set_position( glm::vec3 value ) {
