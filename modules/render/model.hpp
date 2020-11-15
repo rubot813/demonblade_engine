@@ -70,10 +70,10 @@ namespace demonblade {
 			// Внутренний метод отрисовки части модели через указатель
 			void _render( model_part *part_ptr );
 
-			// Метод получения указателя на итератор списка model_part по индексу
+			// Метод получения итератора на элемент model_part по индексу
 			// Своя замена std::list::at
-			std::list< model_part >::iterator* _get_part_iter( std::size_t index );
-
+			std::list< model_part >::iterator _get_part_iterator( std::size_t index );
+			// todo: iter* ?
 
 			// Базовые параметры модели: положение, вращение и масштабирование
 			glm::vec3 _position;

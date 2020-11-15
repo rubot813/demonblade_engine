@@ -33,7 +33,7 @@ namespace demonblade {
 	bool model::remove_part( std::size_t id ) {
 		bool flag_removed = 0;
 		if ( id < _part.size( ) ) {
-			_part.erase( *( _get_part_iter( id ) ) );
+			_part.erase( _get_part_iterator( id ) );
 			flag_removed = 1;
 		}
 
@@ -45,28 +45,27 @@ namespace demonblade {
 	}
 
 	mesh* model::get_mesh( std::size_t id ) {
-		/*mesh *ptr;
+		mesh *ptr;
 		if ( id < _part.size( ) )
-			auto iter = _get_part_iter( id );
-			ptr = &( *iter ).get_mesh_ptr( );
+			ptr = _get_part_iterator( id )->get_mesh_ptr( );	// whoa
 		else
 			ptr = nullptr;
-		return ptr;*/
+		return ptr;
 	}
 
 	texture* model::get_texture( std::size_t id ) {
-		/*texture *ptr;
+		texture *ptr;
 		if ( id < _part.size( ) )
-			ptr = _part.at( id ).get_texture_ptr( );
+			ptr = _get_part_iterator( id )->get_texture_ptr( );
 		else
 			ptr = nullptr;
-		return ptr;*/
+		return ptr;
 	}
 
-	std::list< model_part >::iterator* model::_get_part_iter( std::size_t index ) {
+	std::list< model_part >::iterator model::_get_part_iterator( std::size_t index ) {
 		auto iter = _part.begin( );
 		std::advance( iter, index );
-		return &iter;
+		return iter;
 	}
 
 	// ==== OFFSETS ====
@@ -109,19 +108,18 @@ namespace demonblade {
 
 	// ==== RENDER ====
 	void model::render( void ) {
-		auto iter = _part.begin( );
-		while( iter != _part.end( ) ) {
-			_render( &( *iter ) );	// fuck as shit
-			++iter;
-		}
+		// Simplified, check this later
+		for ( auto iter: _part )
+			_render( &iter );
 	}	// render
 
 	void model::render( std::size_t id ) {
-	//	_render( &_part[ id ] );
+		// Simplified, check this later
+		_render( &( *_get_part_iterator( id ) ) );
 	}
 
 	void model::_render( model_part *part_ptr ) {
-	/*	// Сохранение текущего состояния трансформации матрицы modelview в стек
+		// Сохранение текущего состояния трансформации матрицы modelview в стек
 		glPushMatrix( );
 
 		// Установка свойств материала: рассеяный свет
@@ -209,7 +207,7 @@ namespace demonblade {
 		// ====
 
 		// Восстановление состояния матрицы modelview из стека
-		glPopMatrix( );*/
+		glPopMatrix( );
 	}
 	// ====
 
