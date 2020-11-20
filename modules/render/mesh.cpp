@@ -48,7 +48,7 @@ namespace demonblade {
 		std::size_t dot_index = path->rfind( '.' );
 		if ( dot_index == std::string::npos ) {
 			#ifdef DB_DEBUG
-				std::cout << __PRETTY_FUNCTION__ << " -> file name error";
+			std::cout << __PRETTY_FUNCTION__ << " -> file name error";
 			#endif // DB_DEBUG
 			return UNKNOWN;
 		}
@@ -56,7 +56,7 @@ namespace demonblade {
 		if ( ext == "obj" || ext == "OBJ" )
 			return OBJ;
 		#ifdef DB_DEBUG
-			std::cout << __PRETTY_FUNCTION__ << " -> unknown file extension = " << ext;
+		std::cout << __PRETTY_FUNCTION__ << " -> unknown file extension = " << ext;
 		#endif // DB_DEBUG
 		return UNKNOWN;
 	}
@@ -80,14 +80,14 @@ namespace demonblade {
 		// Проверка, смогли ли открыть файл
 		if ( !file.is_open( ) ) {
 			#ifdef DB_DEBUG
-				std::cout << __PRETTY_FUNCTION__ << " -> cannot open file";
+			std::cout << __PRETTY_FUNCTION__ << " -> cannot open file";
 			#endif // DB_DEBUG
 			return 0;
 		}
 
 		#ifdef DB_DEBUG
-			// Текущий номер строки в файле
-			uint16_t line_number = 0;
+		// Текущий номер строки в файле
+		uint16_t line_number = 0;
 		#endif // DB_DEBUG
 
 		// Буферы считанной строки и подстроки
@@ -108,7 +108,7 @@ namespace demonblade {
 		// Считывание построчно, пока есть что читать
 		while ( std::getline( file, line ) ) {
 			#ifdef DB_DEBUG
-				line_number++;
+			line_number++;
 			#endif // DB_DEBUG
 
 			// Подстрока размером 2 символа начиная с нулевого
@@ -198,8 +198,8 @@ namespace demonblade {
 			if ( buffer == "o ")
 				continue;
 
-			// Если объявлен материал модели ( mtllib )
-			if ( buffer == "mt" )
+			// Если объявлен материал модели ( mtllib, usemtl )
+			if ( buffer == "mt" || buffer == "us" )
 				continue;
 
 			// Если объявлен комментарий
@@ -219,7 +219,7 @@ namespace demonblade {
 				continue;
 
 			#ifdef DB_DEBUG
-				std::cout << __PRETTY_FUNCTION__ << " -> unknown definition '" << buffer << "'" << ", line = " << line_number;
+			std::cout << __PRETTY_FUNCTION__ << " -> unknown definition '" << buffer << "'" << ", line = " << line_number;
 			#endif // DB_DEBUG
 			file.close( );
 			return 0;

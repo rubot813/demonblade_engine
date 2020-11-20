@@ -4,133 +4,64 @@
 namespace demonblade {
 	model::model( void ) {
 		// ѕоложение
-		_position	= { .0f, .0f, .0f };
-		_rotation	= { .0f, .0f, .0f };
+		_position	=	_rotation	= { .0f, .0f, .0f };
 		_scale		= { 1.0f, 1.0f, 1.0f };
 
 		// —вет
 		_ambient = _diffuse = _specular = { .25f, .25f, .25f, 1.0f };
-
-		#ifdef __linux__
-		_part.clear( );
-		#endif
 	}
 
 	model::~model( void ) {
-		// no new's, nope
+
 	}
 
-	bool model::add_part( mesh *mesh_ptr, texture *tex_ptr ) {
-		bool data_valid = 0;
-		_part.push_back( { mesh_ptr, tex_ptr } );
-		if ( _part.back( ).is_data_valid( ) )
-			data_valid = 1;
-		else
-			_part.pop_back( );
+	bool model::set_data( mesh *mesh_ptr, texture *tex_ptr ) {
+		return ( set_mesh( mesh_ptr ) && set_texture( tex_ptr ) );
+	}
+
+	bool model::set_mesh( mesh *mesh_ptr ) {
+
+		bool data_valid = 1;
+
+		if ( mesh_ptr ) {
+			_mesh = *mesh_ptr;
+		}
+		else {
+			data_valid = 0;
+			#ifdef DB_DEBUG
+				std::cout << __PRETTY_FUNCTION__ << " -> received null mesh pointer";
+			#endif // DB_DEBUG
+		}
 
 		return data_valid;
 	}
 
-	bool model::remove_part( std::size_t id ) {
-		bool flag_removed = 0;
-		if ( id < _part.size( ) ) {
-			_part.erase( _get_part_iterator( id ) );
-			flag_removed = 1;
-		}
-		#ifdef DB_DEBUG
-			else std::cout << __PRETTY_FUNCTION__ << " -> cannot remove model part";
-		#endif // DB_DEBUG
+	bool model::set_texture( texture *tex_ptr ) {
 
-		return flag_removed;
-	}
+		bool data_valid = 1;
 
-	std::size_t model::get_part_count( void ) {
-		return _part.size( );
-	}
-
-	mesh* model::get_mesh( std::size_t id ) {
-		mesh *ptr;
-		if ( id < _part.size( ) )
-			ptr = _get_part_iterator( id )->get_mesh_ptr( );	// whoa
-		else {
+		if ( tex_ptr && tex_ptr->get_pointer( ) ) {
+			_texture = tex_ptr;
+			_texture_name = _texture->get_pointer( );
+		} else {
+			data_valid = 0;
 			#ifdef DB_DEBUG
-				std::cout << __PRETTY_FUNCTION__ << " -> remove nullprt mesh";
+				std::cout << __PRETTY_FUNCTION__ << " -> received texture that not loaded to VRAM";
 			#endif // DB_DEBUG
-			ptr = nullptr;
 		}
-		return ptr;
+
+		return data_valid;
 	}
 
-	texture* model::get_texture( std::size_t id ) {
-		texture *ptr;
-		if ( id < _part.size( ) )
-			ptr = _get_part_iterator( id )->get_texture_ptr( );
-		else {
-			#ifdef DB_DEBUG
-				std::cout << __PRETTY_FUNCTION__ << " -> remove nullprt texture";
-			#endif // DB_DEBUG
-			ptr = nullptr;
-		}
-		return ptr;
+	mesh* model::get_mesh( void ) {
+		return &_mesh;
 	}
 
-	std::list< model_part >::iterator model::_get_part_iterator( std::size_t index ) {
-		auto iter = _part.begin( );
-		std::advance( iter, index );
-		return iter;
+	texture* model::get_texture( void ) {
+		return _texture;
 	}
 
-	// ==== OFFSETS ====
-	void model::move( glm::vec3 offset ) {
-		_position += offset;
-	}
-	void model::rotate( glm::vec3 offset ) {
-		_rotation += offset;
-	}
-	void model::scale( glm::vec3 offset ) {
-		_scale += offset;
-	}
-	// ====
-
-
-	// ==== SETTERS ====
-	void model::set_position( glm::vec3 value ) {
-		_position = value;
-	}
-	void model::set_rotation( glm::vec3 value ) {
-		_rotation = value;
-	}
-	void model::set_scale( glm::vec3 value ) {
-		_scale = value;
-	}
-	// ====
-
-
-	// ==== GETTERS ====
-	glm::vec3 model::get_position( void ) {
-		return _position;
-	}
-	glm::vec3 model::get_rotation( void ) {
-		return _rotation;
-	}
-	glm::vec3 model::get_scale( void ) {
-		return _scale;
-	}
-	// ====
-
-	// ==== RENDER ====
 	void model::render( void ) {
-		// Simplified, check this later
-		for ( auto iter : _part )
-			_render( &iter );
-	}	// render
-
-	void model::render( std::size_t id ) {
-		// Simplified, check this later
-		_render( &( *_get_part_iterator( id ) ) );
-	}
-
-	void model::_render( model_part *part_ptr ) {
 		// —охранение текущего состо€ни€ трансформации матрицы modelview в стек
 		glPushMatrix( );
 
@@ -164,7 +95,7 @@ namespace demonblade {
 		// ====
 
 		// ”становка текстуры дл€ отрисовки
-		glBindTexture( GL_TEXTURE_2D, ( GLuint )( *part_ptr->get_texture_name_ptr( ) ) );
+		glBindTexture( GL_TEXTURE_2D, *_texture_name );
 
 		// ====
 
@@ -184,26 +115,26 @@ namespace demonblade {
 		// тип данных,
 		// смещение данных в массиве
 		// указатель на массив
-		glVertexPointer( 3, GL_FLOAT, 0, part_ptr->get_mesh_ptr( )->get_vertex_ptr( )->data( ) );
+		glVertexPointer( 3, GL_FLOAT, 0, _mesh.get_vertex_ptr( )->data( ) );
 
 		// —оздание указател€ на массив текстурных координат
 		// количество координат,
 		// тип данных,
 		// смещение данных в массиве
 		// указатель на массив
-		glTexCoordPointer( 2, GL_FLOAT, 0, part_ptr->get_mesh_ptr( )->get_texel_ptr( )->data( ) );
+		glTexCoordPointer( 2, GL_FLOAT, 0, _mesh.get_texel_ptr( )->data( ) );
 
 		// —оздание указател€ на массив нормалей
 		// тип данных,
 		// смещение данных в массиве,
 		// указатель на массив
-		glNormalPointer( GL_FLOAT, 0, part_ptr->get_mesh_ptr( )->get_normal_ptr( )->data( ) );
+		glNormalPointer( GL_FLOAT, 0, _mesh.get_normal_ptr( )->data( ) );
 
 		// ќтрисовка массива
 		// “ип данных дл€ отрисовки
 		// начальный индекс массива
 		// количество элементов дл€ отрисовки
-		glDrawArrays( GL_TRIANGLES, 0, part_ptr->get_mesh_ptr( )->get_vertex_ptr( )->size( ) );
+		glDrawArrays( GL_TRIANGLES, 0, _mesh.get_vertex_ptr( )->size( ) );
 
 		// ====
 

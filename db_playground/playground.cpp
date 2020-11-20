@@ -94,17 +94,22 @@ bool playground::init( void ) {
 	db_camera.set_center( { 0.0f, 0.0f, -1.0f });
 	db_camera.set_position( { 0.0f, 0.0f, 0.0f });
 
-	sf_image.loadFromFile( "resources/DB2X2_L01.png" );
+	sf_image.loadFromFile( "resources/box.jpg" );
 	if ( db_texture0.load_from_memory( sf_image.getPixelsPtr( ),
 	                                  sf_image.getSize( ).x,
 	                                  sf_image.getSize( ).y ) )
 		std::cout << "Load texture ok!\n";
 
-	if ( db_mesh0.load_from_file( "resources/ss.obj" ) )
+	if ( db_mesh.load_from_file( "resources/box.obj" ) )
 		std::cout << "Load mesh ok!\n";
 
-	if ( db_model.add_part( &db_mesh0, &db_texture0 ) )
+	if ( db_model0.set_data( &db_mesh, &db_texture0 ) )
 		std::cout << "Model add part ok!\n";
+
+	if ( db_model1.set_data( &db_mesh, &db_texture0 ) )
+		std::cout << "Model add part ok!\n";
+
+	db_model0.get_mesh( )->get_vertex_ptr( )->at( 0 ).x = 10.0f;
 
 	/*sf_image.loadFromFile( "resources/grass_001.png" );
 	if ( db_texture1.load_from_memory( sf_image.getPixelsPtr( ),
@@ -118,13 +123,14 @@ bool playground::init( void ) {
 	if ( db_model.add_part( &db_mesh1, &db_texture1 ) )
 		std::cout << "Model add part ok!\n";*/
 
-	db_model.set_position( glm::vec3( 0.0f, -.5f, -2.0f ) );
+	db_model0.set_position( glm::vec3( 1.0f, -.5f, -2.0f ) );
+	db_model1.set_position( glm::vec3( 0.0f, -.5f, -2.0f ) );
 
 	return _init;
 }
 
 void playground::update( void ) {
-	db_model.rotate( { .0f, -.1f, .0f } );
+	db_model0.rotate( { .0f, -.1f, .0f } );
 
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::W ) )
 		db_camera.move_forward( camera_speed );
@@ -196,7 +202,8 @@ void playground::render( void ) {
 	// ====
 
 	// Рисуем модельку
-	db_model.render( );
+	db_model0.render( );
+	db_model1.render( );
 
 	// ====
 	// 5

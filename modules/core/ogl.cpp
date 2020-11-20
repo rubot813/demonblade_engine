@@ -10,7 +10,7 @@ namespace demonblade {
 
 		if ( glew_init_error != GLEW_OK ) {
 			#ifdef DB_DEBUG
-				std::cout << __PRETTY_FUNCTION__ << " -> init GLEW error";
+			std::cout << __PRETTY_FUNCTION__ << " -> init GLEW error";
 			#endif // DB_DEBUG
 			return 0;
 		}
