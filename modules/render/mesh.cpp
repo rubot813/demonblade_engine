@@ -210,6 +210,14 @@ namespace demonblade {
 			if ( buffer[ 0 ] == 's' )
 				continue;
 
+			// Если объявлена группа
+			if ( buffer[ 0 ] == 'g' )
+				continue;
+
+			// Если строка пуста
+			if ( !buffer.size( ) )
+				continue;
+
 			#ifdef DB_DEBUG
 				std::cout << __PRETTY_FUNCTION__ << " -> unknown definition '" << buffer << "'" << ", line = " << line_number;
 			#endif // DB_DEBUG

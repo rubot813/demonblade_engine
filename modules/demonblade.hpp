@@ -4,7 +4,6 @@
 #ifndef DEMONBLADE_HPP_INCLUDED
 #define DEMONBLADE_HPP_INCLUDED
 
-#include "./common/global.hpp"
 #include "./core/core.hpp"
 #include "./render/render.hpp"
 

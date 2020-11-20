@@ -100,7 +100,7 @@ bool playground::init( void ) {
 	                                  sf_image.getSize( ).y ) )
 		std::cout << "Load texture ok!\n";
 
-	if ( db_mesh0.load_from_file( "resources/box.obj" ) )
+	if ( db_mesh0.load_from_file( "resources/ss.obj" ) )
 		std::cout << "Load mesh ok!\n";
 
 	if ( db_model.add_part( &db_mesh0, &db_texture0 ) )
