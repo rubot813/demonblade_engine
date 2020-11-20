@@ -73,7 +73,6 @@ namespace demonblade {
 			// Метод получения итератора на элемент model_part по индексу
 			// Своя замена std::list::at
 			std::list< model_part >::iterator _get_part_iterator( std::size_t index );
-			// todo: iter* ?
 
 			// Базовые параметры модели: положение, вращение и масштабирование
 			glm::vec3 _position;

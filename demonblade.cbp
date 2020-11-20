@@ -32,6 +32,8 @@
 		<Unit filename="modules/core/camera.cpp" />
 		<Unit filename="modules/core/camera.hpp" />
 		<Unit filename="modules/core/core.hpp" />
+		<Unit filename="modules/core/fp_camera.cpp" />
+		<Unit filename="modules/core/fp_camera.hpp" />
 		<Unit filename="modules/core/ogl.cpp" />
 		<Unit filename="modules/core/ogl.hpp" />
 		<Unit filename="modules/demonblade.hpp" />

@@ -41,6 +41,9 @@ class playground {
 		// Размеры окна
 		const uint16_t window_size_x = 1280;
 		const uint16_t window_size_y = 720;
+		const float window_fov		 = 60.0f;
+		const float camera_speed	 = 0.05f;
+		const float mouse_sens		 = 0.00005f;
 
 		// ====
 		// Переменные SFML, начинаются с sf_
@@ -64,7 +67,7 @@ class playground {
 
 		// ====
 		// Переменные движка, начинаются с db_
-		db::camera db_camera;
+		db::fp_camera	db_camera;
 		db::texture db_texture0, db_texture1;
 		db::mesh	db_mesh0, db_mesh1;
 		db::model	db_model;

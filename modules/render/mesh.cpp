@@ -71,10 +71,9 @@ namespace demonblade {
 		std::ifstream file;
 		file.open( fname, std::ios_base::in );
 		// Проверка, смогли ли открыть файл
-		if ( !file.is_open( ) ) {
-			std::cout << "##!\n";
+		if ( !file.is_open( ) )
 			return 0;
-		}
+
 		// Буферы считанной строки и подстроки
 		std::string line, buffer;
 
@@ -192,8 +191,11 @@ namespace demonblade {
 			if ( buffer[ 0 ] == 's' )
 				continue;
 
+			continue;
+
 			// Если определение неизвестно
 			// TODO: можно хотя бы строчку вывести, где не смогли прочитать
+			std::cout << "UNKNOWN = " << buffer[ 0 ];
 			file.close( );
 			return 0;
 

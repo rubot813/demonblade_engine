@@ -7,5 +7,6 @@
 
 #include "ogl.hpp"
 #include "camera.hpp"
+#include "fp_camera.hpp"
 
 #endif // OGL_HPP_INCLUDED

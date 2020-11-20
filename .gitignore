@@ -3,3 +3,14 @@
 /demonblade.depend
 /demonblade.layout
 /objects
+/db_playground/objects
+/db_playground/build/db_playground.exe
+/db_playground/build/glew32.dll
+/db_playground/build/sfml-graphics-2.dll
+/db_playground/build/sfml-graphics-d-2.dll
+/db_playground/build/sfml-system-2.dll
+/db_playground/build/sfml-system-d-2.dll
+/db_playground/build/sfml-window-2.dll
+/db_playground/build/sfml-window-d-2.dll
+/db_playground/db_playground.depend
+/db_playground/db_playground.layout
