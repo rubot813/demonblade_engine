@@ -7,5 +7,6 @@
 #include "texture.hpp"
 #include "mesh.hpp"
 #include "model.hpp"
+#include "sprite.hpp"
 
 #endif // RENDER_HPP_INCLUDED

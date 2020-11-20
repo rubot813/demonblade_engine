@@ -70,7 +70,9 @@ class playground {
 		db::fp_camera	db_camera;
 		db::texture db_texture0, db_texture1;
 		db::mesh	db_mesh;
-		db::model	db_model0, db_model1;
+		db::model	db_model;
+		db::sprite	db_sprite;
+
 };	// playground class
 
 #endif // PLAYGROUND_H
