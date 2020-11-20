@@ -1,8 +1,10 @@
 #ifndef MESH_HPP_INCLUDED
 #define MESH_HPP_INCLUDED
 
-#include "../common/gl_libs.hpp"
+#include "../common/db_glm.hpp"
+#include "../common/global.hpp"
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <vector>
 
@@ -10,17 +12,7 @@
 	 ласс описывает меш ( полигональную сетку ) модели
 	позвол€ет загружать вершины, текстурные координаты и карты нормалей из файлов
 	ѕоддерживаемые форматы: Wavefront OBJ
-	todo: md2 with anim
-
-	usage:
-	db::mesh *msh;
-	msh = new db::mesh;
-	if ( msh->load_from_file( ... ) ) {
-			// ok!
-	}
-	model->
-
-
+	todo: milkshape 3d, md2 with anim
 */
 
 namespace demonblade {

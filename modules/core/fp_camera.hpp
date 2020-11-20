@@ -2,7 +2,6 @@
 #define FP_CAMERA_HPP_INCLUDED
 
 #include "camera.hpp"
-#include "../common/gl_libs.hpp"
 
 /*
 	Класс реализует работу камеры от первого лица ( first - person camera )

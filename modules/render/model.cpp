@@ -1,4 +1,5 @@
 #include "model.hpp"
+#include "../common/db_gl.hpp"
 
 namespace demonblade {
 	model::model( void ) {
@@ -36,6 +37,9 @@ namespace demonblade {
 			_part.erase( _get_part_iterator( id ) );
 			flag_removed = 1;
 		}
+		#ifdef DB_DEBUG
+			else std::cout << __PRETTY_FUNCTION__ << " -> cannot remove model part";
+		#endif // DB_DEBUG
 
 		return flag_removed;
 	}
@@ -48,8 +52,12 @@ namespace demonblade {
 		mesh *ptr;
 		if ( id < _part.size( ) )
 			ptr = _get_part_iterator( id )->get_mesh_ptr( );	// whoa
-		else
+		else {
+			#ifdef DB_DEBUG
+				std::cout << __PRETTY_FUNCTION__ << " -> remove nullprt mesh";
+			#endif // DB_DEBUG
 			ptr = nullptr;
+		}
 		return ptr;
 	}
 
@@ -57,8 +65,12 @@ namespace demonblade {
 		texture *ptr;
 		if ( id < _part.size( ) )
 			ptr = _get_part_iterator( id )->get_texture_ptr( );
-		else
+		else {
+			#ifdef DB_DEBUG
+				std::cout << __PRETTY_FUNCTION__ << " -> remove nullprt texture";
+			#endif // DB_DEBUG
 			ptr = nullptr;
+		}
 		return ptr;
 	}
 

@@ -1,5 +1,4 @@
 #include "mesh.hpp"
-#include <fstream>
 
 namespace demonblade {
 
@@ -41,16 +40,24 @@ namespace demonblade {
 			default:
 				break;
 		}
+
 		return load_flag;
 	}
 
 	mesh::format_e mesh::_get_extension( std::string *path ) {
 		std::size_t dot_index = path->rfind( '.' );
-		if ( dot_index == std::string::npos )
+		if ( dot_index == std::string::npos ) {
+			#ifdef DB_DEBUG
+				std::cout << __PRETTY_FUNCTION__ << " -> file name error";
+			#endif // DB_DEBUG
 			return UNKNOWN;
+		}
 		std::string ext = path->substr( dot_index + 1 );
 		if ( ext == "obj" || ext == "OBJ" )
 			return OBJ;
+		#ifdef DB_DEBUG
+			std::cout << __PRETTY_FUNCTION__ << " -> unknown file extension = " << ext;
+		#endif // DB_DEBUG
 		return UNKNOWN;
 	}
 
@@ -71,8 +78,17 @@ namespace demonblade {
 		std::ifstream file;
 		file.open( fname, std::ios_base::in );
 		// Проверка, смогли ли открыть файл
-		if ( !file.is_open( ) )
+		if ( !file.is_open( ) ) {
+			#ifdef DB_DEBUG
+				std::cout << __PRETTY_FUNCTION__ << " -> cannot open file";
+			#endif // DB_DEBUG
 			return 0;
+		}
+
+		#ifdef DB_DEBUG
+			// Текущий номер строки в файле
+			uint16_t line_number = 0;
+		#endif // DB_DEBUG
 
 		// Буферы считанной строки и подстроки
 		std::string line, buffer;
@@ -91,6 +107,9 @@ namespace demonblade {
 
 		// Считывание построчно, пока есть что читать
 		while ( std::getline( file, line ) ) {
+			#ifdef DB_DEBUG
+				line_number++;
+			#endif // DB_DEBUG
 
 			// Подстрока размером 2 символа начиная с нулевого
 			buffer = line.substr( 0, 2 );
@@ -191,11 +210,9 @@ namespace demonblade {
 			if ( buffer[ 0 ] == 's' )
 				continue;
 
-			continue;
-
-			// Если определение неизвестно
-			// TODO: можно хотя бы строчку вывести, где не смогли прочитать
-			std::cout << "UNKNOWN = " << buffer[ 0 ];
+			#ifdef DB_DEBUG
+				std::cout << __PRETTY_FUNCTION__ << " -> unknown definition '" << buffer << "'" << ", line = " << line_number;
+			#endif // DB_DEBUG
 			file.close( );
 			return 0;
 

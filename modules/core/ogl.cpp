@@ -1,5 +1,5 @@
 #include "ogl.hpp"
-#include "../common/gl_libs.hpp"
+#include "../common/db_gl.hpp"
 
 namespace demonblade {
 
@@ -8,8 +8,12 @@ namespace demonblade {
 		// Инициализация GLEW и обработка ошибки
 		GLenum glew_init_error = glewInit( );
 
-		if ( glew_init_error != GLEW_OK )
+		if ( glew_init_error != GLEW_OK ) {
+			#ifdef DB_DEBUG
+				std::cout << __PRETTY_FUNCTION__ << " -> init GLEW error";
+			#endif // DB_DEBUG
 			return 0;
+		}
 
 		// Базовая настройка OpenGL
 

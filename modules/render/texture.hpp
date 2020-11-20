@@ -2,10 +2,10 @@
 #define TEXTURE_HPP_INCLUDED
 
 #include <cstdint>	// C++11
-
 #ifndef __GNUC__	// For VC
 	#include <cstddef>
 #endif
+#include "../common/global.hpp"
 
 /*
 	Класс texture описывает одну текстуру. Позволяет загружать набор пикселей из RAM в VRAM

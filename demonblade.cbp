@@ -27,7 +27,8 @@
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="modules/common/gl_libs.hpp" />
+		<Unit filename="modules/common/db_gl.hpp" />
+		<Unit filename="modules/common/db_glm.hpp" />
 		<Unit filename="modules/common/global.hpp" />
 		<Unit filename="modules/core/camera.cpp" />
 		<Unit filename="modules/core/camera.hpp" />

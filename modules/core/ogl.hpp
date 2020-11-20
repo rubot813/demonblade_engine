@@ -10,6 +10,7 @@
 */
 
 #include <cstdint>
+#include "../common/global.hpp"
 
 // todo: light
 

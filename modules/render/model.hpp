@@ -1,8 +1,6 @@
 #ifndef MODEL_HPP_INCLUDED
 #define MODEL_HPP_INCLUDED
 
-#include "../common/gl_libs.hpp"
-#include "../common/global.hpp"
 #include "model_part.hpp"
 
 #include <sstream>

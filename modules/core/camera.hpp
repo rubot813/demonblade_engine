@@ -1,7 +1,8 @@
 #ifndef CAMERA_HPP_INCLUDED
 #define CAMERA_HPP_INCLUDED
 
-#include "../common/gl_libs.hpp"
+#include "../common/db_glm.hpp"
+#include "../common/global.hpp"
 
 /*
 	Класс для базовой работы с камерой. Служит классом - родителем для

@@ -1,4 +1,5 @@
 #include "camera.hpp"
+#include "../common/db_gl.hpp"
 
 namespace demonblade {
 	camera::camera( void ) {

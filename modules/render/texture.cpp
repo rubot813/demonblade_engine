@@ -1,5 +1,5 @@
 #include "texture.hpp"
-#include "../common/gl_libs.hpp"
+#include "../common/db_gl.hpp"
 
 namespace demonblade {
 

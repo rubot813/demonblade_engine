@@ -1,4 +1,5 @@
 #include "model_part.hpp"
+#include "../common/db_gl.hpp"
 
 namespace demonblade {
 
@@ -8,11 +9,22 @@ namespace demonblade {
 
 		// _texture_name
 		_texture_name = nullptr;
-		if ( _texture )
+		if ( _texture ) {
 			_texture_name = _texture->get_pointer( );
+			#ifdef DB_DEBUG
+				if ( _texture_name == nullptr )
+					std::cout << __PRETTY_FUNCTION__ << " -> received texture that not loaded to VRAM";
+			#endif // DB_DEBUG
+		}
 
 		// mesh
-		_mesh = *mesh_ptr;
+		if ( mesh_ptr )
+			_mesh = *mesh_ptr;
+		#ifdef DB_DEBUG
+			else
+				std::cout << __PRETTY_FUNCTION__ << " -> received nullptr mesh";
+		#endif // DB_DEBUG
+
 	}
 
 	model_part::~model_part( void ) {
