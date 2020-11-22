@@ -5,29 +5,17 @@
 #ifndef __GNUC__	// For VC
 	#include <cstddef>
 #endif
-#include "../common/global.hpp"
+#include "../core/ogl.hpp"
 
 /*
-	Класс texture описывает одну текстуру. Позволяет загружать набор пикселей из RAM в VRAM
-
-	usage:
-	db::texture *tex;
-	tex = new db::texture;
-	if ( tex.load_from_memory( ... ) ) {
-		// ok!
-	}
-	model->set_texture( tex );
+	Класс texture описывает базовый объект текстуры
 */
-
-// todo: 1d, 3d textures, mipmap, check on 64bit compiler
 
 namespace demonblade {
 
 	class texture {
 
 		public:
-			texture( void );
-			~texture( void );
 
 			// Перечисление типов фильтрации текстуры
 			enum filter_e {
@@ -58,22 +46,26 @@ namespace demonblade {
 				RGBA32UI		= 0x8D70	// RGBA, 32ui бит / пиксель
 			};
 
-			// Алиас текстуры
-			typedef std::size_t texture_t;
+			// Алиас текстуры, чтобы не светить GLuint
+			typedef std::size_t texture_id;
 
-			// Метод с полным набором параметров
-			// Загружает текстуру в VRAM
-			bool load_from_memory( const void *pixel_ptr, uint16_t width, uint16_t height, pack_e pack = RGBA8,
-			                       filter_e filter_high = NEAREST, filter_e filter_low = NEAREST,
-			                       wrap_e wrap_u = CLAMP, wrap_e wrap_v = CLAMP );
+			// Метод установки текстуры
+			void bind( void );
 
-			// Метод получения имени загруженой текстуры, используется в db::model
-			texture_t* get_pointer( void );
+			// Метод получения количества текстурных координат
+			virtual uint8_t get_tex_coords_num( void );
 
-		private:
+			// Метод получения указателя на идентификатор загруженой текстуры
+			texture_id* get_pointer( void );
 
-			// Указатель на загруженную текстуру
-			texture_t _texture_ptr;
+		protected:
+
+			// Идентификатор загруженной текстуры
+			texture_id _texture_ptr;
+
+			// Тип текстуры
+			std::size_t		_type;
+
 	};	// class texture
 
 }	// namespace demonblade

@@ -47,10 +47,8 @@ namespace demonblade {
 			// Меш модели
 			mesh				_mesh;
 
-			// Текстура и имя текстуры модели
+			// Текстура модели
 			texture				*_texture;
-			texture::texture_t	*_texture_name;
-
 	};	// class model
 
 }	// namespace demonblade

@@ -95,7 +95,7 @@ bool playground::init( void ) {
 	db_camera.set_position( { 0.0f, 0.0f, 0.0f });
 
 	sf_image.loadFromFile( "resources/box.jpg" );
-	if ( db_texture0.load_from_memory( sf_image.getPixelsPtr( ),
+	if ( db_texture.load_from_memory( sf_image.getPixelsPtr( ),
 	                                  sf_image.getSize( ).x,
 	                                  sf_image.getSize( ).y ) )
 		std::cout << "Load texture ok!\n";
@@ -103,10 +103,10 @@ bool playground::init( void ) {
 	if ( db_mesh.load_from_file( "resources/box.obj" ) )
 		std::cout << "Load mesh ok!\n";
 
-	if ( db_model.set_data( &db_mesh, &db_texture0 ) )
+	if ( db_model.set_data( &db_mesh, &db_texture ) )
 		std::cout << "Model add part ok!\n";
 
-	if ( db_sprite.set_data( db::sprite::SPHERICAL, glm::vec2( 0.2f, 0.2f ), &db_texture0 ) ) {
+	if ( db_sprite.set_data( db::sprite::SPHERICAL, glm::vec2( 0.2f, 0.2f ), &db_texture ) ) {
 		std::cout << "Sprite add tex ok!\n";
 	}
 

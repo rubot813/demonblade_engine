@@ -10,7 +10,7 @@ namespace demonblade {
 
 		if ( glew_init_error != GLEW_OK ) {
 			#ifdef DB_DEBUG
-				debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> init GLEW error\n" );
+			debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> init GLEW error\n" );
 			#endif // DB_DEBUG
 			return 0;
 		}
@@ -44,7 +44,7 @@ namespace demonblade {
 		glMatrixMode( GL_MODELVIEW );
 
 		#ifdef DB_DEBUG
-			debug::get_instance( )->message( std::string( __FUNCTION__ ) + " -> init ok\n" );
+		debug::get_instance( )->message( std::string( __FUNCTION__ ) + " -> init ok\n" );
 		#endif // DB_DEBUG
 
 		return 1;

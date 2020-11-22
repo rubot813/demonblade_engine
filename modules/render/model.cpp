@@ -28,7 +28,7 @@ namespace demonblade {
 		else {
 			data_valid = 0;
 			#ifdef DB_DEBUG
-				debug::get_instance( )->warn( std::string( __FUNCTION__ ) + " -> received null mesh pointer\n" );
+			debug::get_instance( )->warn( std::string( __FUNCTION__ ) + " -> received null mesh pointer\n" );
 			#endif // DB_DEBUG
 		}
 
@@ -41,11 +41,10 @@ namespace demonblade {
 
 		if ( tex_ptr && tex_ptr->get_pointer( ) ) {
 			_texture = tex_ptr;
-			_texture_name = _texture->get_pointer( );
 		} else {
 			data_valid = 0;
 			#ifdef DB_DEBUG
-				debug::get_instance( )->warn( std::string( __FUNCTION__ ) + " -> received texture that not loaded to VRAM\n" );
+			debug::get_instance( )->warn( std::string( __FUNCTION__ ) + " -> received texture that not loaded to VRAM\n" );
 			#endif // DB_DEBUG
 		}
 
@@ -94,8 +93,7 @@ namespace demonblade {
 		// ====
 
 		// Установка текстуры для отрисовки
-		glBindTexture( GL_TEXTURE_2D, *_texture_name );
-
+		_texture->bind( );
 		// ====
 
 		// Включение режима вершинных массивов
@@ -121,7 +119,7 @@ namespace demonblade {
 		// тип данных,
 		// смещение данных в массиве
 		// указатель на массив
-		glTexCoordPointer( 2, GL_FLOAT, 0, _mesh.get_texel_ptr( )->data( ) );
+		glTexCoordPointer( _texture->get_tex_coords_num( ), GL_FLOAT, 0, _mesh.get_texel_ptr( )->data( ) );
 
 		// Создание указателя на массив нормалей
 		// тип данных,

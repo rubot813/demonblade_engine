@@ -49,7 +49,7 @@ namespace demonblade {
 
 		protected:
 			#ifdef __WIN32__
-				HANDLE console_handle;
+			HANDLE console_handle;
 			#endif // __WIN32__
 
 	};	// debug class

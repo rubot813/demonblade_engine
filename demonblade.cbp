@@ -51,6 +51,14 @@
 		<Unit filename="modules/render/sprite.hpp" />
 		<Unit filename="modules/render/texture.cpp" />
 		<Unit filename="modules/render/texture.hpp" />
+		<Unit filename="modules/render/texture_1d.cpp" />
+		<Unit filename="modules/render/texture_1d.hpp" />
+		<Unit filename="modules/render/texture_2d.cpp" />
+		<Unit filename="modules/render/texture_2d.hpp" />
+		<Unit filename="modules/render/texture_3d.cpp" />
+		<Unit filename="modules/render/texture_3d.hpp" />
+		<Unit filename="modules/render/texture_cm.cpp" />
+		<Unit filename="modules/render/texture_cm.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

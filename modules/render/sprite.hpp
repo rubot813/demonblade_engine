@@ -63,7 +63,7 @@ namespace demonblade {
 
 			// Текстура и имя текстуры
 			texture				*_texture;
-			texture::texture_t	*_texture_name;
+			texture::texture_id	*_texture_id;
 
 	};	// class sprite
 

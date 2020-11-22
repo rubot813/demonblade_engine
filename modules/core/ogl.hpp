@@ -25,12 +25,17 @@ namespace demonblade {
 
 			// Перечисление функций ядра
 			enum func_e {
-				TEXTURE_2D	= 0x0DE1,	// Текстуры 2D
-				LIGHT		= 0x0B50,	// Свет
-				ALPHA_TEST	= 0x0BC0,	// Альфа тест ( спрайты, текстуры )
-				FOG			= 0x0B60,	// Туман
-				CULL		= 0x0B44,	// Отсечение невидимых граней
-				DITHERING	= 0x0BD0	// Смешивание цветов при отрисовке
+				TEXTURE_1D			=	0x0DE0,	// Текстуры по количеству измерений
+				TEXTURE_2D			=	0x0DE1,
+				TEXTURE_3D			=	0x806F,
+				TEXTURE_CUBE_MAP	=	0x8513,	// Кубическая текстура
+				LIGHT				=	0x0B50,	// Свет
+				ALPHA_TEST			=	0x0BC0,	// Альфа тест ( спрайты, текстуры )
+				FOG					=	0x0B60,	// Туман
+				CULL				=	0x0B44,	// Отсечение невидимых граней
+				DITHERING			=	0x0BD0	// Смешивание цветов при отрисовке
+				// todo GL_TEXTURE_CUBEMAP_SEAMLESS
+				// todo DEPTH MASK
 			};
 
 			// Функция инициализации ядра OpenGL

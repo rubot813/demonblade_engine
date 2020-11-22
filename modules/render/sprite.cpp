@@ -73,7 +73,7 @@ namespace demonblade {
 
 		if ( tex_ptr && tex_ptr->get_pointer( ) ) {
 			_texture = tex_ptr;
-			_texture_name = _texture->get_pointer( );
+			_texture_id = _texture->get_pointer( );
 		} else {
 			data_valid = 0;
 			#ifdef DB_DEBUG
@@ -111,7 +111,7 @@ namespace demonblade {
 		// ====
 
 		// Установка текстуры для отрисовки
-		glBindTexture( GL_TEXTURE_2D, *_texture_name );
+		_texture->bind( );
 
 		// Получение буфера видовой матрицы
 		glm::mat4 _matrix_buffer;
