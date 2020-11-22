@@ -29,6 +29,8 @@
 		</Build>
 		<Unit filename="modules/common/db_gl.hpp" />
 		<Unit filename="modules/common/db_glm.hpp" />
+		<Unit filename="modules/common/debug.cpp" />
+		<Unit filename="modules/common/debug.hpp" />
 		<Unit filename="modules/common/global.hpp" />
 		<Unit filename="modules/core/camera.cpp" />
 		<Unit filename="modules/core/camera.hpp" />
@@ -45,6 +47,8 @@
 		<Unit filename="modules/render/model.cpp" />
 		<Unit filename="modules/render/model.hpp" />
 		<Unit filename="modules/render/render.hpp" />
+		<Unit filename="modules/render/sprite.cpp" />
+		<Unit filename="modules/render/sprite.hpp" />
 		<Unit filename="modules/render/texture.cpp" />
 		<Unit filename="modules/render/texture.hpp" />
 		<Extensions>

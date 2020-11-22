@@ -77,7 +77,7 @@ namespace demonblade {
 		} else {
 			data_valid = 0;
 			#ifdef DB_DEBUG
-				std::cout << __PRETTY_FUNCTION__ << " -> received texture that not loaded to VRAM";
+			std::cout << __PRETTY_FUNCTION__ << " -> received texture that not loaded to VRAM";
 			#endif // DB_DEBUG
 		}
 

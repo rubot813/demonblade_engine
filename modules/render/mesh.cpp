@@ -48,7 +48,7 @@ namespace demonblade {
 		std::size_t dot_index = path->rfind( '.' );
 		if ( dot_index == std::string::npos ) {
 			#ifdef DB_DEBUG
-			std::cout << __PRETTY_FUNCTION__ << " -> file name error";
+				debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> file name error\n" );
 			#endif // DB_DEBUG
 			return UNKNOWN;
 		}
@@ -56,7 +56,7 @@ namespace demonblade {
 		if ( ext == "obj" || ext == "OBJ" )
 			return OBJ;
 		#ifdef DB_DEBUG
-		std::cout << __PRETTY_FUNCTION__ << " -> unknown file extension = " << ext;
+			debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> unknown file extension: " + ext );
 		#endif // DB_DEBUG
 		return UNKNOWN;
 	}
@@ -80,14 +80,14 @@ namespace demonblade {
 		// Проверка, смогли ли открыть файл
 		if ( !file.is_open( ) ) {
 			#ifdef DB_DEBUG
-			std::cout << __PRETTY_FUNCTION__ << " -> cannot open file";
+				debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> cannot open file\n" );
 			#endif // DB_DEBUG
 			return 0;
 		}
 
 		#ifdef DB_DEBUG
-		// Текущий номер строки в файле
-		uint16_t line_number = 0;
+			// Текущий номер строки в файле
+			uint16_t line_number = 0;
 		#endif // DB_DEBUG
 
 		// Буферы считанной строки и подстроки
@@ -219,7 +219,9 @@ namespace demonblade {
 				continue;
 
 			#ifdef DB_DEBUG
-			std::cout << __PRETTY_FUNCTION__ << " -> unknown definition '" << buffer << "'" << ", line = " << line_number;
+				debug::get_instance( )->error( std::string( __FUNCTION__ ) +
+												" -> unknown definition '" + buffer +
+												"', line = " + std::to_string( line_number ) + "\n" );
 			#endif // DB_DEBUG
 			file.close( );
 			return 0;

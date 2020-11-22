@@ -10,7 +10,7 @@ namespace demonblade {
 
 		if ( glew_init_error != GLEW_OK ) {
 			#ifdef DB_DEBUG
-			std::cout << __PRETTY_FUNCTION__ << " -> init GLEW error";
+				debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> init GLEW error\n" );
 			#endif // DB_DEBUG
 			return 0;
 		}
@@ -42,6 +42,10 @@ namespace demonblade {
 		// Выбор матрицы наблюдения моделей
 		// Чтобы не упали, если выбрана другая
 		glMatrixMode( GL_MODELVIEW );
+
+		#ifdef DB_DEBUG
+			debug::get_instance( )->message( std::string( __FUNCTION__ ) + " -> init ok\n" );
+		#endif // DB_DEBUG
 
 		return 1;
 	}
