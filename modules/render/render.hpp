@@ -7,7 +7,6 @@
 #include "texture_1d.hpp"
 #include "texture_2d.hpp"
 #include "texture_3d.hpp"
-#include "texture_cm.hpp"
 #include "mesh.hpp"
 #include "model.hpp"
 #include "sprite.hpp"

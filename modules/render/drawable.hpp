@@ -5,7 +5,6 @@
 #include "../common/db_glm.hpp"
 
 namespace demonblade {
-	// Класс описывает одну модель
 	class drawable {
 
 		public:

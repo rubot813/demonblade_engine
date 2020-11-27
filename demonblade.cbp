@@ -47,6 +47,8 @@
 		<Unit filename="modules/render/model.cpp" />
 		<Unit filename="modules/render/model.hpp" />
 		<Unit filename="modules/render/render.hpp" />
+		<Unit filename="modules/render/skybox.cpp" />
+		<Unit filename="modules/render/skybox.hpp" />
 		<Unit filename="modules/render/sprite.cpp" />
 		<Unit filename="modules/render/sprite.hpp" />
 		<Unit filename="modules/render/texture.cpp" />

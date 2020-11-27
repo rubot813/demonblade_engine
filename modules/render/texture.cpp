@@ -4,6 +4,7 @@
 namespace demonblade {
 
 	void texture::bind( void ) {
+		glActiveTexture( _type ); // ???
 		glBindTexture( _type, _texture_ptr );	// oh, how fast
 	}
 
