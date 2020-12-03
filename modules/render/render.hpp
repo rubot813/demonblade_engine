@@ -10,5 +10,6 @@
 #include "mesh.hpp"
 #include "model.hpp"
 #include "sprite.hpp"
+#include "skybox.hpp"
 
 #endif // RENDER_HPP_INCLUDED

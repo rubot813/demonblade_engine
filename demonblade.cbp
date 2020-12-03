@@ -59,8 +59,11 @@
 		<Unit filename="modules/render/texture_2d.hpp" />
 		<Unit filename="modules/render/texture_3d.cpp" />
 		<Unit filename="modules/render/texture_3d.hpp" />
-		<Unit filename="modules/render/texture_cm.cpp" />
-		<Unit filename="modules/render/texture_cm.hpp" />
+		<Unit filename="modules/utils/bmp.cpp" />
+		<Unit filename="modules/utils/bmp.hpp" />
+		<Unit filename="modules/utils/image.cpp" />
+		<Unit filename="modules/utils/image.hpp" />
+		<Unit filename="modules/utils/utils.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

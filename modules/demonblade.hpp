@@ -7,7 +7,7 @@
 // modules
 #include "./core/core.hpp"
 #include "./render/render.hpp"
-
+#include "./utils/utils.hpp"
 // live fast, die young! |:>
 namespace db = demonblade;
 

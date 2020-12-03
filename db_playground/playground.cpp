@@ -1,51 +1,5 @@
 #include "playground.h"
 
-
-float skyboxVertices[] = {
-	// Координаты
-	-1.0f,  1.0f, -1.0f,
-	-1.0f, -1.0f, -1.0f,
-	1.0f, -1.0f, -1.0f,
-	1.0f, -1.0f, -1.0f,
-	1.0f,  1.0f, -1.0f,
-	-1.0f,  1.0f, -1.0f,
-
-	-1.0f, -1.0f,  1.0f,
-	-1.0f, -1.0f, -1.0f,
-	-1.0f,  1.0f, -1.0f,
-	-1.0f,  1.0f, -1.0f,
-	-1.0f,  1.0f,  1.0f,
-	-1.0f, -1.0f,  1.0f,
-
-	1.0f, -1.0f, -1.0f,
-	1.0f, -1.0f,  1.0f,
-	1.0f,  1.0f,  1.0f,
-	1.0f,  1.0f,  1.0f,
-	1.0f,  1.0f, -1.0f,
-	1.0f, -1.0f, -1.0f,
-
-	-1.0f, -1.0f,  1.0f,
-	-1.0f,  1.0f,  1.0f,
-	1.0f,  1.0f,  1.0f,
-	1.0f,  1.0f,  1.0f,
-	1.0f, -1.0f,  1.0f,
-	-1.0f, -1.0f,  1.0f,
-
-	-1.0f,  1.0f, -1.0f,
-	1.0f,  1.0f, -1.0f,
-	1.0f,  1.0f,  1.0f,
-	1.0f,  1.0f,  1.0f,
-	-1.0f,  1.0f,  1.0f,
-	-1.0f,  1.0f, -1.0f,
-
-	-1.0f, -1.0f, -1.0f,
-	-1.0f, -1.0f,  1.0f,
-	1.0f, -1.0f, -1.0f,
-	1.0f, -1.0f, -1.0f,
-	-1.0f, -1.0f,  1.0f,
-	1.0f, -1.0f,  1.0f
-};
-
 playground::playground( void ) {
 	// Инициализация
 	if ( !init( ) )
@@ -141,50 +95,37 @@ bool playground::init( void ) {
 	db_camera.set_center( { 0.0f, 0.0f, -1.0f });
 	db_camera.set_position( { 0.0f, 0.0f, 0.0f });
 
-	sf_image.loadFromFile( "resources/box.jpg" );
+	/*
+	sf_image.loadFromFile( "resources/TallGreenGrass.bmp" );
 	if ( db_texture.load_from_memory( sf_image.getPixelsPtr( ),
 	                                  sf_image.getSize( ).x,
-	                                  sf_image.getSize( ).y ) )
+	                                  sf_image.getSize( ).y, db::texture::RGBA8,
+									db::texture::LINEAR, db::texture::LINEAR,
+									db::texture::CLAMP_TO_BORDER,db::texture:: CLAMP_TO_BORDER ) )
+		std::cout << "Load texture ok!\n";
+	*/
+
+	if ( db_bmp.read( "resources/TallGreenGrass.bmp" ) )
+		std::cout << "Load tex done!";
+
+	if ( db_texture.load_from_memory( db_bmp.get_data_pointer( ),
+	                                  db_bmp.get_width( ),
+	                                  db_bmp.get_height( ), db::texture::RGBA8,
+									db::texture::LINEAR, db::texture::LINEAR,
+									db::texture::CLAMP_TO_BORDER,db::texture:: CLAMP_TO_BORDER ) )
 		std::cout << "Load texture ok!\n";
 
 	if ( db_mesh.load_from_file( "resources/box.obj" ) )
 		std::cout << "Load mesh ok!\n";
 
 	if ( db_model.set_data( &db_mesh, &db_texture ) )
-		std::cout << "Model add part ok!\n";
+		std::cout << "Model set data ok!\n";
 
 	if ( db_sprite.set_data( db::sprite::SPHERICAL, glm::vec2( 0.2f, 0.2f ), &db_texture ) ) {
 		std::cout << "Sprite add tex ok!\n";
 	}
 
-	if ( db_sb_mesh.load_from_file( "resources/box.obj" ) )
-		std::cout << "Load mesh sb ok!\n";
-
 	db_model.set_position( glm::vec3( 1.0f, -.5f, -2.0f ) );
-
-	if ( !sf_image_cm[ 0 ].loadFromFile( "resources/clouds1_down.bmp" ) )
-		std::cout << "ERR 0";
-	if ( !sf_image_cm[ 1 ].loadFromFile( "resources/clouds1_east.bmp" ) )
-		std::cout << "ERR 1";
-	if ( !sf_image_cm[ 2 ].loadFromFile( "resources/clouds1_north.bmp" ) )
-		std::cout << "ERR 2";
-	if ( !sf_image_cm[ 3 ].loadFromFile( "resources/clouds1_south.bmp" ) )
-		std::cout << "ERR 3";
-	if ( !sf_image_cm[ 4 ].loadFromFile( "resources/clouds1_up.bmp" ) )
-		std::cout << "ERR 4";
-	if ( !sf_image_cm[ 5 ].loadFromFile( "resources/clouds1_west.bmp" ) )
-		std::cout << "ERR 5";
-
-	uint16_t w = sf_image_cm[ 0 ].getSize( ).x;
-	uint16_t h = sf_image_cm[ 0 ].getSize( ).y;
-	for ( uint8_t i = 0; i < 6; i++ ) {
-		cm_ptrs[ i ] = const_cast< void* >( reinterpret_cast< const void *>( sf_image_cm[ i ].getPixelsPtr( ) ) );
-		if ( cm_ptrs[ i ] == nullptr )
-			std::cout << "FCK";
-		std::cout << "MEMVAL = " << &cm_ptrs[ i ] << "\n";
-	}
-	if ( db_texture_cm.load_from_memory( cm_ptrs, w, h ) )
-		std::cout << "DONE";
 
 	// ====
 
@@ -263,45 +204,9 @@ void playground::render( void ) {
 	// 4. Здесь вся отрисовка движка или обычный OpenGL код
 	// ====
 
-	//db_model.render( );
+	db_model.render( );
 
-	//db_sprite.render( );
-
-	// ====
-	// Сохранение текущего состояния трансформации матрицы modelview в стек
-	glPushMatrix( );
-	// Установка текстуры для отрисовки
-	db_texture_cm.bind( );
-	// Включение режима вершинных массивов
-	glEnableClientState( GL_VERTEX_ARRAY );
-	// Включение режима массивов текстурных координат
-	glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-	// Создание указателя на массив вершин
-	// количество координат,
-	// тип данных,
-	// смещение данных в массиве
-	// указатель на массив
-	glVertexPointer( 3, GL_FLOAT, 0, db_sb_mesh.get_vertex_ptr( )->data( ) );
-	// Создание указателя на массив текстурных координат
-	// количество координат,
-	// тип данных,
-	// смещение данных в массиве
-	// указатель на массив
-	glTexCoordPointer( 2/* # */, GL_FLOAT, 0, db_sb_mesh.get_texel_ptr( )->data( ) );
-	// Отрисовка массива
-	// Тип данных для отрисовки
-	// начальный индекс массива
-	// количество элементов для отрисовки
-	glDrawArrays( GL_TRIANGLES, 0, db_sb_mesh.get_vertex_ptr( )->size( ) );
-	// Выключение режима массивов текстурных координат
-	glDisableClientState( GL_TEXTURE_COORD_ARRAY );
-	// Выключение режима вершинных массивов
-	glDisableClientState( GL_VERTEX_ARRAY );
-	// Восстановление состояния матрицы modelview из стека
-	glPopMatrix( );
-
-
-	// ====
+	db_sprite.render( );
 
 	// ====
 	// 5

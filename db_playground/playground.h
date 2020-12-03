@@ -75,15 +75,10 @@ class playground {
 		// Переменные движка, начинаются с db_
 		db::fp_camera	db_camera;
 		db::texture_2d db_texture;
-		db::texture_cm db_texture_cm;
 		db::mesh	db_mesh;
 		db::model	db_model;
 		db::sprite	db_sprite;
-		db::mesh db_sb_mesh;
-
-
-		sf::Image sf_image_cm[ 6 ];
-		void *cm_ptrs[ 6 ];
+		db::bmp		db_bmp;
 
 };	// playground class
 

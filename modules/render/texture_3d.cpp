@@ -13,9 +13,14 @@ namespace demonblade {
 			glDeleteTextures( 1, &_texture_ptr );
 	}
 
-	bool texture_3d::load_from_memory( const void *pixel_ptr, uint16_t width, uint16_t height, uint16_t depth,
-									pack_e pack, filter_e filter_high, filter_e filter_low,
-									wrap_e wrap_s, wrap_e wrap_t, wrap_e wrap_r ) {
+	bool texture_3d::load_from_memory( 	const void *pixel_ptr, uint16_t width, uint16_t height, uint16_t depth,
+										ogl::tex_base_format_e base,
+										ogl::tex_sized_format_e sized,
+										ogl::tex_filter_e filter_high,
+										ogl::tex_filter_e filter_low,
+										ogl::tex_wrap_e wrap_s,
+										ogl::tex_wrap_e wrap_t,
+										ogl::tex_wrap_e wrap_r ) {
 
 		// Генерация имени текстуры: заносит в _texture_ptr имя сгенерированной текстуры
 		glGenTextures( 1, &_texture_ptr );
@@ -26,12 +31,12 @@ namespace demonblade {
 		// Загрузка текстуры в VRAM
 		glTexImage3D( _type,				// 2D
 		              0,					// Mipmap level
-		              pack,					// Тип упаковки бит
+		              sized,				// Тип упаковки бит
 		              width,				// Ширина
 		              height,				// Длина
 		              depth,				// Глубина
 		              0,					// Смещение в массиве байт
-		              GL_RGBA,				// Формат пикселей
+		              base,					// Формат пикселей
 		              GL_UNSIGNED_BYTE,		// Формат данных
 		              pixel_ptr );			// Указатель на массив байт пикселей
 
