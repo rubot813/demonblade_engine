@@ -81,8 +81,12 @@ namespace demonblade {
 				_data[ i ] ^= _data[ i + 2 ];
 			}
 			_ok = 1;
-		} else
+		} else {
+			#ifdef DB_DEBUG
+				debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> incorrect component count\n" );
+			#endif // DB_DEBUG
 			_ok = 0;
+		}
 		return _ok;
 	}
 }	// namespace demonblade

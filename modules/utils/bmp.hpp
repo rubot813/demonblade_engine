@@ -91,8 +91,16 @@ namespace demonblade {
 
 		private:
 
-			// Заголовки bmp формата
-			bmp_file_header_s	_header;
+			// Метод читает заголовки открытого bmp/dib файла
+			// Возвращает 1 если заголовки заполнены корректно и формат пикселей поддерживается
+			bool _read_header( std::ifstream *file );
+
+			// Метод читает данные пикселей открытого bmp/dib файла
+			// Возвращает 1 если успешно
+			bool _read_pixel_data( std::ifstream *file );
+
+			// Заголовки bmp/dib формата
+			bmp_file_header_s	_file_header;
 			bmp_info_header_s	_info_header;
 			bmp_color_header_s	_color_header;
 

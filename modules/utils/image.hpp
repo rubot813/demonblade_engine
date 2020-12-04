@@ -89,7 +89,7 @@ namespace demonblade {
 			// Вернет 0 в случае ошибки
 			bool convert_format( void );
 
-		private:
+		protected:
 
 			// Массив пикселей
 			std::vector< uint8_t >	_data;
