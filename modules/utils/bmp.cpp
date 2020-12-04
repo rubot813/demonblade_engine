@@ -5,17 +5,19 @@ namespace demonblade {
 	bmp::bmp( void ) {
 		#ifdef __linux
 		_data.clear( );
-		#endif
+		#endif	// ifdef __linux
 	}
 	bmp::bmp( std::string file_name ) {
-		read( file_name );
+		load_from_file( file_name );
 	}
 
 	bmp::~bmp( void ) {
-
+		// nope
 	}
 
-	bool bmp::read( std::string file_name ) {
+	// Метод загрузки изображения из файла
+	bool bmp::load_from_file( std::string file_name ) {
+		/*
 		// Открытие файла
 		std::ifstream file;
 		file.open( file_name, std::ios_base::binary );
@@ -82,6 +84,7 @@ namespace demonblade {
 			size_info_color = sizeof( bmp_info_header_s ) + sizeof( bmp_color_header_s );
 			size_headers = sizeof( bmp_header_s ) + sizeof( bmp_info_header_s ) + sizeof( bmp_color_header_s );
 
+			// Корректировка структуры заголовка
 			if ( _header.offset_data != size_headers ) {
 				#ifdef DB_DEBUG
 				debug::get_instance( )->warn( std::string( __FUNCTION__ ) + " -> wrong header size, corrected ( 32bpp )\n" );
@@ -89,19 +92,19 @@ namespace demonblade {
 				_header.offset_data = size_headers;
 			}
 
+			// Корректировка структуры информации файла
 			if ( _info_header.size != size_info_color ) {
 				#ifdef DB_DEBUG
 				debug::get_instance( )->warn( std::string( __FUNCTION__ ) + " -> wrong info header size, corrected ( 32bpp )\n" );
 				#endif // DB_DEBUG
-				_header.offset_data = size_info_color;
+				_info_header.size = size_info_color;
 			}
-
-
 		} else {
-			// 24 бит / пиксель, не используется
+			// 24 бит / пиксель
 			size_info = sizeof( bmp_info_header_s );
 			size_headers = sizeof( bmp_header_s ) + sizeof( bmp_info_header_s );
 
+			// Корректировка  структуры заголовка
 			if ( _header.offset_data != size_headers ) {
 				#ifdef DB_DEBUG
 				debug::get_instance( )->warn( std::string( __FUNCTION__ ) + " -> wrong header size, corrected ( 24bpp )\n" );
@@ -109,11 +112,12 @@ namespace demonblade {
 				_header.offset_data = size_headers;
 			}
 
+			// Корректировка структуры информации файла
 			if ( _info_header.size != size_info ) {
 				#ifdef DB_DEBUG
 				debug::get_instance( )->warn( std::string( __FUNCTION__ ) + " -> wrong info header size, corrected ( 24bpp )\n" );
 				#endif // DB_DEBUG
-				_header.offset_data = size_info;
+				_info_header.size = size_info;
 			}
 		}	// if transparent
 
@@ -132,63 +136,45 @@ namespace demonblade {
 		_data.resize( _info_header.width * _info_header.height * _info_header.bpp / 8 );
 
 		// Проверка, нужно ли выравнивание строк
-		// todo: вачаут, для BRG не сработает
 		if ( _info_header.width % 4 == 0 ) {
 			// Выравнивание не нужно
 			file.read( ( char* )_data.data( ), _data.size( ) );
-			_header.file_size += _data.size( );
+			_header.file_size += static_cast< uint8_t >( _data.size( ) );
 		} else {
+			#ifdef DB_DEBUG
+			debug::get_instance( )->message( std::string( __FUNCTION__ ) + " -> NEED ALIGNMENT\n" );
+			#endif // DB_DEBUG
 			// Выравнивание нужно
 			uint32_t row_stride = _info_header.width * _info_header.bpp / 8;
 			uint32_t stride = row_stride;
 			while ( stride % 4 != 0 )
 				stride++;
-
-			// Странная конструкция, надо переписать
 			std::vector< uint8_t > padding_row( stride - row_stride );
 			for ( int32_t i = 0; i < _info_header.height; i++ ) {
 				file.read( ( char* )( _data.data( ) + row_stride * i ), row_stride );
 				file.read( ( char* )padding_row.data( ), padding_row.size( ) );
 			}
-
-			_header.file_size += _data.size( ) + _info_header.height * padding_row.size( );
+			_header.file_size += static_cast< uint32_t >( _data.size( ) ) + _info_header.height * static_cast< uint32_t >( padding_row.size( ) );
 		}
-
-		return 1;
-	}	// read
-
-	bool bmp::write( std::string file_name ) {
+		*/
 		return 1;
 	}
 
-	bool bmp::create( uint16_t width, uint16_t height, bool alpha ) {
-		return 1;
+	// Метод записи изображения в файл
+	bool bmp::save_to_file( std::string file_name ) {
+		#ifdef DB_DEBUG
+			debug::get_instance( )->message( std::string( __FUNCTION__ ) + " -> currently unsupported\n" );
+		#endif // DB_DEBUG
+		return 0;
 	}
 
-	bool bmp::is_empty( void ) {
-		return ( bool ) ( !_data.size( ) );
-	}
-
-	void *bmp::get_data_ptr( void ) {
-		return _data.data( );
-	}
-
-	int32_t  bmp::get_width( void ) {
-		return _info_header.width;
-	}
-
-	int32_t  bmp::get_height( void ) {
-		return _info_header.height;
-	}
-
-
-	bool bmp::bmp_color_header_s::is_correct_type( void ) {
+	bool bmp::bmp_color_header_s::is_valid_format( void ) {
 		// mask = BGRA, space = sRGB
-		return (	red_mask		== 0x00ff0000 &&
-		            green_mask		== 0x0000ff00 &&
-		            blue_mask		== 0x000000ff &&
-		            alpha_mask		== 0xff000000 &&
-		            color_space_type == 0x73524742 );
+		return (	red_mask			== 0x00ff0000 &&
+		            green_mask			== 0x0000ff00 &&
+		            blue_mask			== 0x000000ff &&
+		            alpha_mask			== 0xff000000 &&
+		            color_space_type	== 0x73524742 );
 	}
 
 }	// namespace demonblade

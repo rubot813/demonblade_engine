@@ -14,13 +14,15 @@ namespace demonblade {
 	}
 
 	bool texture_3d::load_from_memory( 	const void *pixel_ptr, uint16_t width, uint16_t height, uint16_t depth,
-										ogl::tex_base_format_e base,
-										ogl::tex_sized_format_e sized,
-										ogl::tex_filter_e filter_high,
-										ogl::tex_filter_e filter_low,
-										ogl::tex_wrap_e wrap_s,
-										ogl::tex_wrap_e wrap_t,
-										ogl::tex_wrap_e wrap_r ) {
+	                                    image::img_sized_format_e sized,
+	                                    tex_filter_e filter_high,
+	                                    tex_filter_e filter_low,
+	                                    tex_wrap_e wrap_s,
+	                                    tex_wrap_e wrap_t,
+	                                    tex_wrap_e wrap_r ) {
+
+		// Определение базового формата изображения
+		image::img_base_format_e base = image::get_base_pixel_format( sized );
 
 		// Генерация имени текстуры: заносит в _texture_ptr имя сгенерированной текстуры
 		glGenTextures( 1, &_texture_ptr );
@@ -29,7 +31,7 @@ namespace demonblade {
 		bind( );
 
 		// Загрузка текстуры в VRAM
-		glTexImage3D( _type,				// 2D
+		glTexImage3D( _type,				// 3D
 		              0,					// Mipmap level
 		              sized,				// Тип упаковки бит
 		              width,				// Ширина

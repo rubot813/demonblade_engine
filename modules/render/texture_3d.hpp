@@ -21,13 +21,12 @@ namespace demonblade {
 			// Принимает указатель на массив и его ширину, длину и глубину
 			// Пока что только базовая обертка, но она должна работать
 			bool load_from_memory( 	const void *pixel_ptr, uint16_t width, uint16_t height, uint16_t depth,
-									ogl::tex_base_format_e base = ogl::RGBA,
-									ogl::tex_sized_format_e sized = ogl::RGBA8,
-									ogl::tex_filter_e filter_high = ogl::NEAREST,
-									ogl::tex_filter_e filter_low = ogl::NEAREST,
-									ogl::tex_wrap_e wrap_s = ogl::CLAMP,
-									ogl::tex_wrap_e wrap_t = ogl::CLAMP,
-									ogl::tex_wrap_e wrap_r = ogl::CLAMP  );
+			                        image::img_sized_format_e sized = image::SIZED_RGB,
+			                        tex_filter_e filter_high = NEAREST,
+			                        tex_filter_e filter_low = NEAREST,
+			                        tex_wrap_e wrap_s = CLAMP,
+			                        tex_wrap_e wrap_t = CLAMP,
+			                        tex_wrap_e wrap_r = CLAMP  );
 
 			// Метод получения количества текстурных координат
 			uint8_t get_tex_coords_num( void );

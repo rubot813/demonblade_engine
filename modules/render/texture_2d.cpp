@@ -14,12 +14,14 @@ namespace demonblade {
 	}
 
 	bool texture_2d::load_from_memory(	const void *pixel_ptr, uint16_t width, uint16_t height,
-	                                    ogl::tex_base_format_e base,
-	                                    ogl::tex_sized_format_e sized,
-	                                    ogl::tex_filter_e filter_high,
-	                                    ogl::tex_filter_e filter_low,
-	                                    ogl::tex_wrap_e wrap_u,
-	                                    ogl::tex_wrap_e wrap_v ) {
+	                                    image::img_sized_format_e sized,
+	                                    tex_filter_e filter_high,
+	                                    tex_filter_e filter_low,
+	                                    tex_wrap_e wrap_u,
+	                                    tex_wrap_e wrap_v ) {
+
+		// Определение базового формата изображения
+		image::img_base_format_e base = image::get_base_pixel_format( sized );
 
 		// Генерация имени текстуры: заносит в _texture_ptr имя сгенерированной текстуры
 		glGenTextures( 1, &_texture_ptr );
@@ -30,7 +32,7 @@ namespace demonblade {
 		// Загрузка текстуры в VRAM
 		glTexImage2D( _type,				// 2D
 		              0,					// Mipmap level
-		              sized,					// Тип упаковки бит
+		              sized,				// Тип упаковки бит
 		              width,				// Ширина
 		              height,				// Длина
 		              0,					// Смещение в массиве байт
@@ -47,6 +49,29 @@ namespace demonblade {
 		glTexParameteri( _type, GL_TEXTURE_WRAP_T, wrap_v );
 
 		return ( ( bool )_texture_ptr );
+	}
+
+	bool texture_2d::load_from_image(	image *img,
+										tex_filter_e filter_high,
+										tex_filter_e filter_low,
+										tex_wrap_e wrap_u,
+										tex_wrap_e wrap_v ) {
+		bool ok = 0;
+		if ( img ) {
+			if ( load_from_memory(	img->get_data_ptr( ),
+									img->get_width( ),
+									img->get_height( ),
+									img->get_pixel_format( ),
+									filter_high,
+									filter_low,
+									wrap_u,
+									wrap_v ) ) {
+
+				ok = 1;
+			}	// if load_from_memory
+		}	// if img
+
+		return ok;
 	}
 
 	uint8_t texture_2d::get_tex_coords_num( void ) {

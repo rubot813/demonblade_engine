@@ -14,11 +14,13 @@ namespace demonblade {
 	}
 
 	bool texture_1d::load_from_memory(	const void *pixel_ptr, uint16_t width,
-	                                    ogl::tex_base_format_e base,
-	                                    ogl::tex_sized_format_e sized,
-	                                    ogl::tex_filter_e filter_high,
-	                                    ogl::tex_filter_e filter_low,
-	                                    ogl::tex_wrap_e wrap_s ) {
+	                                    image::img_sized_format_e sized,
+	                                    tex_filter_e filter_high,
+	                                    tex_filter_e filter_low,
+	                                    tex_wrap_e wrap_s ) {
+
+		// Определение базового формата изображения
+		image::img_base_format_e base = image::get_base_pixel_format( sized );
 
 		// Генерация имени текстуры: заносит в _texture_ptr имя сгенерированной текстуры
 		glGenTextures( 1, &_texture_ptr );

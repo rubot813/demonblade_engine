@@ -20,11 +20,10 @@ namespace demonblade {
 			// ћетод загрузки 1d текстуры из пам€ти
 			// ѕринимает указатель на массив и его размер в байтах
 			bool load_from_memory(	const void *pixel_ptr, uint16_t width,
-									ogl::tex_base_format_e base = ogl::RGBA,
-									ogl::tex_sized_format_e sized = ogl::RGBA8,
-									ogl::tex_filter_e filter_high = ogl::NEAREST,
-									ogl::tex_filter_e filter_low = ogl::NEAREST,
-									ogl::tex_wrap_e wrap_s = ogl::CLAMP );
+			                        image::img_sized_format_e sized = image::SIZED_RGB,
+			                        tex_filter_e filter_high = NEAREST,
+			                        tex_filter_e filter_low = NEAREST,
+			                        tex_wrap_e wrap_s = CLAMP );
 
 			// ћетод получени€ количества текстурных координат
 			uint8_t get_tex_coords_num( void );

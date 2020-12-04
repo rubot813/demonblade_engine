@@ -57,6 +57,7 @@ namespace demonblade {
 
 			// types, methods
 		private:
+
 			// Структура индексов одной поверхности ( треугольника )
 			typedef struct {
 				// Индексы вершин, текселей и нормалей

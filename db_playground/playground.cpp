@@ -86,6 +86,7 @@ bool playground::init( void ) {
 	// Инициализация GLEW, очистка матриц и буферов
 	if ( !db::ogl::get_instance( )->init( ) )
 		_init = 0;
+
 	db::ogl::get_instance( )->enable( db::ogl::TEXTURE_2D );
 	db::ogl::get_instance( )->enable( db::ogl::TEXTURE_CUBE_MAP );
 
@@ -95,24 +96,13 @@ bool playground::init( void ) {
 	db_camera.set_center( { 0.0f, 0.0f, -1.0f });
 	db_camera.set_position( { 0.0f, 0.0f, 0.0f });
 
-	/*
-	sf_image.loadFromFile( "resources/TallGreenGrass.bmp" );
-	if ( db_texture.load_from_memory( sf_image.getPixelsPtr( ),
-	                                  sf_image.getSize( ).x,
-	                                  sf_image.getSize( ).y, db::texture::RGBA8,
-									db::texture::LINEAR, db::texture::LINEAR,
-									db::texture::CLAMP_TO_BORDER,db::texture:: CLAMP_TO_BORDER ) )
-		std::cout << "Load texture ok!\n";
-	*/
+	if ( db_bmp.load_from_file( "resources/TallGreenGrass.bmp" ) )
+		std::cout << "Load tex done!\n";
 
-	if ( db_bmp.read( "resources/TallGreenGrass.bmp" ) )
-		std::cout << "Load tex done!";
+	if ( db_bmp.convert_format( ) ) // BGR -> RGB
+		std::cout << "Convert to RGB done!\n";
 
-	if ( db_texture.load_from_memory( db_bmp.get_data_pointer( ),
-	                                  db_bmp.get_width( ),
-	                                  db_bmp.get_height( ), db::texture::RGBA8,
-									db::texture::LINEAR, db::texture::LINEAR,
-									db::texture::CLAMP_TO_BORDER,db::texture:: CLAMP_TO_BORDER ) )
+	if ( db_texture.load_from_image( &db_bmp ) )
 		std::cout << "Load texture ok!\n";
 
 	if ( db_mesh.load_from_file( "resources/box.obj" ) )
@@ -153,28 +143,30 @@ void playground::update( void ) {
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::LShift ) )
 		db_camera.move_down( camera_speed );
 
-	// Считаю вектор смещения курса относительно центра окна
-	sf_mouse_offset = sf::Mouse::getPosition( sf_render_window ) - sf::Vector2i( sf_render_window.getSize( ).x / 2.0f,
-	                  sf_render_window.getSize( ).y / 2.0f );
+	if ( sf::Mouse::isButtonPressed( sf::Mouse::Left ) ) {
+		// Считаю вектор смещения курса относительно центра окна
+		sf_mouse_offset = sf::Mouse::getPosition( sf_render_window ) - sf::Vector2i( sf_render_window.getSize( ).x / 2.0f,
+		        sf_render_window.getSize( ).y / 2.0f );
 
-	// Устанавливаю положение курсора по центру окна
-	sf::Mouse::setPosition( sf::Vector2i( sf_render_window.getSize( ).x / 2.0f, sf_render_window.getSize( ).y / 2.0f ), sf_render_window );
+		// Устанавливаю положение курсора по центру окна
+		sf::Mouse::setPosition( sf::Vector2i( sf_render_window.getSize( ).x / 2.0f, sf_render_window.getSize( ).y / 2.0f ), sf_render_window );
 
-	// x - yaw, y - pitch
-	// Пересчитываю углы поворота камеры с чувствительностью
-	glm::vec2 _tmp;
-	_tmp.x = sf_mouse_offset.x;	// sf::Vector2f -> glm::vec2
-	_tmp.y = -sf_mouse_offset.y;
-	glm::vec2 angle = _tmp * mouse_sens;
+		// x - yaw, y - pitch
+		// Пересчитываю углы поворота камеры с чувствительностью
+		glm::vec2 _tmp;
+		_tmp.x = sf_mouse_offset.x;	// sf::Vector2f -> glm::vec2
+		_tmp.y = -sf_mouse_offset.y;
+		glm::vec2 angle = _tmp * mouse_sens;
 
-	// Добавляю смещение указателя мыши от центра к углу поворота камеры
-	db_camera.add_angle( angle );
+		// Добавляю смещение указателя мыши от центра к углу поворота камеры
+		db_camera.add_angle( angle );
 
-	// Ограничение поворота камеры по оси y
-	db_camera.constraint_pitch( );
+		// Ограничение поворота камеры по оси y
+		db_camera.constraint_pitch( );
 
-	// Считаю новый угол поворота камеры по заданным углам
-	db_camera.calc_center( );
+		// Считаю новый угол поворота камеры по заданным углам
+		db_camera.calc_center( );
+	}
 }
 
 void playground::render( void ) {

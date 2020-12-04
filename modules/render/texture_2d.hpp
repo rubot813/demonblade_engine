@@ -19,13 +19,19 @@ namespace demonblade {
 
 			// ћетод загрузки текстуры из пам€ти
 			// ѕринимает указатель на массив и его ширину и длину
-		bool load_from_memory(	const void *pixel_ptr, uint16_t width, uint16_t height,
-		                        ogl::tex_base_format_e base = ogl::RGBA,
-		                        ogl::tex_sized_format_e sized = ogl::RGBA8,
-		                        ogl::tex_filter_e filter_high = ogl::NEAREST,
-		                        ogl::tex_filter_e filter_low = ogl::NEAREST,
-		                        ogl::tex_wrap_e wrap_u = ogl::CLAMP,
-		                        ogl::tex_wrap_e wrap_v = ogl::CLAMP );
+			bool load_from_memory(	const void *pixel_ptr, uint16_t width, uint16_t height,
+			                        image::img_sized_format_e sized = image::SIZED_RGB,
+			                        tex_filter_e filter_high = NEAREST,
+			                        tex_filter_e filter_low = NEAREST,
+			                        tex_wrap_e wrap_u = CLAMP,
+			                        tex_wrap_e wrap_v = CLAMP );
+
+			// ћетод загрузки текстуры из изображени€
+			bool load_from_image(	image *img,
+									tex_filter_e filter_high = NEAREST,
+									tex_filter_e filter_low = NEAREST,
+									tex_wrap_e wrap_u = CLAMP,
+									tex_wrap_e wrap_v = CLAMP );
 
 			// ћетод получени€ количества текстурных координат
 			uint8_t get_tex_coords_num( void );
