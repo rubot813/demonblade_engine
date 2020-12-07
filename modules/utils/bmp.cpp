@@ -22,9 +22,7 @@ namespace demonblade {
 
 		// Проверка типа файла
 		if ( _file_header.file_type != 0x4D42 ) {
-			#ifdef DB_DEBUG
-			debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> file header -> wrong type\n" );
-			#endif // DB_DEBUG
+			db_dbg_error( "ile header -> wrong type\n" );
 			return 0;
 		}
 
@@ -40,18 +38,13 @@ namespace demonblade {
 				// Чтение заголовка color_header
 				file->read( ( char* )&_color_header, sizeof( bmp_color_header_s ) );
 
-				// Проверка поддержки маски цвета
-				if ( !_color_header.is_valid_format( ) ) {
-					#ifdef DB_DEBUG
-					debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> color header -> unsupported color format\n" );
-					#endif // DB_DEBUG
+				// Проверка поддержки маски цвета BGRA и цветового пространства sRGB
+				if ( !_color_header.is_bgra( ) || !_color_header.is_srgb( ) ) {
+					db_dbg_error( "color header -> unsupported color format\n" );
 					return 0;
 				}
 			} else {
-				#ifdef DB_DEBUG
-				debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> color header -> file not contain color mask info\n" );
-				#endif // DB_DEBUG
-
+				db_dbg_error( "color header -> file not contain color mask info\n" );
 				return 0;
 			}
 
@@ -75,17 +68,13 @@ namespace demonblade {
 
 			// Корректировка структуры заголовка
 			if ( _file_header.offset_data != size_headers ) {
-				#ifdef DB_DEBUG
-				debug::get_instance( )->warn( std::string( __FUNCTION__ ) + " -> wrong file header size, corrected ( 32bpp )\n" );
-				#endif // DB_DEBUG
+				db_dbg_warn( "wrong file header size, corrected ( 32bpp )\n" );
 				_file_header.offset_data = size_headers;
 			}
 
 			// Корректировка структуры информации файла
 			if ( _info_header.size != size_info_color ) {
-				#ifdef DB_DEBUG
-				debug::get_instance( )->warn( std::string( __FUNCTION__ ) + " -> wrong info header size, corrected ( 32bpp )\n" );
-				#endif // DB_DEBUG
+				db_dbg_warn( "wrong info header size, corrected ( 32bpp )\n" );
 				_info_header.size = size_info_color;
 			}
 			// Иначе, если в файле нет альфа - канала
@@ -95,17 +84,13 @@ namespace demonblade {
 
 			// Корректировка  структуры заголовка
 			if ( _file_header.offset_data != size_headers ) {
-				#ifdef DB_DEBUG
-				debug::get_instance( )->warn( std::string( __FUNCTION__ ) + " -> wrong file header size, corrected ( 24bpp )\n" );
-				#endif // DB_DEBUG
+				db_dbg_warn( "wrong file header size, corrected ( 24bpp )\n" );
 				_file_header.offset_data = size_headers;
 			}
 
 			// Корректировка структуры информации файла
 			if ( _info_header.size != size_info ) {
-				#ifdef DB_DEBUG
-				debug::get_instance( )->warn( std::string( __FUNCTION__ ) + " -> wrong info header size, corrected ( 24bpp )\n" );
-				#endif // DB_DEBUG
+				db_dbg_warn( "wrong info header size, corrected ( 24bpp )\n" );
 				_info_header.size = size_info;
 			}
 		}	// if transparent
@@ -114,33 +99,53 @@ namespace demonblade {
 
 		// Проверка соответствия формата файла: начало должно быть с верхнего левого угла
 		if ( _info_header.height < 0 ) {
-			#ifdef DB_DEBUG
-			debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> info header: bottom - left origin unsupported\n" );
-			#endif // DB_DEBUG
+			db_dbg_error( "info header: bottom - left origin unsupported\n" );
 			return 0;
 		}
 
 		// Выделение памяти под массив пикселей
 		_data.resize( _info_header.width * _info_header.height * _info_header.bpp / 8 );
 
+		// Количество байт в строке должно быть кратным 4
 		// Проверка, нужно ли выравнивание строк
 		if ( _info_header.width % 4 == 0 ) {
-			// Выравнивание не нужно
+			// Выравнивание не нужно, просто считывается массив пикселей
 			file->read( ( char* )_data.data( ), _data.size( ) );
 			_file_header.file_size += static_cast< uint8_t >( _data.size( ) );
 
 		} else {
 			// Выравнивание нужно
+			db_dbg_warn( "incorrect row padding. Try to align...\n" );
+
+			// Расчет размера отступа после каждой строки в байтах
+			uint32_t padding = ( ( 4 - ( _info_header.width * _info_header.bpp / 8 ) ) % 4 ) & 3;
+
+			for ( int32_t i = 0; i < _info_header.height; i++ ) {
+				for ( int32_t i = 0; i < _info_header.width; i++ )
+					file->read( ( char* )( _data.data( ) ), _info_header.height );
+				file->seekg( padding, std::ios_base::cur );
+			}
+
+			/*
+
 			uint32_t row_stride = _info_header.width * _info_header.bpp / 8;
+
 			uint32_t stride = row_stride;
 			while ( stride % 4 != 0 )
 				stride++;
+
 			std::vector< uint8_t > padding_row( stride - row_stride );
 			for ( int32_t i = 0; i < _info_header.height; i++ ) {
 				file->read( ( char* )( _data.data( ) + row_stride * i ), row_stride );
 				file->read( ( char* )padding_row.data( ), padding_row.size( ) );
 			}
 			_file_header.file_size += static_cast< uint32_t >( _data.size( ) ) + _info_header.height * static_cast< uint32_t >( padding_row.size( ) );
+			#ifdef DB_DEBUG
+			debug::get_instance( )->message( std::string( __FUNCTION__ ) + " -> alignment done\n" );
+			#endif // DB_DEBUG
+			*/
+			db_dbg_warn( "alignment done\n" );
+
 		}
 
 		// Successfull
@@ -153,17 +158,13 @@ namespace demonblade {
 		std::ifstream file;
 		file.open( file_name, std::ios_base::binary );
 		if ( !file.is_open( ) ) {
-			#ifdef DB_DEBUG
-			debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> cannot open file\n" );
-			#endif // DB_DEBUG
+			db_dbg_error( "cannot open file\n" );
 			return 0;
 		}
 
 		// Чтение заголовков
 		if ( !_read_header( &file ) ) {
-			#ifdef DB_DEBUG
-			debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> cannot parse headers\n" );
-			#endif // DB_DEBUG
+			db_dbg_error( "cannot read headers\n" );
 			file.close( );
 			return 0;
 		}
@@ -173,9 +174,7 @@ namespace demonblade {
 
 		// Чтение заголовков
 		if ( !_read_pixel_data( &file ) ) {
-			#ifdef DB_DEBUG
-			debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> cannot read pixel array\n" );
-			#endif // DB_DEBUG
+			db_dbg_error( "cannot read pixel data\n" );
 			file.close( );
 			return 0;
 		}
@@ -189,38 +188,57 @@ namespace demonblade {
 			_format = SIZED_RGB;
 		else if ( _info_header.bpp == 32 )
 			_format = SIZED_RGBA;
-		else {
-			#ifdef DB_DEBUG
-			debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> cannot read bpp field\n" );
-			#endif // DB_DEBUG
-		}
+		else
+			db_dbg_error( "cannot read bpp field\n" );
 
 		// Конвертация BGR -> RGB / BGRA -> RGBA
-		if ( !convert_format( ) ) {
-			#ifdef DB_DEBUG
-			debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> cannot convert to RGB(A)\n" );
-			#endif // DB_DEBUG
-		}
+		if ( !convert_format( ) )
+			db_dbg_warn( "cannot convert to RGB(A)\n" );
 
 		// Success
 		return 1;
 	}
 
 	bool bmp::save_to_file( std::string file_name ) {
-		#ifdef DB_DEBUG
-		debug::get_instance( )->message( std::string( __FUNCTION__ ) + " -> currently unsupported\n" );
-		#endif // DB_DEBUG
+		db_dbg_msg( "currently unsupported\n" );
 		return 0;
 	}
 
-	bool bmp::bmp_color_header_s::is_valid_format( void ) {
-		// mask = BGRA, space = sRGB
+	// ==== bmp_color_header_s ====
+
+	bool  bmp::bmp_color_header_s::is_bgr( void ) {
 		return (	red_mask			== 0x00ff0000 &&
 		            green_mask			== 0x0000ff00 &&
 		            blue_mask			== 0x000000ff &&
-		            alpha_mask			== 0xff000000 &&
-		            color_space_type	== 0x73524742 );
+		            alpha_mask			== 0x00000000 );
 	}
+
+	bool  bmp::bmp_color_header_s::is_bgra( void ) {
+		return (	red_mask			== 0x00ff0000 &&
+		            green_mask			== 0x0000ff00 &&
+		            blue_mask			== 0x000000ff &&
+		            alpha_mask			== 0xff000000 );
+	}
+
+	bool  bmp::bmp_color_header_s::is_rgb( void ) {
+		return (	red_mask			== 0x000000ff &&
+		            green_mask			== 0x0000ff00 &&
+		            blue_mask			== 0x00ff0000 &&
+		            alpha_mask			== 0x00000000 );
+	}
+
+	bool  bmp::bmp_color_header_s::is_rgba( void ) {
+		return (	red_mask			== 0x000000ff &&
+		            green_mask			== 0x0000ff00 &&
+		            blue_mask			== 0x00ff0000 &&
+		            alpha_mask			== 0xff000000 );
+	}
+
+	bool  bmp::bmp_color_header_s::is_srgb( void ) {
+		return ( color_space_type	== 0x73524742 );
+	}
+
+	// ==== bmp_color_header_s ====
 
 }	// namespace demonblade
 

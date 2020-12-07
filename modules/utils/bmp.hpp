@@ -25,7 +25,7 @@ namespace demonblade {
 
 				bmp_file_header_s( void ) {
 					memset( this, 0, sizeof( bmp_file_header_s ) );
-					file_type = 0x4D42;
+					file_type = 0x4D42;	// 'B' + 'M'
 				}
 			};
 
@@ -64,6 +64,7 @@ namespace demonblade {
 
 				bmp_color_header_s( void ) {
 					memset( this, 0, sizeof( bmp_color_header_s ) );
+					// По умолчанию формат упаковки BGRA. sRGB
 					red_mask			= 0x00ff0000;
 					green_mask			= 0x0000ff00;
 					blue_mask			= 0x000000ff;
@@ -71,10 +72,15 @@ namespace demonblade {
 					color_space_type	= 0x73524742;	// spaceRGB
 				}
 
-				// Метод возвращает 1, если цветовая маска имеет верный формат:
-				// BGRA, sRGB
-				// Иначе возвращает 0
-				bool is_valid_format( void );
+				// Функции возвращают 1, если цветовая маска соответствует названию
+				bool is_bgr( void );	// BGR
+				bool is_bgra( void );	// BGRA
+				bool is_rgb( void );	// RGB
+				bool is_rgba( void );	// RGBA
+
+				// Функция возвращает 1, если цветовое пространство маски цвета sRGB
+				bool is_srgb( void );
+
 			};
 #pragma pack(pop)
 

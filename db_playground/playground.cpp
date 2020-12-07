@@ -96,7 +96,7 @@ bool playground::init( void ) {
 	db_camera.set_center( { 0.0f, 0.0f, -1.0f });
 	db_camera.set_position( { 0.0f, 0.0f, 0.0f });
 
-	if ( db_bmp.load_from_file( "resources/StanfordDish.bmp" ) )
+	if ( db_bmp.load_from_file( "resources/diamondplate4.bmp" ) )
 		std::cout << "Load tex done!\n";
 
 	if ( db_texture.load_from_image( &db_bmp ) )
@@ -143,7 +143,7 @@ void playground::update( void ) {
 	if ( sf::Mouse::isButtonPressed( sf::Mouse::Left ) ) {
 		// Считаю вектор смещения курса относительно центра окна
 		sf_mouse_offset = sf::Mouse::getPosition( sf_render_window ) - sf::Vector2i( sf_render_window.getSize( ).x / 2.0f,
-		        sf_render_window.getSize( ).y / 2.0f );
+		                  sf_render_window.getSize( ).y / 2.0f );
 
 		// Устанавливаю положение курсора по центру окна
 		sf::Mouse::setPosition( sf::Vector2i( sf_render_window.getSize( ).x / 2.0f, sf_render_window.getSize( ).y / 2.0f ), sf_render_window );

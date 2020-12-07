@@ -82,9 +82,7 @@ namespace demonblade {
 			}
 			_ok = 1;
 		} else {
-			#ifdef DB_DEBUG
-				debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> incorrect component count\n" );
-			#endif // DB_DEBUG
+			db_dbg_error( "incorrect component count\n" );
 			_ok = 0;
 		}
 		return _ok;

@@ -52,20 +52,20 @@ namespace demonblade {
 	}
 
 	bool texture_2d::load_from_image(	image *img,
-										tex_filter_e filter_high,
-										tex_filter_e filter_low,
-										tex_wrap_e wrap_u,
-										tex_wrap_e wrap_v ) {
+	                                    tex_filter_e filter_high,
+	                                    tex_filter_e filter_low,
+	                                    tex_wrap_e wrap_u,
+	                                    tex_wrap_e wrap_v ) {
 		bool ok = 0;
 		if ( img ) {
 			if ( load_from_memory(	img->get_data_ptr( ),
-									img->get_width( ),
-									img->get_height( ),
-									img->get_pixel_format( ),
-									filter_high,
-									filter_low,
-									wrap_u,
-									wrap_v ) ) {
+			                        img->get_width( ),
+			                        img->get_height( ),
+			                        img->get_pixel_format( ),
+			                        filter_high,
+			                        filter_low,
+			                        wrap_u,
+			                        wrap_v ) ) {
 
 				ok = 1;
 			}	// if load_from_memory

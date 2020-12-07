@@ -47,17 +47,13 @@ namespace demonblade {
 	mesh::format_e mesh::_get_extension( std::string *path ) {
 		std::size_t dot_index = path->rfind( '.' );
 		if ( dot_index == std::string::npos ) {
-			#ifdef DB_DEBUG
-			debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> file name error\n" );
-			#endif // DB_DEBUG
+			db_dbg_error( "file name error\n" );
 			return UNKNOWN;
 		}
 		std::string ext = path->substr( dot_index + 1 );
 		if ( ext == "obj" || ext == "OBJ" )
 			return OBJ;
-		#ifdef DB_DEBUG
-		debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> unknown file extension: " + ext );
-		#endif // DB_DEBUG
+		db_dbg_error( "unknown file extension: " + ext );
 		return UNKNOWN;
 	}
 
@@ -79,9 +75,7 @@ namespace demonblade {
 		file.open( fname, std::ios_base::in );
 		// Проверка, смогли ли открыть файл
 		if ( !file.is_open( ) ) {
-			#ifdef DB_DEBUG
-			debug::get_instance( )->error( std::string( __FUNCTION__ ) + " -> cannot open file\n" );
-			#endif // DB_DEBUG
+			db_dbg_error( "cannot open file\n" );
 			return 0;
 		}
 
@@ -218,11 +212,8 @@ namespace demonblade {
 			if ( !buffer.size( ) )
 				continue;
 
-			#ifdef DB_DEBUG
-			debug::get_instance( )->error( std::string( __FUNCTION__ ) +
-			                               " -> unknown definition '" + buffer +
-			                               "', line = " + std::to_string( line_number ) + "\n" );
-			#endif // DB_DEBUG
+			db_dbg_error(	" -> unknown definition '" + buffer +
+			                "', line = " + std::to_string( line_number ) + "\n" );
 			file.close( );
 			return 0;
 

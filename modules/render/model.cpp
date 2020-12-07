@@ -27,9 +27,7 @@ namespace demonblade {
 			_mesh = *mesh_ptr;
 		else {
 			data_valid = 0;
-			#ifdef DB_DEBUG
-			debug::get_instance( )->warn( std::string( __FUNCTION__ ) + " -> received null mesh pointer\n" );
-			#endif // DB_DEBUG
+			db_dbg_warn( "received null mesh pointer\n" );
 		}
 
 		return data_valid;
@@ -43,9 +41,7 @@ namespace demonblade {
 			_texture = tex_ptr;
 		} else {
 			data_valid = 0;
-			#ifdef DB_DEBUG
-			debug::get_instance( )->warn( std::string( __FUNCTION__ ) + " -> received texture that not loaded to VRAM\n" );
-			#endif // DB_DEBUG
+			db_dbg_warn( "received texture that not loaded to VRAM\n" );
 		}
 
 		return data_valid;

@@ -26,19 +26,21 @@ namespace demonblade {
 
 	class debug {
 		public:
+
+			// Типы отладочных сообщений
+			enum dbg_type_e {
+			dbg_msg,	// Сообщение
+				dbg_warn,	// Предупреждение
+				dbg_error	// Ошибка
+			};
+
 			static debug* get_instance( void ) {
 				static debug debug_instance;
 				return &debug_instance;
 			}
 
-			// Вывод сообщения, белый цвет
-			void message( std::string st );
-
-			// Вывод предупреждения, желтый цвет
-			void warn( std::string st );
-
-			// Вывод ошибки, красный цвет
-			void error( std::string st );
+			// Вывод отладочного сообщения
+			void print( dbg_type_e type, std::string st );
 
 		private:
 			// Запрет конструктора, деструктора, операции копирования

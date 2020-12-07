@@ -7,18 +7,26 @@ namespace demonblade {
 		console_handle = GetStdHandle( STD_OUTPUT_HANDLE );
 	}
 
-	void debug::message( std::string st ) {
-		SetConsoleTextAttribute( console_handle, DBG_WHITE_COLOR );
-		std::cout << st;
-	}
+	void debug::print( dbg_type_e type, std::string st ) {
+		uint16_t color;
+		switch ( type ) {
+			case dbg_msg: {
+				color = DBG_WHITE_COLOR;
+				break;
+			}
+			case dbg_warn: {
+				color = DBG_YELLOW_COLOR;;
+				break;
+			}
+			case dbg_error: {
+				color = DBG_RED_COLOR;
+				break;
+			}
+			default:
+				color = DBG_WHITE_COLOR;
+		}	// switch type
 
-	void debug::warn( std::string st ) {
-		SetConsoleTextAttribute( console_handle, DBG_YELLOW_COLOR );
-		std::cout << st;
-	}
-
-	void debug::error( std::string st ) {
-		SetConsoleTextAttribute( console_handle, DBG_RED_COLOR );
+		SetConsoleTextAttribute( console_handle, color );
 		std::cout << st;
 	}
 
@@ -29,17 +37,27 @@ namespace demonblade {
 		// np
 	}
 
-	void debug::message( std::string st ) {
-		std::cout << DBG_WHITE_COLOR << st;
+	void debug::print( dbg_type_e type, std::string st ) {
+		std::string color;
+		switch ( type ) {
+			case dbg_msg: {
+				color = DBG_WHITE_COLOR;
+				break;
+			}
+			case dbg_warn: {
+				color = DBG_YELLOW_COLOR;;
+				break;
+			}
+			case dbg_error: {
+				color = DBG_RED_COLOR;
+				break;
+			}
+			default:
+				color = DBG_WHITE_COLOR;
+		}	// switch type
+		std::cout << color << st;
 	}
 
-	void debug::warn( std::string st ) {
-		std::cout << DBG_YELLOW_COLOR << st;
-	}
-
-	void debug::error( std::string st ) {
-		std::cout << DBG_RED_COLOR << st;
-	}
 	#endif // __linux__
 
 } //namespace demonblade

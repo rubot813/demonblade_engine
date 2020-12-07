@@ -28,10 +28,10 @@ namespace demonblade {
 
 			// ћетод загрузки текстуры из изображени€
 			bool load_from_image(	image *img,
-									tex_filter_e filter_high = NEAREST,
-									tex_filter_e filter_low = NEAREST,
-									tex_wrap_e wrap_u = CLAMP,
-									tex_wrap_e wrap_v = CLAMP );
+			                        tex_filter_e filter_high = NEAREST,
+			                        tex_filter_e filter_low = NEAREST,
+			                        tex_wrap_e wrap_u = CLAMP,
+			                        tex_wrap_e wrap_v = CLAMP );
 
 			// ћетод получени€ количества текстурных координат
 			uint8_t get_tex_coords_num( void );
