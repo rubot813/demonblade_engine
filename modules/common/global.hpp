@@ -1,7 +1,7 @@
 #ifndef GLOBAL_HPP_INCLUDED
 #define GLOBAL_HPP_INCLUDED
 
-#define DB_VERSION 0.980
+#define DB_VERSION 0.981
 
 // Закомментировать строчку ниже для отключения вывода отладочных сообщений
 #define DB_DEBUG

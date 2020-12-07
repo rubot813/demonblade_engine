@@ -6,10 +6,10 @@
 #include "image.hpp"
 
 // Размеры заголовка bmp_info_header для разных версий файла
-#define BMP_COLOR_HEADER_SIZE_CORE	12
-#define BMP_COLOR_HEADER_SIZE_V3	40
-#define BMP_COLOR_HEADER_SIZE_V4	108
-#define BMP_COLOR_HEADER_SIZE_V5	124
+#define BMP_INFO_HEADER_SIZE_CORE	12
+#define BMP_INFO_HEADER_SIZE_V3		40
+#define BMP_INFO_HEADER_SIZE_V4		108
+#define BMP_INFO_HEADER_SIZE_V5		124
 
 /*
 	Класс позволяет работать с bmp и dib файлами ( .rle не поддерживается )
@@ -56,7 +56,7 @@ namespace demonblade {
 
 				int32_t		x_pix_per_meter;
 				int32_t		y_pix_per_meter;
-				uint32_t	used_color_ind;		// Количество индексов цветов из палитры
+				uint32_t	used_color_ind;		// Размер таблицы цветов в ячейках
 				uint32_t	color_req;			// Количество цветов используемых в изображении. 0 - вся палитра
 
 				// Для версии 4 допустима структура bmp_color_header_s
