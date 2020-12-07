@@ -50,7 +50,7 @@ namespace demonblade {
 
 				// Считываю оставшиеся байты структуры bmp_info_header
 				file->read( ( char* )&_info_header + BMP_COLOR_HEADER_SIZE_CORE + 4,
-							BMP_COLOR_HEADER_SIZE_V3 - BMP_COLOR_HEADER_SIZE_CORE + 4 );
+				            BMP_COLOR_HEADER_SIZE_V3 - BMP_COLOR_HEADER_SIZE_CORE + 4 );
 				break;
 			}
 
@@ -59,11 +59,18 @@ namespace demonblade {
 
 				// Считываю оставшиеся байты структуры bmp_info_header
 				file->read( ( char* )&_info_header + BMP_COLOR_HEADER_SIZE_CORE + 4,
-							BMP_COLOR_HEADER_SIZE_V3 - BMP_COLOR_HEADER_SIZE_CORE + 4 );	// V3 - корректно
+				            BMP_COLOR_HEADER_SIZE_V3 - BMP_COLOR_HEADER_SIZE_CORE + 4 );	// V3 - корректно
 
 				db_dbg_msg( "info_header.compression = " + std::to_string( _info_header.compression ) + "\n" );
 				db_dbg_msg( "info_header.palette color used = " + std::to_string( _info_header.used_color_ind ) + "\n" );
 				db_dbg_msg( "info_header.colors = " + std::to_string( _info_header.color_req ) + "\n" );
+
+				// Проверка поддержки типа сжатия изображения
+				bmp_info_header_s::compression_s comp = _info_header.get_compression( );
+				if ( !( comp == bmp_info_header_s::CMP_BI_RGB ) || !( comp == bmp_info_header_s::CMP_BI_BITFIELDS ) ) {
+					db_dbg_error( "info header -> unsupported compression format\n" );
+					return 0;
+				}
 
 				// Считываю bmp_color_header_s
 				file->read( ( char* )&_color_header, sizeof( bmp_color_header_s ) );
@@ -77,6 +84,7 @@ namespace demonblade {
 					db_dbg_error( "color header -> unsupported color format\n" );
 					return 0;
 				}
+
 				break;
 			}
 
@@ -85,6 +93,20 @@ namespace demonblade {
 				db_dbg_error("version 5 BMP files are not supported. Contact the developer");
 				return 0;
 			}
+		}
+
+		// Установка размеров изображения
+		_width	= _info_header.width;
+		_height = _info_header.height;
+
+		// Установка расширенного формата файла
+		if ( _info_header.bpp == 24 )
+			_format = SIZED_RGB;
+		else if ( _info_header.bpp == 32 )
+			_format = SIZED_RGBA;
+		else {
+			db_dbg_error( "unsupported bpp\n" );
+			return 0;
 		}
 
 		return 1;
@@ -201,7 +223,7 @@ namespace demonblade {
 
 		// Чтение заголовков
 		if ( !_read_header( &file ) ) {
-			db_dbg_error( "cannot read headers\n" );
+			db_dbg_error( "error while reading headers\n" );
 			file.close( );
 			return 0;
 		}
@@ -211,22 +233,10 @@ namespace demonblade {
 
 		// Чтение заголовков
 		if ( !_read_pixel_data( &file ) ) {
-			db_dbg_error( "cannot read pixel data\n" );
+			db_dbg_error( "error while reading pixel data\n" );
 			file.close( );
 			return 0;
 		}
-
-		// Установка размеров изображения
-		_width	= _info_header.width;
-		_height = _info_header.height;
-
-		// Установка расширенного формата файла
-		if ( _info_header.bpp == 24 )
-			_format = SIZED_RGB;
-		else if ( _info_header.bpp == 32 )
-			_format = SIZED_RGBA;
-		else
-			db_dbg_error( "cannot read bpp field\n" );
 
 		// Конвертация BGR -> RGB / BGRA -> RGBA
 		if ( !convert_format( ) )
@@ -267,6 +277,10 @@ namespace demonblade {
 			}
 		}
 		return ver;
+	}
+
+	bmp::bmp_info_header_s::compression_s bmp::bmp_info_header_s::get_compression( void ) {
+		return ( compression_s )compression;
 	}
 
 	// ==== bmp_info_header_s ====

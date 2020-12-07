@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <cstring>
+#include <string>
 
 #include "../common/global.hpp"
 #include "../core/ogl.hpp"

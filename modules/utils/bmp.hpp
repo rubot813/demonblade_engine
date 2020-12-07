@@ -11,10 +11,10 @@
 #define BMP_COLOR_HEADER_SIZE_V4	108
 #define BMP_COLOR_HEADER_SIZE_V5	124
 
-
 /*
-	Класс позволяет работать с bmp и dib файлами
-	Класс - потомок image
+	Класс позволяет работать с bmp и dib файлами ( .rle не поддерживается )
+	Поддерживаются версии CORE, V3(24 / 32bpp), V4(42 / 32bpp)
+	Потомок image
 */
 
 namespace demonblade {
@@ -70,6 +70,17 @@ namespace demonblade {
 					VERSION_5		= 5,
 				};
 
+				// Перечисление типов сжатия изображения
+				enum compression_s {
+					CMP_BI_RGB	= 0,	// Двумерный массив
+					CMP_BI_RLE8,		// RLE
+					CMP_BI_RLE4,		// RLE
+					CMP_BI_BITFIELDS,	// Двумерный массив с масками цветовых каналов
+					CMP_BI_JPEG,		// Во встроенном JPEG файле
+					CMP_BI_PNG,			// Во встроенном PNG файле
+					CMP_BI_APHABITFIELS	// Двумерный массив с масками цветов и альфа - канала
+				};
+
 				bmp_info_header_s( void ) {
 					memset( this, 0, sizeof( bmp_info_header_s ) );
 					planes = 1;
@@ -78,6 +89,10 @@ namespace demonblade {
 				// Получение версии заголовка bmp_info_header
 				// Версия заголовка ( и допустимые для чтения / записи поля ) определяются по размеру структуры ( поля size )
 				version_s get_version( void );
+
+				// Метод получения параметра сжатия изображения
+				compression_s get_compression( void );
+
 			};
 
 			// Структура заголовка информации о маске цвета
