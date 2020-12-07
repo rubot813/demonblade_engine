@@ -5,6 +5,13 @@
 
 #include "image.hpp"
 
+// Размеры заголовка bmp_info_header для разных версий файла
+#define BMP_COLOR_HEADER_SIZE_CORE	12
+#define BMP_COLOR_HEADER_SIZE_V3	40
+#define BMP_COLOR_HEADER_SIZE_V4	108
+#define BMP_COLOR_HEADER_SIZE_V5	124
+
+
 /*
 	Класс позволяет работать с bmp и dib файлами
 	Класс - потомок image
@@ -31,7 +38,10 @@ namespace demonblade {
 
 			// Структура заголовка информации о файле
 			struct bmp_info_header_s {
+				// Допустимо для всех версий
 				uint32_t	size;				// Размер заголовка ( bmp_info_header_s )  в байтах
+
+				// Допустимые поля для версии CORE
 				int32_t		width;				// Ширина массива в пикселях
 				int32_t		height;				// Длина массива в пикселях
 				// Если > 0, значит начало с нижнего левого угла
@@ -39,6 +49,8 @@ namespace demonblade {
 
 				uint16_t	planes;				// Количество плоскостей битовых полей. Всегда = 1
 				uint16_t	bpp;				// Количество бит на пиксель
+
+				// Допустимые поля для версии 3
 				uint32_t	compression;		// Степень сжатия изображения. 0 для 24bpp, 3 для 32bpp
 				uint32_t	image_size;
 
@@ -46,6 +58,9 @@ namespace demonblade {
 				int32_t		y_pix_per_meter;
 				uint32_t	used_color_ind;		// Количество индексов цветов из палитры
 				uint32_t	color_req;			// Количество цветов используемых в изображении. 0 - вся палитра
+
+				// Для версии 4 допустима структура bmp_color_header_s
+				// Версия 5 не поддерживается
 
 				// Перечисление версий заголовка bmp_info_header
 				enum version_s {

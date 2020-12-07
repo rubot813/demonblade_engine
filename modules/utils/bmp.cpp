@@ -24,43 +24,69 @@ namespace demonblade {
 
 		// Проверка типа файла
 		if ( _file_header.type != 0x4D42 ) {
-			db_dbg_error( "file header -> wrong type\n" );
+			db_dbg_error( "file header -> wrong type. big endian?\n" );
 			return 0;
 		}
 
 		// Чтение заголовка информации о файле
-		file->read( ( char* )&_info_header, sizeof( bmp_info_header_s ) );
-		db_dbg_msg( "info_header.version = " + std::to_string( ( unsigned )_info_header.get_version( ) ) + "\n" );
+
+		// Чтение значений для версии CORE
+		file->read( ( char* )&_info_header, BMP_COLOR_HEADER_SIZE_CORE + 4 );	// Поле size не учитывается в размере, поэтому +4 байта
 		db_dbg_msg( "info_header.header size = " + std::to_string( _info_header.size ) + " bytes\n" );
 		db_dbg_msg( "info_header.width = " + std::to_string( _info_header.width ) + "\n" );
 		db_dbg_msg( "info_header.height = " + std::to_string( _info_header.height ) + "\n" );
 		db_dbg_msg( "info_header.bpp = " + std::to_string( _info_header.bpp ) + "\n" );
-		db_dbg_msg( "info_header.compression = " + std::to_string( _info_header.compression ) + "\n" );
-		db_dbg_msg( "info_header.palette color used = " + std::to_string( _info_header.used_color_ind ) + "\n" );
-		db_dbg_msg( "info_header.colors = " + std::to_string( _info_header.color_req ) + "\n" );
 
-		/*
-		// Если в файле есть альфа - канал, чтение заголовка bmp_color_header
-		if ( _info_header.bpp == 32 ) {
+		// Получение версии bmp
+		bmp_info_header_s::version_s version = _info_header.get_version( );
+		switch( version ) {
+			case bmp_info_header_s::VERSION_CORE: {
+				db_dbg_msg( "info_header.version = CORE\n" );
+				break;
+			}
 
-			// Проверка, имеет ли файл информацию о маске цвета
-			if ( _info_header.size >= ( sizeof( bmp_info_header_s ) + sizeof( bmp_color_header_s ) ) ) {	// Ну я хуй знает здесь, какая то ебола, но допустим
+			case bmp_info_header_s::VERSION_3: {
+				db_dbg_msg( "info_header.version = 3\n" );
 
-				// Чтение заголовка color_header
+				// Считываю оставшиеся байты структуры bmp_info_header
+				file->read( ( char* )&_info_header + BMP_COLOR_HEADER_SIZE_CORE + 4,
+							BMP_COLOR_HEADER_SIZE_V3 - BMP_COLOR_HEADER_SIZE_CORE + 4 );
+				break;
+			}
+
+			case bmp_info_header_s::VERSION_4: {
+				db_dbg_msg( "info_header.version = 4\n" );
+
+				// Считываю оставшиеся байты структуры bmp_info_header
+				file->read( ( char* )&_info_header + BMP_COLOR_HEADER_SIZE_CORE + 4,
+							BMP_COLOR_HEADER_SIZE_V3 - BMP_COLOR_HEADER_SIZE_CORE + 4 );	// V3 - корректно
+
+				db_dbg_msg( "info_header.compression = " + std::to_string( _info_header.compression ) + "\n" );
+				db_dbg_msg( "info_header.palette color used = " + std::to_string( _info_header.used_color_ind ) + "\n" );
+				db_dbg_msg( "info_header.colors = " + std::to_string( _info_header.color_req ) + "\n" );
+
+				// Считываю bmp_color_header_s
 				file->read( ( char* )&_color_header, sizeof( bmp_color_header_s ) );
+				db_dbg_msg( "color_header.red_mask =  " + std::to_string( _color_header.red_mask ) );
+				db_dbg_msg( "color_header.green_mask =  " + std::to_string( _color_header.green_mask ) );
+				db_dbg_msg( "color_header.blue_mask =  " + std::to_string( _color_header.blue_mask ) );
+				db_dbg_msg( "color_header.alpha_mask =  " + std::to_string( _color_header.alpha_mask ) );
 
 				// Проверка поддержки маски цвета BGRA и цветового пространства sRGB
 				if ( !_color_header.is_bgra( ) || !_color_header.is_srgb( ) ) {
 					db_dbg_error( "color header -> unsupported color format\n" );
 					return 0;
 				}
-			} else {
-				db_dbg_error( "color header -> file not contain color mask info\n" );
-				return 0;
+				break;
 			}
 
-		}	// if transparent
-		*/
+			case bmp_info_header_s::VERSION_5: {
+				db_dbg_msg( "info_header.version = 5\n" );
+				db_dbg_error("version 5 BMP files are not supported. Contact the developer");
+				return 0;
+			}
+		}
+
 		return 1;
 	}
 
@@ -219,24 +245,24 @@ namespace demonblade {
 	bmp::bmp_info_header_s::version_s bmp::bmp_info_header_s::get_version( void ) {
 		version_s ver;
 		switch ( size ) {
-			case 12: {
+			case BMP_COLOR_HEADER_SIZE_CORE: {
 				ver = VERSION_CORE;
 				break;
 			}
-			case 40: {
+			case BMP_COLOR_HEADER_SIZE_V3: {
 				ver = VERSION_3;
 				break;
 			}
-			case 108: {
+			case BMP_COLOR_HEADER_SIZE_V4: {
 				ver = VERSION_4;
 				break;
 			}
-			case 124: {
+			case BMP_COLOR_HEADER_SIZE_V5: {
 				ver = VERSION_5;
 				break;
 			}
 			default: {
-				db_dbg_error( "wrong size field. Cannot get version of bmp image" );
+				db_dbg_error( "wrong _size_ field. Cannot get version of bmp image" );
 				ver = VERSION_CORE;
 			}
 		}
