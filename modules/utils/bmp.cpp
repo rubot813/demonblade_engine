@@ -19,16 +19,27 @@ namespace demonblade {
 
 		// Чтение заголовка файла
 		file->read( ( char* )&_file_header, sizeof( bmp_file_header_s ) );
+		db_dbg_msg( "file_header.type = " + std::to_string( _file_header.type ) + "\n" );
+		db_dbg_msg( "file_header.size = " + std::to_string( _file_header.size ) + " bytes\n" );
 
 		// Проверка типа файла
-		if ( _file_header.file_type != 0x4D42 ) {
-			db_dbg_error( "ile header -> wrong type\n" );
+		if ( _file_header.type != 0x4D42 ) {
+			db_dbg_error( "file header -> wrong type\n" );
 			return 0;
 		}
 
 		// Чтение заголовка информации о файле
 		file->read( ( char* )&_info_header, sizeof( bmp_info_header_s ) );
+		db_dbg_msg( "info_header.version = " + std::to_string( ( unsigned )_info_header.get_version( ) ) + "\n" );
+		db_dbg_msg( "info_header.header size = " + std::to_string( _info_header.size ) + " bytes\n" );
+		db_dbg_msg( "info_header.width = " + std::to_string( _info_header.width ) + "\n" );
+		db_dbg_msg( "info_header.height = " + std::to_string( _info_header.height ) + "\n" );
+		db_dbg_msg( "info_header.bpp = " + std::to_string( _info_header.bpp ) + "\n" );
+		db_dbg_msg( "info_header.compression = " + std::to_string( _info_header.compression ) + "\n" );
+		db_dbg_msg( "info_header.palette color used = " + std::to_string( _info_header.used_color_ind ) + "\n" );
+		db_dbg_msg( "info_header.colors = " + std::to_string( _info_header.color_req ) + "\n" );
 
+		/*
 		// Если в файле есть альфа - канал, чтение заголовка bmp_color_header
 		if ( _info_header.bpp == 32 ) {
 
@@ -49,7 +60,7 @@ namespace demonblade {
 			}
 
 		}	// if transparent
-
+		*/
 		return 1;
 	}
 
@@ -95,7 +106,7 @@ namespace demonblade {
 			}
 		}	// if transparent
 
-		_file_header.file_size = _file_header.offset_data;
+		_file_header.size = _file_header.offset_data;
 
 		// Проверка соответствия формата файла: начало должно быть с верхнего левого угла
 		if ( _info_header.height < 0 ) {
@@ -111,7 +122,7 @@ namespace demonblade {
 		if ( _info_header.width % 4 == 0 ) {
 			// Выравнивание не нужно, просто считывается массив пикселей
 			file->read( ( char* )_data.data( ), _data.size( ) );
-			_file_header.file_size += static_cast< uint8_t >( _data.size( ) );
+			_file_header.size += static_cast< uint8_t >( _data.size( ) );
 
 		} else {
 			// Выравнивание нужно
@@ -203,6 +214,37 @@ namespace demonblade {
 		db_dbg_msg( "currently unsupported\n" );
 		return 0;
 	}
+
+	// ==== bmp_info_header_s ====
+	bmp::bmp_info_header_s::version_s bmp::bmp_info_header_s::get_version( void ) {
+		version_s ver;
+		switch ( size ) {
+			case 12: {
+				ver = VERSION_CORE;
+				break;
+			}
+			case 40: {
+				ver = VERSION_3;
+				break;
+			}
+			case 108: {
+				ver = VERSION_4;
+				break;
+			}
+			case 124: {
+				ver = VERSION_5;
+				break;
+			}
+			default: {
+				db_dbg_error( "wrong size field. Cannot get version of bmp image" );
+				ver = VERSION_CORE;
+			}
+		}
+		return ver;
+	}
+
+	// ==== bmp_info_header_s ====
+
 
 	// ==== bmp_color_header_s ====
 

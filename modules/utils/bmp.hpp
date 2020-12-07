@@ -18,14 +18,14 @@ namespace demonblade {
 #pragma pack(push, 1)
 			// Структура заголовка файла
 			struct bmp_file_header_s {
-				uint16_t file_type;		// Тип файла, всегда равен 0x4D42
-				uint32_t file_size;		// Размер файла в байтах
+				uint16_t type;			// Тип файла, всегда равен 0x4D42
+				uint32_t size;			// Размер файла в байтах
 				uint32_t _reserved;		// Резерв 32 бита
 				uint32_t offset_data; 	// Смещение начала массива пикселей
 
 				bmp_file_header_s( void ) {
 					memset( this, 0, sizeof( bmp_file_header_s ) );
-					file_type = 0x4D42;	// 'B' + 'M'
+					type = 0x4D42;	// 'B' + 'M'
 				}
 			};
 
@@ -47,10 +47,22 @@ namespace demonblade {
 				uint32_t	used_color_ind;		// Количество индексов цветов из палитры
 				uint32_t	color_req;			// Количество цветов используемых в изображении. 0 - вся палитра
 
+				// Перечисление версий заголовка bmp_info_header
+				enum version_s {
+					VERSION_CORE	= 0,
+					VERSION_3		= 3,
+					VERSION_4		= 4,
+					VERSION_5		= 5,
+				};
+
 				bmp_info_header_s( void ) {
 					memset( this, 0, sizeof( bmp_info_header_s ) );
 					planes = 1;
 				}
+
+				// Получение версии заголовка bmp_info_header
+				// Версия заголовка ( и допустимые для чтения / записи поля ) определяются по размеру структуры ( поля size )
+				version_s get_version( void );
 			};
 
 			// Структура заголовка информации о маске цвета
@@ -72,6 +84,8 @@ namespace demonblade {
 					color_space_type	= 0x73524742;	// spaceRGB
 				}
 
+
+
 				// Функции возвращают 1, если цветовая маска соответствует названию
 				bool is_bgr( void );	// BGR
 				bool is_bgra( void );	// BGRA
@@ -82,6 +96,7 @@ namespace demonblade {
 				bool is_srgb( void );
 
 			};
+
 #pragma pack(pop)
 
 			// default

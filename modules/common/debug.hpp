@@ -29,7 +29,7 @@ namespace demonblade {
 
 			// Типы отладочных сообщений
 			enum dbg_type_e {
-			dbg_msg,	// Сообщение
+				dbg_msg,	// Сообщение
 				dbg_warn,	// Предупреждение
 				dbg_error	// Ошибка
 			};
