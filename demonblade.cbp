@@ -63,6 +63,8 @@
 		<Unit filename="modules/utils/bmp.hpp" />
 		<Unit filename="modules/utils/image.cpp" />
 		<Unit filename="modules/utils/image.hpp" />
+		<Unit filename="modules/utils/obj.cpp" />
+		<Unit filename="modules/utils/obj.hpp" />
 		<Unit filename="modules/utils/utils.hpp" />
 		<Extensions>
 			<code_completion />

@@ -12,7 +12,7 @@ namespace demonblade {
 	}
 
 	model::~model( void ) {
-
+		// nope
 	}
 
 	bool model::set_data( mesh *mesh_ptr, texture *tex_ptr ) {
@@ -24,7 +24,7 @@ namespace demonblade {
 		bool data_valid = 1;
 
 		if ( mesh_ptr )
-			_mesh = *mesh_ptr;
+			_mesh = mesh_ptr;
 		else {
 			data_valid = 0;
 			db_dbg_warn( "received null mesh pointer\n" );
@@ -48,7 +48,7 @@ namespace demonblade {
 	}
 
 	mesh* model::get_mesh( void ) {
-		return &_mesh;
+		return _mesh;
 	}
 
 	texture* model::get_texture( void ) {
@@ -108,26 +108,26 @@ namespace demonblade {
 		// тип данных,
 		// смещение данных в массиве
 		// указатель на массив
-		glVertexPointer( 3, GL_FLOAT, 0, _mesh.get_vertex_ptr( )->data( ) );
+		glVertexPointer( 3, GL_FLOAT, 0, _mesh->get_vertex_ptr( )->data( ) );
 
 		// Создание указателя на массив текстурных координат
 		// количество координат,
 		// тип данных,
 		// смещение данных в массиве
 		// указатель на массив
-		glTexCoordPointer( _texture->get_tex_coords_num( ), GL_FLOAT, 0, _mesh.get_texel_ptr( )->data( ) );
+		glTexCoordPointer( _texture->get_tex_coords_num( ), GL_FLOAT, 0, _mesh->get_texel_ptr( )->data( ) );
 
 		// Создание указателя на массив нормалей
 		// тип данных,
 		// смещение данных в массиве,
 		// указатель на массив
-		glNormalPointer( GL_FLOAT, 0, _mesh.get_normal_ptr( )->data( ) );
+		glNormalPointer( GL_FLOAT, 0, _mesh->get_normal_ptr( )->data( ) );
 
 		// Отрисовка массива
 		// Тип данных для отрисовки
 		// начальный индекс массива
 		// количество элементов для отрисовки
-		glDrawArrays( GL_TRIANGLES, 0, _mesh.get_vertex_ptr( )->size( ) );
+		glDrawArrays( GL_TRIANGLES, 0, _mesh->get_vertex_ptr( )->size( ) );
 
 		// ====
 

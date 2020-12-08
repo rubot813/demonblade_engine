@@ -75,7 +75,7 @@ class playground {
 		// Переменные движка, начинаются с db_
 		db::fp_camera	db_camera;
 		db::texture_2d db_texture;
-		db::mesh	db_mesh;
+		db::obj		db_obj;
 		db::model	db_model;
 		db::sprite	db_sprite;
 		db::bmp		db_bmp;

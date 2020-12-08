@@ -93,19 +93,19 @@ bool playground::init( void ) {
 	// Настройка камеры ( она обязательна,даже если будет статична )
 	// Настраивает и устанавливает матрицу перспективной проекции
 	db_camera.set_viewport( window_size_x, window_size_y, 60.0f );
-	db_camera.set_center( { 0.0f, 0.0f, -1.0f });
-	db_camera.set_position( { 0.0f, 0.0f, 0.0f });
+	db_camera.set_center( { 0.0f, 0.0f, -1.0f } );
+	db_camera.set_position( { 0.0f, 0.0f, 0.0f } );
 
-	if ( db_bmp.load_from_file( "resources/LAND2.BMP" ) )
+	if ( db_bmp.load_from_file( "resources/StanfordDish.bmp" ) )
 		std::cout << "Load tex done!\n";
 
 	if ( db_texture.load_from_image( &db_bmp ) )
 		std::cout << "Load texture ok!\n";
 
-	if ( db_mesh.load_from_file( "resources/box.obj" ) )
+	if ( db_obj.load_from_file( "resources/box.obj" ) )
 		std::cout << "Load mesh ok!\n";
 
-	if ( db_model.set_data( &db_mesh, &db_texture ) )
+	if ( db_model.set_data( &db_obj, &db_texture ) )
 		std::cout << "Model set data ok!\n";
 
 	if ( db_sprite.set_data( db::sprite::SPHERICAL, glm::vec2( 0.2f, 0.2f ), &db_texture ) ) {

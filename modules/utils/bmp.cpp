@@ -139,16 +139,8 @@ namespace demonblade {
 		// Выделение памяти под массив пикселей
 		_data.resize( _height * row_size );
 
-		// Смещение для рядов пикселей
-		uint32_t row_offset = 0;
-		for ( uint32_t h = 0; h < _height; h++ ) {
-
-			// Считывание ряда пикселей
-			file->read( ( char* )_data.data( ) + row_offset, row_size );
-
-			// Смещение адреса в _data, по которому считываются пиксели
-			row_offset += row_size;
-		}
+		// Считывание всего массива пикселей в _data
+		file->read( ( char* )_data.data( ), _height * row_size );
 
 		return 1;
 	}
