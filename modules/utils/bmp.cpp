@@ -129,33 +129,25 @@ namespace demonblade {
 		// –азмер пиксел€ в байтах ( 3 или 4 )
 		uint8_t pixel_size = _info_header.bpp / 8;
 
-		// –азмер р€да пикселей в байтах
-		uint16_t row_size = _width * pixel_size;
-
-		// aka row_padding. «начение байт в конце каждой строки которое нужно пропустить,
-		// т.к. длина строки должна быть кратна 4 байтам
-		uint16_t row_indent = ( ( _width * pixel_size ) % 4 ) & 3;
-		db_dbg_msg( "width = " + std::to_string( _width * pixel_size ) + "\n" );
-		db_dbg_msg( "row_indent = " + std::to_string( row_indent ) + "\n" );
-		db_dbg_msg( "total = " + std::to_string( ( _width * pixel_size ) + row_indent ) + "\n" );
+		// –азмер р€да пикселей в байтах с учетом дополнени€ длины до кратности 4 байтам
+		// todo: проверить на 32bpp
+		uint16_t row_size = ( _width * pixel_size + pixel_size ) & ( ~pixel_size );
 
 		// ѕереход к массиву пикселей
 		file->seekg( _file_header.offset_data, file->beg );
 
 		// ¬ыделение пам€ти под массив пикселей
-		_data.resize( _width * _height * pixel_size );
+		_data.resize( _height * row_size );
 
 		// —мещение дл€ р€дов пикселей
 		uint32_t row_offset = 0;
 		for ( uint32_t h = 0; h < _height; h++ ) {
+
 			// —читывание р€да пикселей
 			file->read( ( char* )_data.data( ) + row_offset, row_size );
 
 			// —мещение адреса в _data, по которому считываютс€ пиксели
 			row_offset += row_size;
-
-			// ѕропуск считывани€ байт в конце каждого р€да, если необходимо ( если размер % 4 != 0 )
-			//file->seekg( 3, std::ios_base::cur );
 		}
 
 		return 1;

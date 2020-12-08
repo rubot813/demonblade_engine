@@ -96,7 +96,7 @@ bool playground::init( void ) {
 	db_camera.set_center( { 0.0f, 0.0f, -1.0f });
 	db_camera.set_position( { 0.0f, 0.0f, 0.0f });
 
-	if ( db_bmp.load_from_file( "resources/TallGreenGrass.bmp" ) )
+	if ( db_bmp.load_from_file( "resources/LAND2.BMP" ) )
 		std::cout << "Load tex done!\n";
 
 	if ( db_texture.load_from_image( &db_bmp ) )
