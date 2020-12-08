@@ -91,15 +91,17 @@ namespace demonblade {
 			}
 		}
 
-		// Проверка значений для версий 4 и 4, чтобы не дублировать
-		if ( version == bmp_info_header_s::VERSION_3 || version == bmp_info_header_s::VERSION_4 ) {
+		// Проверка значений для версий 3+, чтобы не дублировать
+		if ( version >= bmp_info_header_s::VERSION_3 ) {
 			db_dbg_msg( "info_header.compression = " + std::to_string( _info_header.compression ) + "\n" );
 			db_dbg_msg( "info_header.palette color used = " + std::to_string( _info_header.used_color_ind ) + "\n" );
 			db_dbg_msg( "info_header.colors = " + std::to_string( _info_header.color_req ) + "\n" );
 
 			// Проверка поддержки типа сжатия изображения
 			bmp_info_header_s::compression_s comp = _info_header.get_compression( );
-			if ( comp != bmp_info_header_s::CMP_BI_RGB && comp != bmp_info_header_s::CMP_BI_BITFIELDS ) {
+			if (	comp != bmp_info_header_s::CMP_BI_RGB &&
+			        comp != bmp_info_header_s::CMP_BI_BITFIELDS &&
+			        comp != bmp_info_header_s::CMP_BI_APHABITFIELS ) {
 				db_dbg_error( "info header -> unsupported compression format\n" );
 				return 0;
 			}
@@ -128,19 +130,24 @@ namespace demonblade {
 		uint8_t pixel_size = _info_header.bpp / 8;
 
 		// Размер ряда пикселей в байтах
-		uint16_t row_size = _info_header.width * pixel_size;
-
-		// Выделение памяти под массив пикселей
-		_data.resize( _info_header.width * _info_header.height * pixel_size );
+		uint16_t row_size = _width * pixel_size;
 
 		// aka row_padding. Значение байт в конце каждой строки которое нужно пропустить,
-		// т.к. длина строки должна быть кратна 4
-		uint16_t row_indent = ( ( _info_header.width * pixel_size ) % 4 ) & 3;
-		db_dbg_msg( "row_indent = " + std::to_string( row_indent ) );
+		// т.к. длина строки должна быть кратна 4 байтам
+		uint16_t row_indent = ( ( _width * pixel_size ) % 4 ) & 3;
+		db_dbg_msg( "width = " + std::to_string( _width * pixel_size ) + "\n" );
+		db_dbg_msg( "row_indent = " + std::to_string( row_indent ) + "\n" );
+		db_dbg_msg( "total = " + std::to_string( ( _width * pixel_size ) + row_indent ) + "\n" );
+
+		// Переход к массиву пикселей
+		file->seekg( _file_header.offset_data, file->beg );
+
+		// Выделение памяти под массив пикселей
+		_data.resize( _width * _height * pixel_size );
 
 		// Смещение для рядов пикселей
 		uint32_t row_offset = 0;
-		for ( int32_t h = 0; h < _info_header.height; h++ ) {
+		for ( uint32_t h = 0; h < _height; h++ ) {
 			// Считывание ряда пикселей
 			file->read( ( char* )_data.data( ) + row_offset, row_size );
 
@@ -148,7 +155,7 @@ namespace demonblade {
 			row_offset += row_size;
 
 			// Пропуск считывания байт в конце каждого ряда, если необходимо ( если размер % 4 != 0 )
-			//file->seekg( 9, std::ios_base::cur );
+			//file->seekg( 3, std::ios_base::cur );
 		}
 
 		return 1;
@@ -170,9 +177,6 @@ namespace demonblade {
 			file.close( );
 			return 0;
 		}
-
-		// Переход к массиву пикселей
-		file.seekg( _file_header.offset_data, file.beg );
 
 		// Чтение заголовков
 		if ( !_read_pixel_data( &file ) ) {
