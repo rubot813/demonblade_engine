@@ -2,14 +2,14 @@
 #define DB_GL_HPP_INCLUDED
 
 /*
-    Хэдер для подключения OpenGL и библиотеки GLEW
-    Текущие версии:
+    РҐСЌРґРµСЂ РґР»СЏ РїРѕРґРєР»СЋС‡РµРЅРёСЏ OpenGL Рё Р±РёР±Р»РёРѕС‚РµРєРё GLEW
+    РўРµРєСѓС‰РёРµ РІРµСЂСЃРёРё:
     GL - 3.2+
     GLEW - 2.1.0
 
-    Подключение:
-    compiler: путь до папки external
-    linker:	путь external/glew/lib/gcc или external/glew/lib/vc
+    РџРѕРґРєР»СЋС‡РµРЅРёРµ:
+    compiler: РїСѓС‚СЊ РґРѕ РїР°РїРєРё external
+    linker:	РїСѓС‚СЊ external/glew/lib/gcc РёР»Рё external/glew/lib/vc
     linker flags: glew32 opengl32
 */
 

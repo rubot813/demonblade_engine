@@ -19,7 +19,7 @@
 	#define DBG_RED_COLOR		"\e[0;31m"
 #endif
 /*
-    Класс для вывода отладочных сообщений
+    РљР»Р°СЃСЃ РґР»СЏ РІС‹РІРѕРґР° РѕС‚Р»Р°РґРѕС‡РЅС‹С… СЃРѕРѕР±С‰РµРЅРёР№
 */
 
 namespace demonblade {
@@ -27,11 +27,11 @@ namespace demonblade {
 	class debug {
 		public:
 
-			// Типы отладочных сообщений
+			// РўРёРїС‹ РѕС‚Р»Р°РґРѕС‡РЅС‹С… СЃРѕРѕР±С‰РµРЅРёР№
 			enum dbg_type_e {
-				dbg_msg,	// Сообщение
-				dbg_warn,	// Предупреждение
-				dbg_error	// Ошибка
+				dbg_msg,	// РЎРѕРѕР±С‰РµРЅРёРµ
+				dbg_warn,	// РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ
+				dbg_error	// РћС€РёР±РєР°
 			};
 
 			static debug* get_instance( void ) {
@@ -39,11 +39,11 @@ namespace demonblade {
 				return &debug_instance;
 			}
 
-			// Вывод отладочного сообщения
+			// Р’С‹РІРѕРґ РѕС‚Р»Р°РґРѕС‡РЅРѕРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ
 			void print( dbg_type_e type, std::string st );
 
 		private:
-			// Запрет конструктора, деструктора, операции копирования
+			// Р—Р°РїСЂРµС‚ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР°, РґРµСЃС‚СЂСѓРєС‚РѕСЂР°, РѕРїРµСЂР°С†РёРё РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 			debug( void );
 			~debug( void ) { };
 			debug( const debug &_ex ) = delete;

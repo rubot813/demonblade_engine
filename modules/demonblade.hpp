@@ -1,5 +1,5 @@
 /*
-    Хэдер для подключения модулей движка demonblade
+    РҐСЌРґРµСЂ РґР»СЏ РїРѕРґРєР»СЋС‡РµРЅРёСЏ РјРѕРґСѓР»РµР№ РґРІРёР¶РєР° demonblade
 */
 #ifndef DEMONBLADE_HPP_INCLUDED
 #define DEMONBLADE_HPP_INCLUDED

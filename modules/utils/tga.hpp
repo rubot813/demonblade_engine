@@ -6,8 +6,8 @@
 #include "image.hpp"
 
 /*
-	Класс позволяет работать с tga файлами
-	Потомок image
+	РљР»Р°СЃСЃ РїРѕР·РІРѕР»СЏРµС‚ СЂР°Р±РѕС‚Р°С‚СЊ СЃ tga С„Р°Р№Р»Р°РјРё
+	РџРѕС‚РѕРјРѕРє image
 */
 
 namespace demonblade {
@@ -18,10 +18,10 @@ namespace demonblade {
 			tga( std::string file_name );
 			~tga( void );
 
-			// Метод загрузки изображения из файла
+			// РњРµС‚РѕРґ Р·Р°РіСЂСѓР·РєРё РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РёР· С„Р°Р№Р»Р°
 			bool load_from_file( std::string file_name );
 
-			// Метод записи изображения в файл
+			// РњРµС‚РѕРґ Р·Р°РїРёСЃРё РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РІ С„Р°Р№Р»
 			bool save_to_file( std::string file_name );
 
 	};	// class tga

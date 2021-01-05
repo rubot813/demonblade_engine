@@ -7,7 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
-#include "demonblade.hpp"	// Так подключается движок
+#include "demonblade.hpp"	// РўР°Рє РїРѕРґРєР»СЋС‡Р°РµС‚СЃСЏ РґРІРёР¶РѕРє
 
 // rem after tests
 #ifndef GLEW_STATIC
@@ -16,8 +16,8 @@
 #include <glew/include/GL/glew.h>	//	defines glext, glew
 
 /*
-	Класс для тестов с движком demonblade.
-	Здесь все сделано криво и косо, класс предназначен только для проверки
+	РљР»Р°СЃСЃ РґР»СЏ С‚РµСЃС‚РѕРІ СЃ РґРІРёР¶РєРѕРј demonblade.
+	Р—РґРµСЃСЊ РІСЃРµ СЃРґРµР»Р°РЅРѕ РєСЂРёРІРѕ Рё РєРѕСЃРѕ, РєР»Р°СЃСЃ РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅ С‚РѕР»СЊРєРѕ РґР»СЏ РїСЂРѕРІРµСЂРєРё
 
 */
 
@@ -27,24 +27,24 @@ class playground {
 		~playground( void );
 
 		// ====
-		// Главные методы
-		bool init( void );		// Инициализация
-		void update( void );	// Обновление логики
-		void render( void );	// Отрисовка
+		// Р“Р»Р°РІРЅС‹Рµ РјРµС‚РѕРґС‹
+		bool init( void );		// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
+		void update( void );	// РћР±РЅРѕРІР»РµРЅРёРµ Р»РѕРіРёРєРё
+		void render( void );	// РћС‚СЂРёСЃРѕРІРєР°
 		// ====
 
 		// ====
-		// Остальные методы
-		// Метод считает и выдает FPS. Вызывать каждый кадр, меняет значение раз в секунду
+		// РћСЃС‚Р°Р»СЊРЅС‹Рµ РјРµС‚РѕРґС‹
+		// РњРµС‚РѕРґ СЃС‡РёС‚Р°РµС‚ Рё РІС‹РґР°РµС‚ FPS. Р’С‹Р·С‹РІР°С‚СЊ РєР°Р¶РґС‹Р№ РєР°РґСЂ, РјРµРЅСЏРµС‚ Р·РЅР°С‡РµРЅРёРµ СЂР°Р· РІ СЃРµРєСѓРЅРґСѓ
 		uint16_t calculate_frame_rate( void );
 
-		// Метод отрисовки текста
+		// РњРµС‚РѕРґ РѕС‚СЂРёСЃРѕРІРєРё С‚РµРєСЃС‚Р°
 		void render_text( sf::Vector2f position, std::string text );
 
 		// ====
-		// Переменные
+		// РџРµСЂРµРјРµРЅРЅС‹Рµ
 
-		// Размеры окна
+		// Р Р°Р·РјРµСЂС‹ РѕРєРЅР°
 		const uint16_t window_size_x = 1280;
 		const uint16_t window_size_y = 720;
 		const float window_fov		 = 60.0f;
@@ -52,27 +52,27 @@ class playground {
 		const float mouse_sens		 = 0.00005f;
 
 		// ====
-		// Переменные SFML, начинаются с sf_
+		// РџРµСЂРµРјРµРЅРЅС‹Рµ SFML, РЅР°С‡РёРЅР°СЋС‚СЃСЏ СЃ sf_
 
-		// Основные переменные SFML
+		// РћСЃРЅРѕРІРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ SFML
 		sf::Event			sf_event;
 		sf::RenderWindow	sf_render_window;
 		sf::ContextSettings sf_context_settings;
 
-		// Часы для расчета dt ( delta time. google it )
+		// Р§Р°СЃС‹ РґР»СЏ СЂР°СЃС‡РµС‚Р° dt ( delta time. google it )
 		sf::Clock sf_dt_clock;
 
-		// Для отрисовки текста
+		// Р”Р»СЏ РѕС‚СЂРёСЃРѕРІРєРё С‚РµРєСЃС‚Р°
 		sf::Text sf_text;
 		sf::Font sf_font;
 
-		// Для загрузки картинок и передачи в db
+		// Р”Р»СЏ Р·Р°РіСЂСѓР·РєРё РєР°СЂС‚РёРЅРѕРє Рё РїРµСЂРµРґР°С‡Рё РІ db
 		sf::Image sf_image;
 
 		sf::Vector2i sf_mouse_offset;
 
 		// ====
-		// Переменные движка, начинаются с db_
+		// РџРµСЂРµРјРµРЅРЅС‹Рµ РґРІРёР¶РєР°, РЅР°С‡РёРЅР°СЋС‚СЃСЏ СЃ db_
 		db::fp_camera	db_camera;
 		db::texture_2d db_texture;
 		db::obj		db_obj;

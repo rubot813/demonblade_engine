@@ -3,8 +3,8 @@
 
 #include "texture.hpp"
 /*
-	Класс texture_2d описывает одну двумерную текстуру. Координаты : u или s(x), v или t(y)
-	Предоставляет методы для загрузки текстуры из RAM или файлов в VRAM и наоборот
+	РљР»Р°СЃСЃ texture_2d РѕРїРёСЃС‹РІР°РµС‚ РѕРґРЅСѓ РґРІСѓРјРµСЂРЅСѓСЋ С‚РµРєСЃС‚СѓСЂСѓ. РљРѕРѕСЂРґРёРЅР°С‚С‹ : u РёР»Рё s(x), v РёР»Рё t(y)
+	РџСЂРµРґРѕСЃС‚Р°РІР»СЏРµС‚ РјРµС‚РѕРґС‹ РґР»СЏ Р·Р°РіСЂСѓР·РєРё С‚РµРєСЃС‚СѓСЂС‹ РёР· RAM РёР»Рё С„Р°Р№Р»РѕРІ РІ VRAM Рё РЅР°РѕР±РѕСЂРѕС‚
 */
 
 namespace demonblade {
@@ -17,8 +17,8 @@ namespace demonblade {
 
 			~texture_2d( void );
 
-			// Метод загрузки текстуры из памяти
-			// Принимает указатель на массив и его ширину и длину
+			// РњРµС‚РѕРґ Р·Р°РіСЂСѓР·РєРё С‚РµРєСЃС‚СѓСЂС‹ РёР· РїР°РјСЏС‚Рё
+			// РџСЂРёРЅРёРјР°РµС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РјР°СЃСЃРёРІ Рё РµРіРѕ С€РёСЂРёРЅСѓ Рё РґР»РёРЅСѓ
 			bool load_from_memory(	const void *pixel_ptr, uint16_t width, uint16_t height,
 			                        image::img_sized_format_e sized = image::SIZED_RGB,
 			                        tex_filter_e filter_high = NEAREST,
@@ -26,14 +26,14 @@ namespace demonblade {
 			                        tex_wrap_e wrap_u = CLAMP,
 			                        tex_wrap_e wrap_v = CLAMP );
 
-			// Метод загрузки текстуры из изображения
+			// РњРµС‚РѕРґ Р·Р°РіСЂСѓР·РєРё С‚РµРєСЃС‚СѓСЂС‹ РёР· РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
 			bool load_from_image(	image *img,
 			                        tex_filter_e filter_high = NEAREST,
 			                        tex_filter_e filter_low = NEAREST,
 			                        tex_wrap_e wrap_u = CLAMP,
 			                        tex_wrap_e wrap_v = CLAMP );
 
-			// Метод получения количества текстурных координат
+			// РњРµС‚РѕРґ РїРѕР»СѓС‡РµРЅРёСЏ РєРѕР»РёС‡РµСЃС‚РІР° С‚РµРєСЃС‚СѓСЂРЅС‹С… РєРѕРѕСЂРґРёРЅР°С‚
 			uint8_t get_tex_coords_num( void );
 
 	};	// class texture_2d

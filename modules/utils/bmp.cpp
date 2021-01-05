@@ -17,33 +17,33 @@ namespace demonblade {
 
 	bool bmp::_read_header( std::ifstream *file ) {
 
-		// Чтение заголовка файла
+		// Р§С‚РµРЅРёРµ Р·Р°РіРѕР»РѕРІРєР° С„Р°Р№Р»Р°
 		file->read( ( char* )&_file_header, sizeof( bmp_file_header_s ) );
 		db_dbg_msg( "file_header.type = " + std::to_string( _file_header.type ) + "\n" );
 		db_dbg_msg( "file_header.size = " + std::to_string( _file_header.size ) + " bytes\n" );
 
-		// Проверка типа файла
+		// РџСЂРѕРІРµСЂРєР° С‚РёРїР° С„Р°Р№Р»Р°
 		if ( _file_header.type != 0x4D42 ) {
 			db_dbg_error( "file header -> wrong type. big endian?\n" );
 			return 0;
 		}
 
-		// Чтение заголовка информации о файле
+		// Р§С‚РµРЅРёРµ Р·Р°РіРѕР»РѕРІРєР° РёРЅС„РѕСЂРјР°С†РёРё Рѕ С„Р°Р№Р»Рµ
 
-		// Чтение значений для версии CORE
-		file->read( ( char* )&_info_header, BMP_INFO_HEADER_SIZE_CORE + 4 );	// Поле size не учитывается в размере, поэтому +4 байта
+		// Р§С‚РµРЅРёРµ Р·РЅР°С‡РµРЅРёР№ РґР»СЏ РІРµСЂСЃРёРё CORE
+		file->read( ( char* )&_info_header, BMP_INFO_HEADER_SIZE_CORE + 4 );	// РџРѕР»Рµ size РЅРµ СѓС‡РёС‚С‹РІР°РµС‚СЃСЏ РІ СЂР°Р·РјРµСЂРµ, РїРѕСЌС‚РѕРјСѓ +4 Р±Р°Р№С‚Р°
 		db_dbg_msg( "info_header.header size = " + std::to_string( _info_header.size ) + " bytes\n" );
 		db_dbg_msg( "info_header.width = " + std::to_string( _info_header.width ) + "\n" );
 		db_dbg_msg( "info_header.height = " + std::to_string( _info_header.height ) + "\n" );
 		db_dbg_msg( "info_header.bpp = " + std::to_string( _info_header.bpp ) + "\n" );
 
-		// Проверка соответствия формата файла: начало должно быть с верхнего левого угла
+		// РџСЂРѕРІРµСЂРєР° СЃРѕРѕС‚РІРµС‚СЃС‚РІРёСЏ С„РѕСЂРјР°С‚Р° С„Р°Р№Р»Р°: РЅР°С‡Р°Р»Рѕ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ СЃ РІРµСЂС…РЅРµРіРѕ Р»РµРІРѕРіРѕ СѓРіР»Р°
 		if ( _info_header.height < 0 || _info_header.width < 0 ) {
 			db_dbg_error( "info header -> bottom - left origin unsupported\n" );
 			return 0;
 		}
 
-		// Получение версии bmp
+		// РџРѕР»СѓС‡РµРЅРёРµ РІРµСЂСЃРёРё bmp
 		bmp_info_header_s::version_s version = _info_header.get_version( );
 		switch( version ) {
 			case bmp_info_header_s::VERSION_CORE: {
@@ -54,7 +54,7 @@ namespace demonblade {
 			case bmp_info_header_s::VERSION_3: {
 				db_dbg_msg( "info_header.version = 3\n" );
 
-				// Считываю оставшиеся байты структуры bmp_info_header
+				// РЎС‡РёС‚С‹РІР°СЋ РѕСЃС‚Р°РІС€РёРµСЃСЏ Р±Р°Р№С‚С‹ СЃС‚СЂСѓРєС‚СѓСЂС‹ bmp_info_header
 				file->read( ( char* )&_info_header + BMP_INFO_HEADER_SIZE_CORE + 4,
 				            BMP_INFO_HEADER_SIZE_V3 - BMP_INFO_HEADER_SIZE_CORE + 4 );
 
@@ -64,18 +64,18 @@ namespace demonblade {
 			case bmp_info_header_s::VERSION_4: {
 				db_dbg_msg( "info_header.version = 4\n" );
 
-				// Считываю оставшиеся байты структуры bmp_info_header
+				// РЎС‡РёС‚С‹РІР°СЋ РѕСЃС‚Р°РІС€РёРµСЃСЏ Р±Р°Р№С‚С‹ СЃС‚СЂСѓРєС‚СѓСЂС‹ bmp_info_header
 				file->read( ( char* )&_info_header + BMP_INFO_HEADER_SIZE_CORE + 4,
-				            BMP_INFO_HEADER_SIZE_V3 - BMP_INFO_HEADER_SIZE_CORE + 4 );	// V3 - корректно
+				            BMP_INFO_HEADER_SIZE_V3 - BMP_INFO_HEADER_SIZE_CORE + 4 );	// V3 - РєРѕСЂСЂРµРєС‚РЅРѕ
 
-				// Считываю bmp_color_header_s
+				// РЎС‡РёС‚С‹РІР°СЋ bmp_color_header_s
 				file->read( ( char* )&_color_header, sizeof( bmp_color_header_s ) );
 				db_dbg_msg( "color_header.red_mask =  " + std::to_string( _color_header.red_mask ) );
 				db_dbg_msg( "color_header.green_mask =  " + std::to_string( _color_header.green_mask ) );
 				db_dbg_msg( "color_header.blue_mask =  " + std::to_string( _color_header.blue_mask ) );
 				db_dbg_msg( "color_header.alpha_mask =  " + std::to_string( _color_header.alpha_mask ) );
 
-				// Проверка поддержки маски цвета BGRA и цветового пространства sRGB
+				// РџСЂРѕРІРµСЂРєР° РїРѕРґРґРµСЂР¶РєРё РјР°СЃРєРё С†РІРµС‚Р° BGRA Рё С†РІРµС‚РѕРІРѕРіРѕ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІР° sRGB
 				if ( !_color_header.is_bgra( ) || !_color_header.is_srgb( ) ) {
 					db_dbg_error( "color header -> unsupported color format\n" );
 					return 0;
@@ -91,13 +91,13 @@ namespace demonblade {
 			}
 		}
 
-		// Проверка значений для версий 3+, чтобы не дублировать
+		// РџСЂРѕРІРµСЂРєР° Р·РЅР°С‡РµРЅРёР№ РґР»СЏ РІРµСЂСЃРёР№ 3+, С‡С‚РѕР±С‹ РЅРµ РґСѓР±Р»РёСЂРѕРІР°С‚СЊ
 		if ( version >= bmp_info_header_s::VERSION_3 ) {
 			db_dbg_msg( "info_header.compression = " + std::to_string( _info_header.compression ) + "\n" );
 			db_dbg_msg( "info_header.palette color used = " + std::to_string( _info_header.used_color_ind ) + "\n" );
 			db_dbg_msg( "info_header.colors = " + std::to_string( _info_header.color_req ) + "\n" );
 
-			// Проверка поддержки типа сжатия изображения
+			// РџСЂРѕРІРµСЂРєР° РїРѕРґРґРµСЂР¶РєРё С‚РёРїР° СЃР¶Р°С‚РёСЏ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
 			bmp_info_header_s::compression_s comp = _info_header.get_compression( );
 			if (	comp != bmp_info_header_s::CMP_BI_RGB &&
 			        comp != bmp_info_header_s::CMP_BI_BITFIELDS &&
@@ -107,11 +107,11 @@ namespace demonblade {
 			}
 		}
 
-		// Установка размеров изображения
+		// РЈСЃС‚Р°РЅРѕРІРєР° СЂР°Р·РјРµСЂРѕРІ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
 		_width	= _info_header.width;
 		_height = _info_header.height;
 
-		// Установка расширенного формата файла
+		// РЈСЃС‚Р°РЅРѕРІРєР° СЂР°СЃС€РёСЂРµРЅРЅРѕРіРѕ С„РѕСЂРјР°С‚Р° С„Р°Р№Р»Р°
 		if ( _info_header.bpp == 24 )
 			_format = SIZED_RGB;
 		else if ( _info_header.bpp == 32 )
@@ -126,20 +126,20 @@ namespace demonblade {
 
 	bool bmp::_read_pixel_data( std::ifstream *file ) {
 
-		// Размер пикселя в байтах ( 3 или 4 )
+		// Р Р°Р·РјРµСЂ РїРёРєСЃРµР»СЏ РІ Р±Р°Р№С‚Р°С… ( 3 РёР»Рё 4 )
 		uint8_t pixel_size = _info_header.bpp / 8;
 
-		// Размер ряда пикселей в байтах с учетом дополнения длины до кратности 4 байтам
-		// todo: проверить на 32bpp
+		// Р Р°Р·РјРµСЂ СЂСЏРґР° РїРёРєСЃРµР»РµР№ РІ Р±Р°Р№С‚Р°С… СЃ СѓС‡РµС‚РѕРј РґРѕРїРѕР»РЅРµРЅРёСЏ РґР»РёРЅС‹ РґРѕ РєСЂР°С‚РЅРѕСЃС‚Рё 4 Р±Р°Р№С‚Р°Рј
+		// todo: РїСЂРѕРІРµСЂРёС‚СЊ РЅР° 32bpp
 		uint16_t row_size = ( _width * pixel_size + pixel_size ) & ( ~pixel_size );
 
-		// Переход к массиву пикселей
+		// РџРµСЂРµС…РѕРґ Рє РјР°СЃСЃРёРІСѓ РїРёРєСЃРµР»РµР№
 		file->seekg( _file_header.offset_data, file->beg );
 
-		// Выделение памяти под массив пикселей
+		// Р’С‹РґРµР»РµРЅРёРµ РїР°РјСЏС‚Рё РїРѕРґ РјР°СЃСЃРёРІ РїРёРєСЃРµР»РµР№
 		_data.resize( _height * row_size );
 
-		// Считывание всего массива пикселей в _data
+		// РЎС‡РёС‚С‹РІР°РЅРёРµ РІСЃРµРіРѕ РјР°СЃСЃРёРІР° РїРёРєСЃРµР»РµР№ РІ _data
 		file->read( ( char* )_data.data( ), _height * row_size );
 
 		return 1;
@@ -147,7 +147,7 @@ namespace demonblade {
 
 	bool bmp::load_from_file( std::string file_name ) {
 
-		// Открытие файла
+		// РћС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р°
 		std::ifstream file;
 		file.open( file_name, std::ios_base::binary );
 		if ( !file.is_open( ) ) {
@@ -155,21 +155,21 @@ namespace demonblade {
 			return 0;
 		}
 
-		// Чтение заголовков
+		// Р§С‚РµРЅРёРµ Р·Р°РіРѕР»РѕРІРєРѕРІ
 		if ( !_read_header( &file ) ) {
 			db_dbg_error( "error while reading headers\n" );
 			file.close( );
 			return 0;
 		}
 
-		// Чтение заголовков
+		// Р§С‚РµРЅРёРµ Р·Р°РіРѕР»РѕРІРєРѕРІ
 		if ( !_read_pixel_data( &file ) ) {
 			db_dbg_error( "error while reading pixel data\n" );
 			file.close( );
 			return 0;
 		}
 
-		// Конвертация BGR -> RGB / BGRA -> RGBA
+		// РљРѕРЅРІРµСЂС‚Р°С†РёСЏ BGR -> RGB / BGRA -> RGBA
 		if ( !convert_format( ) )
 			db_dbg_warn( "cannot convert to RGB(A)\n" );
 

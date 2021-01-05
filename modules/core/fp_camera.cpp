@@ -2,7 +2,7 @@
 
 namespace demonblade {
 	fp_camera::fp_camera( void ) {
-		// Инициализация векторов
+		// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РІРµРєС‚РѕСЂРѕРІ
 		_position	= { .0f, .0f, .0f };
 		_center		= { .0f, .0f, .0f };
 		_up			= { .0, 1.0f, .0f };

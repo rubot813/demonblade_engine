@@ -70,7 +70,7 @@ namespace demonblade {
 	}
 
 	bool image::convert_format( void ) {
-		// Получение количества байт на пиксель
+		// РџРѕР»СѓС‡РµРЅРёРµ РєРѕР»РёС‡РµСЃС‚РІР° Р±Р°Р№С‚ РЅР° РїРёРєСЃРµР»СЊ
 		uint8_t component_count = get_bpp( ) / 8;
 		bool _ok = 0;
 		if ( component_count ) {
